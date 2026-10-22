@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="14" fill="#0A1124" />
+  <rect x="1" y="1" width="46" height="46" rx="13" stroke="url(#borderGrad)" stroke-width="1.5" />
+  <path d="M8 24H16L20 14L26 34L31 20L35 25H40" stroke="url(#pulseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="26" cy="34" r="3" fill="#38BDF8" filter="url(#glow)" />
+  <defs>
+    <linearGradient id="borderGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6" stop-opacity="0.8" />
+      <stop offset="1" stop-color="#1D4ED8" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="pulseGrad" x1="8" y1="24" x2="40" y2="24" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA" />
+      <stop offset="0.5" stop-color="#3B82F6" />
+      <stop offset="1" stop-color="#06B6D4" />
+    </linearGradient>
+    <filter id="glow" x="19" y="27" width="14" height="14" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
