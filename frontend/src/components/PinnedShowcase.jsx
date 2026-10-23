@@ -15,7 +15,8 @@ import {
   Zap, 
   Sparkles,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  ArrowUp
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,21 +24,23 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────────────────
-   10 PHONE SCREEN MOCKUPS (FIGMA CLEAN LIGHT THEME)
-   Clean white cards, slate-900 typography, royal blue accents,
-   soft borders, emerald prime indicators.
+   10 PHONE SCREEN MOCKUPS (MATCHING PRIMATE.HEALTH & FIT GRAPH)
 ───────────────────────────────────────────────────────── */
 
-// 01. Daily Health Overview
+// 01. Capacity & Daily Readiness (Matching primate.health screenshot 2 teaser)
 function ScreenDailyOverview() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
       <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold">DAILY CAPACITY</span>
+        <div>
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#b5853a] font-bold block">
+            DAILY CAPACITY
+          </span>
+          <span className="text-sm font-black text-[#143428]">Tuesday, 14 July</span>
         </div>
-        <span className="text-[10px] font-mono text-blue-600 font-semibold">TODAY · 08:30 AM</span>
+        <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+          92 / 100 PRIME
+        </span>
       </div>
 
       <div className="relative my-3 flex flex-col items-center justify-center">
@@ -54,16 +57,16 @@ function ScreenDailyOverview() {
           />
           <defs>
             <linearGradient id="screenGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#3b82f6" />
-              <stop offset="100%" stopColor="#1d4ed8" />
+              <stop offset="0%" stopColor="#10b981" />
+              <stop offset="100%" stopColor="#059669" />
             </linearGradient>
           </defs>
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Readiness</span>
+          <span className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Capacity</span>
           <span className="text-4xl font-black text-slate-900 tracking-tight">92</span>
           <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-0.5 border border-emerald-200">
-            PRIME STATE
+            OPTIMAL LOAD
           </span>
         </div>
       </div>
@@ -82,69 +85,152 @@ function ScreenDailyOverview() {
         ))}
       </div>
 
-      <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200/80 mt-auto">
+      <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/80 mt-auto">
         <div className="flex items-center gap-1.5 mb-1">
-          <Sparkles className="w-3 h-3 text-blue-600" />
-          <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wider">TODAY'S BRIEF</span>
+          <Sparkles className="w-3 h-3 text-[#b5853a]" />
+          <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider">CAPACITY BRIEF</span>
         </div>
         <p className="text-[10px] text-slate-700 leading-relaxed font-normal">
-          "Deep sleep was 1h 53m (+22m vs avg). Your nervous system is primed for high-intensity power output until 2:00 PM."
+          "Deep sleep cleared sleep debt by 22m. Autonomic nervous system is primed for peak output before 3:00 PM."
         </p>
       </div>
     </div>
   );
 }
 
-// 02. Wearable Connections
+// 02. Wearables Sync (Exact match to Screenshot 3: primate.health/#rail 02 WEARABLES)
 function ScreenWearables() {
   const devices = [
-    { name: 'Apple Watch Ultra 2', metric: 'HRV, SpO2 & ECG', status: 'Live Sync', latency: '0.4s' },
-    { name: 'Oura Ring Gen 3', metric: 'Sleep & Temp Deviation', status: 'Live Sync', latency: '1.2s' },
-    { name: 'Whoop 4.0 Strap', metric: 'Strain & Recovery', status: 'Live Sync', latency: '0.8s' },
-    { name: 'Dexcom G7 CGM', metric: 'Interstitial Glucose', status: 'Continuous', latency: 'Real-time' },
-    { name: 'Garmin Epix Pro', metric: 'VO2 Max & GPS Dynamics', status: 'Connected', latency: '2.1s' },
+    { name: 'Apple Watch', metric: 'Sleep, HRV, workouts', status: 'SYNCED', dot: 'bg-emerald-500' },
+    { name: 'Garmin', metric: 'Runs, HRV, training load', status: 'SYNCED', dot: 'bg-emerald-500' },
+    { name: 'Mi Band', metric: 'Steps, heart rate', status: 'SYNCED', dot: 'bg-emerald-500' },
+    { name: 'Whoop', metric: 'Recovery, strain', status: 'SYNCED', dot: 'bg-emerald-500' },
+    { name: 'boAt', metric: 'Steps, sleep', status: 'SYNCED', dot: 'bg-emerald-500' },
   ];
 
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold">DEVICE MESH</span>
+      <div className="pb-2.5 border-b border-slate-200/80">
+        <span className="text-[9px] uppercase tracking-wider text-[#b5853a] font-mono font-bold block">SOURCES</span>
+        <span className="text-base font-black text-[#143428]">Wearables</span>
+        <div className="text-[9px] text-amber-900 bg-amber-50 border border-amber-200 rounded px-2 py-0.5 inline-block mt-1 font-mono font-semibold">
+          All streams synced · 06:40
         </div>
-        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-          5 CONNECTED
-        </span>
       </div>
 
-      <div className="mt-3 mb-2 flex items-center justify-between text-[11px] text-slate-600">
-        <span className="font-bold text-slate-900">Aggregated Pipeline</span>
-        <span className="text-blue-600 font-mono text-[10px] font-semibold">AES-256 E2EE</span>
-      </div>
-
-      <div className="space-y-2 flex-1">
+      <div className="space-y-1.5 my-auto">
         {devices.map((d) => (
-          <div key={d.name} className="p-2 rounded-xl bg-white border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div key={d.name} className="p-2.5 rounded-xl bg-white border border-slate-200/90 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-[11px] font-bold text-slate-900 leading-tight">{d.name}</div>
-              <div className="text-[9px] text-slate-500">{d.metric}</div>
+              <div className="text-[9px] text-slate-400 font-mono">{d.metric}</div>
             </div>
-            <div className="text-right">
-              <span className="text-[9px] font-semibold text-blue-600 block">{d.status}</span>
-              <span className="text-[8px] text-slate-400 font-mono">{d.latency}</span>
+            <div className="flex items-center gap-1.5 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              <span className={`w-1.5 h-1.5 rounded-full ${d.dot}`} />
+              <span>{d.status}</span>
             </div>
           </div>
         ))}
       </div>
 
       <div className="p-2 rounded-xl bg-slate-100 border border-slate-200 text-center mt-auto">
-        <span className="text-[9px] text-slate-600 font-medium">Zero duplicate counts · Single consolidated timeline</span>
+        <span className="text-[8.5px] text-slate-500 font-mono block">
+          Via Apple Health, Google Health Connect & Samsung Health
+        </span>
       </div>
     </div>
   );
 }
 
-// 03. Sleep Intelligence
+// 03. Stress Intelligence (Exact match to Screenshot 4: primate.health/#rail 03 STRESS)
+function ScreenStress() {
+  return (
+    <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
+      <div className="flex items-center justify-between pb-2 border-b border-slate-200/80">
+        <div>
+          <span className="text-[9px] uppercase tracking-wider text-[#b5853a] font-mono font-bold block">DAILY SIGNAL</span>
+          <span className="text-base font-black text-[#143428]">Stress</span>
+        </div>
+        <span className="text-[10px] font-mono text-slate-500 font-medium">Tuesday, 14 July</span>
+      </div>
+
+      {/* Radial Semi-Circle Gauge */}
+      <div className="relative my-2 flex flex-col items-center justify-center">
+        <svg className="w-36 h-20" viewBox="0 0 100 55">
+          <path
+            d="M 12 50 A 38 38 0 0 1 88 50"
+            fill="none"
+            stroke="#e2e8f0"
+            strokeWidth="7"
+            strokeLinecap="round"
+          />
+          <path
+            d="M 12 50 A 38 38 0 0 1 88 50"
+            fill="none"
+            stroke="url(#stressGrad2)"
+            strokeWidth="7"
+            strokeDasharray="120"
+            strokeDashoffset="75"
+            strokeLinecap="round"
+          />
+          <defs>
+            <linearGradient id="stressGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#10b981" />
+              <stop offset="60%" stopColor="#f59e0b" />
+              <stop offset="100%" stopColor="#ef4444" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <div className="text-center -mt-4">
+          <div className="text-2xl font-black text-slate-900 tracking-tight">
+            32 <span className="text-xs font-normal text-slate-400">/ 100</span>
+          </div>
+          <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 block mt-0.5">
+            LOW · Target: under 33
+          </span>
+        </div>
+      </div>
+
+      {/* 7-day avg and Best day cards */}
+      <div className="grid grid-cols-2 gap-2 mb-2 text-center">
+        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <span className="text-[8px] text-slate-400 uppercase font-bold block">7-day avg</span>
+          <span className="text-sm font-black text-slate-900">31</span>
+          <span className="text-[7px] text-slate-400 block font-mono">vs last week -</span>
+        </div>
+        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <span className="text-[8px] text-slate-400 uppercase font-bold block">Best day</span>
+          <span className="text-sm font-black text-emerald-600">28</span>
+          <span className="text-[7px] text-slate-400 block font-mono">lowest this week -</span>
+        </div>
+      </div>
+
+      {/* Today's stress curve graph */}
+      <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-sm mt-auto">
+        <div className="flex justify-between items-center text-[9px] mb-1 font-semibold text-slate-700">
+          <span className="text-[#b5853a] font-bold">| Today's stress</span>
+          <span className="text-slate-400 font-mono text-[8px]">12AM - 10PM</span>
+        </div>
+        <svg className="w-full h-8" viewBox="0 0 200 35" fill="none">
+          <path
+            d="M 0 25 Q 30 26 50 20 T 100 24 T 130 8 T 160 12 T 200 22"
+            stroke="#d97706"
+            strokeWidth="2"
+            fill="none"
+          />
+        </svg>
+        <div className="grid grid-cols-3 gap-1 text-[8px] text-center pt-1 border-t border-slate-100 font-medium">
+          <span className="text-emerald-700">Low 54% (13h)</span>
+          <span className="text-amber-700">Mod 35% (8h)</span>
+          <span className="text-rose-700">High 10% (2.5h)</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 04. Sleep Architecture
 function ScreenSleep() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
@@ -192,7 +278,7 @@ function ScreenSleep() {
   );
 }
 
-// 04. Recovery — HRV & Readiness
+// 05. Autonomic Nervous System Recovery
 function ScreenRecovery() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
@@ -243,55 +329,7 @@ function ScreenRecovery() {
   );
 }
 
-// 05. Activity & Strain
-function ScreenActivity() {
-  return (
-    <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
-        <div>
-          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">CARDIO STRAIN</span>
-          <div className="text-2xl font-black text-slate-900">15.2 <span className="text-xs font-normal text-slate-500">/ 21.0</span></div>
-        </div>
-        <div className="text-right">
-          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">ENERGY EXPENDITURE</span>
-          <div className="text-sm font-bold text-amber-600">2,420 kcal</div>
-        </div>
-      </div>
-
-      <div className="my-3">
-        <div className="flex justify-between text-[10px] text-slate-700 mb-1.5 font-semibold">
-          <span>Target Strain Budget</span>
-          <span className="text-amber-600">Target: 14.0 - 16.5</span>
-        </div>
-        <div className="grid grid-cols-4 gap-1.5 text-center">
-          <div className="p-1.5 rounded-lg bg-blue-50 border border-blue-200">
-            <span className="text-[8px] text-blue-700 block font-bold">Zone 2</span>
-            <span className="text-xs font-bold text-slate-900">45m</span>
-          </div>
-          <div className="p-1.5 rounded-lg bg-emerald-50 border border-emerald-200">
-            <span className="text-[8px] text-emerald-700 block font-bold">Zone 3</span>
-            <span className="text-xs font-bold text-slate-900">22m</span>
-          </div>
-          <div className="p-1.5 rounded-lg bg-amber-50 border border-amber-200">
-            <span className="text-[8px] text-amber-700 block font-bold">Zone 4</span>
-            <span className="text-xs font-bold text-slate-900">14m</span>
-          </div>
-          <div className="p-1.5 rounded-lg bg-red-50 border border-red-200">
-            <span className="text-[8px] text-red-700 block font-bold">Zone 5</span>
-            <span className="text-xs font-bold text-slate-900">8m</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 mt-auto text-[10px] flex items-center justify-between">
-        <span className="text-slate-700 font-medium">Remaining Safe Day Strain</span>
-        <span className="font-bold text-amber-700">1.8 Score Remaining</span>
-      </div>
-    </div>
-  );
-}
-
-// 06. Nutrition & Hydration
+// 06. Nutrition & CGM
 function ScreenNutrition() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
@@ -318,17 +356,6 @@ function ScreenNutrition() {
             strokeWidth="2.5"
             fill="none"
           />
-          <path
-            d="M 0 30 Q 35 24 70 28 T 130 15 T 190 26 T 260 21 L 260 50 L 0 50 Z"
-            fill="url(#cgmLightGrad)"
-            opacity="0.15"
-          />
-          <defs>
-            <linearGradient id="cgmLightGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop stopColor="#2563EB" />
-              <stop offset="1" stopColor="#2563EB" stopOpacity="0" />
-            </linearGradient>
-          </defs>
         </svg>
       </div>
 
@@ -350,7 +377,7 @@ function ScreenNutrition() {
   );
 }
 
-// 07. Biomarkers & Health Reports
+// 07. Clinical Blood Panel
 function ScreenBiomarkers() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
@@ -397,46 +424,55 @@ function ScreenBiomarkers() {
   );
 }
 
-// 08. Biological Age
-function ScreenBiologicalAge() {
+// 08. Activity Strain
+function ScreenActivity() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
       <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
         <div>
-          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">BIOLOGICAL AGE</span>
-          <div className="text-2xl font-black text-purple-600">28.6 <span className="text-xs font-normal text-slate-500">Yrs</span></div>
+          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">CARDIO STRAIN</span>
+          <div className="text-2xl font-black text-slate-900">15.2 <span className="text-xs font-normal text-slate-500">/ 21.0</span></div>
         </div>
         <div className="text-right">
-          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">CHRONOLOGICAL</span>
-          <div className="text-sm font-bold text-slate-900">34.0 Yrs <span className="text-[9px] text-emerald-600 block font-bold">-5.4 Yrs Younger</span></div>
+          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">ENERGY</span>
+          <div className="text-sm font-bold text-amber-600">2,420 kcal</div>
         </div>
       </div>
 
-      <div className="p-2.5 rounded-xl bg-purple-50 border border-purple-200 my-3">
-        <div className="flex justify-between items-center text-[10px] mb-1">
-          <span className="font-bold text-slate-900">Phenotypic Pace of Aging</span>
-          <span className="font-bold text-emerald-600 font-mono">0.81 yr / yr</span>
+      <div className="my-3">
+        <div className="flex justify-between text-[10px] text-slate-700 mb-1.5 font-semibold">
+          <span>Target Strain Budget</span>
+          <span className="text-amber-600">Target: 14.0 - 16.5</span>
         </div>
-        <p className="text-[9px] text-slate-600 leading-relaxed font-normal">
-          For every 1 calendar year, your cardiovascular and metabolic systems age just 9.7 months.
-        </p>
+        <div className="grid grid-cols-4 gap-1.5 text-center">
+          <div className="p-1.5 rounded-lg bg-blue-50 border border-blue-200">
+            <span className="text-[8px] text-blue-700 block font-bold">Zone 2</span>
+            <span className="text-xs font-bold text-slate-900">45m</span>
+          </div>
+          <div className="p-1.5 rounded-lg bg-emerald-50 border border-emerald-200">
+            <span className="text-[8px] text-emerald-700 block font-bold">Zone 3</span>
+            <span className="text-xs font-bold text-slate-900">22m</span>
+          </div>
+          <div className="p-1.5 rounded-lg bg-amber-50 border border-amber-200">
+            <span className="text-[8px] text-amber-700 block font-bold">Zone 4</span>
+            <span className="text-xs font-bold text-slate-900">14m</span>
+          </div>
+          <div className="p-1.5 rounded-lg bg-red-50 border border-red-200">
+            <span className="text-[8px] text-red-700 block font-bold">Zone 5</span>
+            <span className="text-xs font-bold text-slate-900">8m</span>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-1.5 text-[10px] mt-auto">
-        <div className="p-2 rounded-lg bg-white border border-slate-200 shadow-sm">
-          <span className="text-slate-500 text-[8px] block font-medium">Cardio Resilience</span>
-          <span className="font-bold text-slate-900">96% Optimal</span>
-        </div>
-        <div className="p-2 rounded-lg bg-white border border-slate-200 shadow-sm">
-          <span className="text-slate-500 text-[8px] block font-medium">Metabolic Resilience</span>
-          <span className="font-bold text-slate-900">92% Optimal</span>
-        </div>
+      <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 mt-auto text-[10px] flex items-center justify-between">
+        <span className="text-slate-700 font-medium">Remaining Safe Day Strain</span>
+        <span className="font-bold text-amber-700">1.8 Score Remaining</span>
       </div>
     </div>
   );
 }
 
-// 09. AI Health Coach
+// 09. AI Context Coach
 function ScreenAiCoach() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-3 select-none">
@@ -457,7 +493,6 @@ function ScreenAiCoach() {
         </div>
 
         <div className="p-2.5 rounded-2xl rounded-tl-sm bg-blue-50 border border-blue-200/80 text-slate-800">
-          <span className="text-[8px] font-bold text-blue-600 block mb-0.5">FITNESS REASONER</span>
           "Yes, keep heart rate strictly under 122 bpm (Zone 1) to accelerate lymphatic drainage without depleting glycogen."
         </div>
       </div>
@@ -470,23 +505,25 @@ function ScreenAiCoach() {
   );
 }
 
-// 10. Connected Health Dashboard / Picture
+// 10. Connected Dashboard / Operating System
 function ScreenConnectedDashboard() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-3.5 select-none">
       <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
         <span className="text-[10px] font-bold text-slate-900">THE CONNECTED PICTURE</span>
-        <span className="text-[9px] font-mono text-blue-600 font-bold">UNIFIED TELEMETRY</span>
+        <span className="text-[9px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+          100% UNIFIED
+        </span>
       </div>
 
       <div className="relative my-3 flex items-center justify-center">
         <svg className="w-32 h-32 -rotate-90" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="42" stroke="#e2e8f0" strokeWidth="6" fill="none" />
-          <circle cx="50" cy="50" r="42" stroke="#6366f1" strokeWidth="6" fill="none"
+          <circle cx="50" cy="50" r="42" stroke="#10b981" strokeWidth="6" fill="none"
             strokeDasharray="264" strokeDashoffset="24" strokeLinecap="round" />
           
           <circle cx="50" cy="50" r="32" stroke="#e2e8f0" strokeWidth="6" fill="none" />
-          <circle cx="50" cy="50" r="32" stroke="#10b981" strokeWidth="6" fill="none"
+          <circle cx="50" cy="50" r="32" stroke="#3b82f6" strokeWidth="6" fill="none"
             strokeDasharray="201" strokeDashoffset="12" strokeLinecap="round" />
 
           <circle cx="50" cy="50" r="22" stroke="#e2e8f0" strokeWidth="6" fill="none" />
@@ -514,46 +551,62 @@ function ScreenConnectedDashboard() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   10 FEATURE DEFINITIONS
+   10 FEATURE DEFINITIONS WITH ALTERNATING CALLOUTS
 ───────────────────────────────────────────────────────── */
 const PANELS = [
   {
     id: 'overview',
     step: '01',
     category: 'SYNTHESIS ENGINE',
-    title: 'Daily Health Overview',
-    headline: 'Your entire body scored in one composite daily signal.',
+    title: 'Capacity, not willpower.',
+    headline: 'Know before breakfast what your body can take today.',
     description:
-      'Fitness continuously weighs sleep architecture (35%), nocturnal HRV (25%), dynamic cardiovascular strain (25%), and metabolic fuel (15%) into a single operational directive for today.',
+      'Fitness continuously weighs sleep architecture, nocturnal HRV, dynamic cardiovascular strain, and metabolic fuel into a single operational directive for today.',
     icon: Activity,
-    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
+    badgeColor: 'text-[#b5853a] bg-amber-50 border-amber-200',
     mockupComponent: ScreenDailyOverview,
     floatingBadges: [
-      { text: 'Composite Readiness', value: '92 / 100', color: 'border-blue-300 text-blue-700' },
-      { text: 'Circadian Delta', value: '+1.4 hrs optimal', color: 'border-emerald-300 text-emerald-700' },
+      { text: 'Composite Readiness', value: '92 / 100', sub: 'Optimal capacity for heavy strain', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'Circadian Delta', value: '+1.4 hrs optimal', sub: 'Cortisol dip window verified', color: 'border-blue-300 text-blue-800' },
     ],
   },
   {
     id: 'wearables',
     step: '02',
-    category: 'TELEMETRY MESH',
-    title: 'Wearable Connections',
-    headline: 'Bi-directional zero-latency sync with 40+ devices.',
+    category: 'WEARABLES',
+    title: 'Reads every wearable.',
+    headline: 'Apple Watch is ~5% of India. PRIMATE reads the other 95% too.',
     description:
-      'Aggregates Apple HealthKit, Oura Ring, Whoop 4.0, Dexcom CGM, Garmin, and Withings into a single consolidated biometrics stream with zero double-counting.',
+      'Synced seamlessly through Apple Health, Google Health Connect, and Samsung Health. We read raw physiological telemetry and calculate unified biometrics with zero duplication.',
     icon: Watch,
-    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
+    badgeColor: 'text-[#b5853a] bg-amber-50 border-amber-200',
     mockupComponent: ScreenWearables,
     floatingBadges: [
-      { text: 'Sync Latency', value: '1.2s Real-Time', color: 'border-blue-300 text-blue-700' },
-      { text: 'Encryption', value: 'AES-256 GCM', color: 'border-emerald-300 text-emerald-700' },
+      { text: 'ALL STREAMS', value: '06:40', sub: 'Synced via Apple Health, Health Connect', color: 'border-slate-200 text-slate-900' },
+      { text: 'COVERAGE', value: '95%', sub: "of wrists aren't Apple Watch - read anyway", color: 'border-amber-300 text-amber-900' },
+    ],
+  },
+  {
+    id: 'stress',
+    step: '03',
+    category: 'STRESS',
+    title: 'Stress, with names attached.',
+    headline: 'Not a mood ring. Spot patterns across your day.',
+    description:
+      'Fitness shows when stress rises across the day so you can pinpoint routines, meals, and meetings that trigger acute nervous system spikes.',
+    icon: Heart,
+    badgeColor: 'text-[#b5853a] bg-amber-50 border-amber-200',
+    mockupComponent: ScreenStress,
+    floatingBadges: [
+      { text: '7-DAY AVERAGE', value: '31 / 100', sub: 'Best day this week: 28', color: 'border-slate-200 text-slate-900' },
+      { text: 'TIME AT HIGH', value: '2 h 30 m', sub: '10% of the day - mostly 2-6 pm', color: 'border-amber-300 text-amber-900' },
     ],
   },
   {
     id: 'sleep',
-    step: '03',
-    category: 'NEUROLOGICAL REST',
-    title: 'Sleep Intelligence',
+    step: '04',
+    category: 'SLEEP ARCHITECTURE',
+    title: 'Sleep, deeply deciphered.',
     headline: 'Continuous hypnograms and real-time circadian phase alignment.',
     description:
       'Track REM, deep, light, and micro-wake periods. Fitness calculates cumulative sleep debt down to the minute and prescribes optimal bedtime windows based on evening cortisol dips.',
@@ -561,301 +614,160 @@ const PANELS = [
     badgeColor: 'text-indigo-700 bg-indigo-50 border-indigo-200',
     mockupComponent: ScreenSleep,
     floatingBadges: [
-      { text: 'Deep Sleep Ratio', value: '24% (1h 53m)', color: 'border-indigo-300 text-indigo-700' },
-      { text: 'Sleep Efficiency', value: '94% Restorative', color: 'border-blue-300 text-blue-700' },
+      { text: 'DEEP SLEEP RATIO', value: '24% (1h 53m)', sub: '+22m vs weekly average', color: 'border-indigo-300 text-indigo-800' },
+      { text: 'SLEEP EFFICIENCY', value: '94% Restorative', sub: 'Zero micro-arousals detected', color: 'border-emerald-300 text-emerald-800' },
     ],
   },
   {
     id: 'recovery',
-    step: '04',
-    category: 'CENTRAL NERVOUS SYSTEM',
-    title: 'Recovery & Daily Readiness',
-    headline: 'Parasympathetic tone calculated from continuous HRV trends.',
+    step: '05',
+    category: 'AUTONOMIC RECOVERY',
+    title: 'Central Nervous System Tone.',
+    headline: 'Parasympathetic balance calculated from continuous HRV trends.',
     description:
       'Quantify autonomic nervous system recovery through rMSSD high-frequency heart rate variability. Know immediately whether your body is primed for record strain or active recovery.',
     icon: Heart,
     badgeColor: 'text-emerald-700 bg-emerald-50 border-emerald-200',
     mockupComponent: ScreenRecovery,
     floatingBadges: [
-      { text: 'Baseline rMSSD', value: '88 ms (+14%)', color: 'border-emerald-300 text-emerald-700' },
-      { text: 'Nocturnal Pulse', value: '48 bpm resting', color: 'border-teal-300 text-teal-700' },
-    ],
-  },
-  {
-    id: 'activity',
-    step: '05',
-    category: 'DYNAMIC LOAD CAPACITY',
-    title: 'Activity & Dynamic Strain',
-    headline: 'Match training intensity directly to physiological capacity.',
-    description:
-      'Quantifies cardiovascular strain and muscular exertion on a 0–21 scale. Dynamically computes your remaining safe daily strain budget so you build resilience without overtraining.',
-    icon: Flame,
-    badgeColor: 'text-amber-700 bg-amber-50 border-amber-200',
-    mockupComponent: ScreenActivity,
-    floatingBadges: [
-      { text: 'Daily Strain', value: '15.2 / 21.0', color: 'border-amber-300 text-amber-700' },
-      { text: 'Zone 2 Cardio', value: '45 min base', color: 'border-orange-300 text-orange-700' },
+      { text: 'BASELINE RMSSD', value: '88 ms (+14%)', sub: 'Parasympathetic dominant', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'RESTING PULSE', value: '48 bpm', sub: '-3 bpm nocturnal drop', color: 'border-blue-300 text-blue-800' },
     ],
   },
   {
     id: 'nutrition',
     step: '06',
-    category: 'METABOLIC STABILITY',
-    title: 'Nutrition & Hydration',
-    headline: 'Continuous glucose monitoring curves and sweat-loss hydration.',
+    category: 'GLYCEMIC FUEL',
+    title: 'Continuous Metabolic Control.',
+    headline: 'Real-time interstitial glucose telemetry with meal correlation.',
     description:
-      'Seamless CGM curve analysis reveals glycemic spikes and crashes in real time. Dynamic hydration formulas adjust water and sodium targets according to ambient temperature and sweat loss.',
+      'Pair continuous glucose monitors (CGM) to uncover how food, meal timing, and post-prandial walks impact your glycemic curve and next-morning recovery scores.',
     icon: Droplets,
     badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
     mockupComponent: ScreenNutrition,
     floatingBadges: [
-      { text: 'CGM Stability', value: '92 mg/dL in-range', color: 'border-blue-300 text-blue-700' },
-      { text: 'Target Hydration', value: '2.8L / 3.2L', color: 'border-sky-300 text-sky-700' },
+      { text: 'TIME IN RANGE', value: '98% (70-120 mg/dL)', sub: 'Zero reactive hypoglycemia', color: 'border-blue-300 text-blue-800' },
+      { text: 'GLYCEMIC VARIABILITY', value: '11.4% CV', sub: 'Optimal metabolic stability', color: 'border-emerald-300 text-emerald-800' },
     ],
   },
   {
     id: 'biomarkers',
     step: '07',
-    category: 'CLINICAL LAB OCR',
-    title: 'Biomarkers & Health Reports',
-    headline: 'Instant OCR extraction of clinical blood tests into trend lines.',
+    category: 'LAB OCR',
+    title: 'Lab Work, Instantly Connected.',
+    headline: 'Turn static annual PDF lab reports into active daily parameters.',
     description:
-      'Simply drop your standard lab PDF. Fitness extracts ApoB, hs-CRP, fasting insulin, testosterone, and lipid panels, tracking each marker across reference ranges and longevity baselines.',
+      'Upload blood test PDFs from any diagnostic lab. Our OCR engine extracts ApoB, hs-CRP, fasting insulin, HbA1c, and lipid panels into longitudinal trend graphs.',
     icon: FileText,
-    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
+    badgeColor: 'text-amber-700 bg-amber-50 border-amber-200',
     mockupComponent: ScreenBiomarkers,
     floatingBadges: [
-      { text: 'Atherogenic ApoB', value: '74 mg/dL (Optimal)', color: 'border-blue-300 text-blue-700' },
-      { text: 'hs-CRP Inflammation', value: '0.38 mg/L (Low)', color: 'border-emerald-300 text-emerald-700' },
+      { text: 'ATHEROGENIC APOB', value: '74 mg/dL', sub: 'Cardiovascular risk: Low', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'SYSTEMIC HS-CRP', value: '0.38 mg/L', sub: 'Ultra-low chronic inflammation', color: 'border-blue-300 text-blue-800' },
     ],
   },
   {
-    id: 'bioage',
+    id: 'activity',
     step: '08',
-    category: 'PHENOTYPIC LONGEVITY',
-    title: 'Biological Age & Trends',
-    headline: 'Phenotypic aging pace calculated from systemic biomarkers.',
+    category: 'CARDIO STRAIN',
+    title: 'Dynamic Strain Prescription.',
+    headline: 'Cardiovascular load calibrated to today’s recovery headroom.',
     description:
-      'Calculates your biological age versus chronological years using composite biological models. Shows exact factors adding or subtracting vitality across your cardiovascular and metabolic systems.',
-    icon: TrendingUp,
-    badgeColor: 'text-purple-700 bg-purple-50 border-purple-200',
-    mockupComponent: ScreenBiologicalAge,
+      'Stop blindly chasing 10,000 steps. Fitness dynamically scales your daily cardiovascular strain budget so you accumulate progressive overload without autonomic burnout.',
+    icon: Flame,
+    badgeColor: 'text-rose-700 bg-rose-50 border-rose-200',
+    mockupComponent: ScreenActivity,
     floatingBadges: [
-      { text: 'Biological Age', value: '28.6 vs 34.0 yrs', color: 'border-purple-300 text-purple-700' },
-      { text: 'Pace of Aging', value: '0.81 yr / yr', color: 'border-emerald-300 text-emerald-700' },
+      { text: 'TARGET STRAIN', value: '15.2 / 16.5', sub: 'Zone 2 base: 45 min completed', color: 'border-rose-300 text-rose-800' },
+      { text: 'CALORIC EXPENDITURE', value: '2,420 kcal', sub: 'Basal 1,740 + Active 680', color: 'border-amber-300 text-amber-800' },
     ],
   },
   {
-    id: 'coach',
+    id: 'aicoach',
     step: '09',
     category: 'CONTEXTUAL REASONING',
-    title: 'AI Health & Fitness Coach',
-    headline: 'Proactive intelligence partner that understands your data.',
+    title: 'AI Health & Fitness Coach.',
+    headline: 'Proactive intelligence partner that understands all 10 dimensions.',
     description:
       'Ask real questions, get precise physiological answers. The coach recalculates training intensity, rest periods, and macro timing on the fly based on your latest HRV, sleep, and glucose readings.',
     icon: Bot,
     badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
     mockupComponent: ScreenAiCoach,
     floatingBadges: [
-      { text: 'Context Window', value: 'All 10 Dimensions', color: 'border-blue-300 text-blue-700' },
-      { text: 'Guidance Type', value: 'Evidence-Based', color: 'border-indigo-300 text-indigo-700' },
+      { text: 'CONTEXT WINDOW', value: 'All 10 Dimensions', sub: 'Continuous cross-domain reasoning', color: 'border-blue-300 text-blue-800' },
+      { text: 'GUIDANCE TYPE', value: 'Evidence-Based', sub: 'Peer-reviewed human physiology', color: 'border-indigo-300 text-indigo-800' },
     ],
   },
   {
     id: 'dashboard',
     step: '10',
     category: 'CONNECTED OS',
-    title: 'Your Connected Health Picture',
+    title: 'Your Connected Health Picture.',
     headline: 'One screen that unites all fragments of human biology.',
     description:
       'Three interlocking telemetry rings—Sleep, Capacity, and Strain—accompanied by real-time metabolic and autonomic telemetry. Open the app, absorb your biological status, and attack the day.',
     icon: Layers,
-    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
+    badgeColor: 'text-emerald-700 bg-emerald-50 border-emerald-200',
     mockupComponent: ScreenConnectedDashboard,
     floatingBadges: [
-      { text: 'Unified Picture', value: '1 Screen / 100% Data', color: 'border-blue-300 text-blue-700' },
-      { text: 'Daily Friction', value: 'Zero Manual Logging', color: 'border-emerald-300 text-emerald-700' },
+      { text: 'UNIFIED PICTURE', value: '1 Screen / 100% Data', sub: 'All 9 isolated silos harmonized', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'DAILY FRICTION', value: 'Zero Manual Logging', sub: 'Automated continuous telemetry', color: 'border-blue-300 text-blue-800' },
     ],
   },
 ];
 
 /* ─────────────────────────────────────────────────────────
    MOBILE ALTERNATING LEFT / RIGHT SCROLL REVEAL COMPONENT
-   Even index → slides from left (phone left, text right)
-   Odd index  → slides from right (text left, phone right)
 ───────────────────────────────────────────────────────── */
 function MobileAlternatingCards({ panels, onOpenAuth }) {
-  const cardRefs = useRef([]);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const observers = cardRefs.current.map((el, idx) => {
-      if (!el) return null;
-
-      // Set initial class — no transform yet, just the CSS transition classes
-      el.classList.add(idx % 2 === 0 ? 'mobile-card-from-left' : 'mobile-card-from-right');
-
-      if (prefersReducedMotion) {
-        el.classList.add('mobile-card-visible');
-        return null;
-      }
-
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            // stagger by index within viewport
-            const delay = 80;
-            setTimeout(() => {
-              el.classList.add('mobile-card-visible');
-            }, delay);
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
-      );
-
-      obs.observe(el);
-      return obs;
-    });
-
-    return () => {
-      observers.forEach((obs) => obs && obs.disconnect());
-    };
-  }, []);
-
   return (
-    <div className="px-4 sm:px-5 pb-6 space-y-6">
+    <div className="px-4 sm:px-6 pb-8 space-y-6">
       {panels.map((panel, idx) => {
         const ScreenComponent = panel.mockupComponent;
         const Icon = panel.icon;
-        const isEven = idx % 2 === 0;
-        const badge1 = panel.floatingBadges[0];
-        const badge2 = panel.floatingBadges[1];
+        const isMockupRight = idx % 2 === 1;
 
         return (
           <div
+            id={`mobile-feature-card-${idx}`}
             key={panel.id}
-            ref={(el) => (cardRefs.current[idx] = el)}
-            className="relative"
+            className="rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 flex flex-col gap-4 overflow-hidden"
           >
-            {/* Journey dot on the center line */}
-            <div className="absolute left-1/2 -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-white border-2 border-blue-400 flex items-center justify-center z-20 shadow-sm">
-              <span className="text-[8px] font-black text-blue-600 font-mono">{panel.step}</span>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono font-bold text-[#b5853a]">
+                MODULE {panel.step}
+              </span>
+              <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${panel.badgeColor}`}>
+                {panel.category}
+              </span>
             </div>
 
-            {/* Card Shell */}
-            <div
-              className={`rounded-3xl overflow-hidden bg-white border border-slate-200 shadow-md flex ${
-                isEven ? 'flex-row' : 'flex-row-reverse'
-              } min-h-[220px]`}
-            >
-              {/* ── Phone Mockup Column ── */}
-              <div
-                className={`relative flex-shrink-0 w-[130px] flex items-center justify-center py-4 px-2 ${
-                  isEven
-                    ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-r border-slate-200'
-                    : 'bg-gradient-to-bl from-emerald-50 to-teal-50 border-l border-slate-200'
-                }`}
+            <div>
+              <h3 className="text-xl font-black text-[#143428] tracking-tight mb-1">
+                {panel.title}
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                {panel.headline}
+              </p>
+            </div>
+
+            {/* Mockup Preview Inside Card */}
+            <div className="w-full max-w-[280px] h-[360px] mx-auto rounded-[36px] bg-slate-900 p-2 shadow-xl border-2 border-slate-300 relative overflow-hidden">
+              <div className="w-full h-full rounded-[28px] overflow-hidden bg-[#f8fafc]">
+                <ScreenComponent />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+              <span className="text-[10px] font-mono text-slate-400">Position: {isMockupRight ? 'Right Frame' : 'Left Frame'}</span>
+              <button
+                onClick={() => onOpenAuth('signup')}
+                type="button"
+                className="text-blue-600 font-bold flex items-center gap-1 hover:text-blue-700"
               >
-                {/* Mini phone frame */}
-                <div className="relative w-[96px] h-[172px]">
-                  {/* Metallic bezel */}
-                  <div className="absolute -inset-[2px] rounded-[22px] bg-gradient-to-b from-slate-200 via-slate-400 to-slate-300 shadow-lg" />
-                  {/* Screen body */}
-                  <div className="absolute inset-0 rounded-[20px] bg-white border-[2.5px] border-slate-300 overflow-hidden flex flex-col">
-                    {/* Dynamic island */}
-                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-3.5 bg-slate-900 rounded-full z-10 flex items-center justify-between px-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-slate-700 flex items-center justify-center">
-                        <div className="w-1 h-1 rounded-full bg-blue-400/60" />
-                      </div>
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    </div>
-                    {/* App screen content — scaled down */}
-                    <div className="flex-1 pt-5 overflow-hidden" style={{ transform: 'scale(0.6)', transformOrigin: 'top center', height: '240px', marginBottom: '-80px' }}>
-                      <ScreenComponent />
-                    </div>
-                    {/* Home bar */}
-                    <div className="h-3 flex items-center justify-center pb-1">
-                      <div className="w-10 h-0.5 bg-slate-300 rounded-full" />
-                    </div>
-                  </div>
-
-                  {/* Floating metric badge 1 */}
-                  <div
-                    className={`absolute z-20 px-2 py-1 rounded-lg bg-white shadow-md border pointer-events-none mobile-badge-float ${
-                      isEven ? '-right-8 top-4 rotate-2' : '-left-8 top-4 -rotate-2'
-                    } ${badge1.color}`}
-                    style={{ minWidth: '72px' }}
-                  >
-                    <span className="text-[7px] uppercase tracking-wide text-slate-400 block font-bold leading-tight">{badge1.text.split(' ').slice(0,2).join(' ')}</span>
-                    <span className="text-[9px] font-black leading-tight">{badge1.value.split(' ').slice(0,2).join(' ')}</span>
-                  </div>
-
-                  {/* Floating metric badge 2 */}
-                  <div
-                    className={`absolute z-20 px-2 py-1 rounded-lg bg-white shadow-md border pointer-events-none mobile-badge-float-alt ${
-                      isEven ? '-right-8 bottom-6 -rotate-1' : '-left-8 bottom-6 rotate-1'
-                    } ${badge2.color}`}
-                    style={{ minWidth: '72px' }}
-                  >
-                    <span className="text-[7px] uppercase tracking-wide text-slate-400 block font-bold leading-tight">{badge2.text.split(' ').slice(0,2).join(' ')}</span>
-                    <span className="text-[9px] font-black leading-tight">{badge2.value.split(' ').slice(0,2).join(' ')}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* ── Text Content Column ── */}
-              <div className="flex-1 flex flex-col justify-between p-4 min-w-0">
-                {/* Top: category + icon */}
-                <div className="flex items-start gap-2 mb-2">
-                  <div className="p-1.5 rounded-lg bg-blue-600 text-white flex-shrink-0">
-                    <Icon className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-[8px] font-mono font-bold text-slate-400 uppercase tracking-widest block">
-                      {panel.step} / 10
-                    </span>
-                    <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full border leading-tight ${panel.badgeColor}`}>
-                      {panel.category}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-base font-black text-slate-900 leading-tight mb-1.5">
-                  {panel.title}
-                </h3>
-
-                {/* Headline */}
-                <p className="text-[11px] font-semibold text-slate-600 leading-snug mb-2">
-                  {panel.headline}
-                </p>
-
-                {/* Metric pills */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {panel.floatingBadges.map((b) => (
-                    <span
-                      key={b.text}
-                      className={`text-[8px] font-bold px-2 py-0.5 rounded-full border ${b.color} bg-white`}
-                    >
-                      {b.value}
-                    </span>
-                  ))}
-                </div>
-
-                {/* CTA link */}
-                <button
-                  onClick={() => onOpenAuth('signup')}
-                  type="button"
-                  className={`text-[10px] font-bold flex items-center gap-1 mt-auto ${
-                    isEven ? 'text-blue-600 hover:text-blue-700' : 'text-emerald-600 hover:text-emerald-700'
-                  } transition-colors`}
-                >
-                  <span>Explore</span>
-                  <ChevronRight className="w-3 h-3" />
-                </button>
-              </div>
+                <span>Learn more</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         );
@@ -865,16 +777,20 @@ function MobileAlternatingCards({ panels, onOpenAuth }) {
 }
 
 /* ─────────────────────────────────────────────────────────
-   MAIN PINNED SHOWCASE COMPONENT
+   MAIN PINNED SHOWCASE WITH ALTERNATING MOCKUP & NAVIGATION
 ───────────────────────────────────────────────────────── */
 export default function PinnedShowcase({ onOpenAuth }) {
   const containerRef = useRef(null);
   const pinTargetRef = useRef(null);
+  const phoneContainerRef = useRef(null);
+  const verticalProgressRef = useRef(null);
   const progressBarRef = useRef(null);
+  const scrollTriggerInstanceRef = useRef(null);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(true);
 
-  // References for all 10 panel elements to animate via GSAP scrubbed timeline
+  // References for all 10 panel elements
   const textElementsRef = useRef([]);
   const screenElementsRef = useRef([]);
   const badgeElementsRef = useRef([]);
@@ -896,6 +812,11 @@ export default function PinnedShowcase({ onOpenAuth }) {
     if (!container || !pinTarget) return () => window.removeEventListener('resize', checkWidth);
 
     const ctx = gsap.context(() => {
+      // Offset from center for the phone: 
+      // Negative (-270px) = Mockup on LEFT (Screenshot 4)
+      // Positive (+270px) = Mockup on RIGHT (Screenshot 3)
+      const phoneOffset = 270;
+
       // Set initial states for all 10 slides
       PANELS.forEach((_, idx) => {
         const textEl = textElementsRef.current[idx];
@@ -904,23 +825,27 @@ export default function PinnedShowcase({ onOpenAuth }) {
 
         if (idx === 0) {
           gsap.set(textEl, { opacity: 1, y: 0, scale: 1, pointerEvents: 'auto' });
-          gsap.set(screenEl, { opacity: 1, scale: 1, filter: 'blur(0px)', pointerEvents: 'auto' });
-          if (badgeEl) gsap.set(badgeEl, { opacity: 1, scale: 1, y: 0 });
+          gsap.set(screenEl, { opacity: 1, scale: 1, pointerEvents: 'auto', zIndex: 10 });
+          if (badgeEl) gsap.set(badgeEl, { opacity: 1, scale: 1, y: 0, pointerEvents: 'auto' });
         } else {
-          gsap.set(textEl, { opacity: 0, y: 40, scale: 0.96, pointerEvents: 'none' });
-          gsap.set(screenEl, { opacity: 0, scale: 1.04, filter: 'blur(4px)', pointerEvents: 'none' });
-          if (badgeEl) gsap.set(badgeEl, { opacity: 0, scale: 0.9, y: 20 });
+          gsap.set(textEl, { opacity: 0, y: 30, scale: 0.96, pointerEvents: 'none' });
+          gsap.set(screenEl, { opacity: 0, scale: 1.02, pointerEvents: 'none', zIndex: 1 });
+          if (badgeEl) gsap.set(badgeEl, { opacity: 0, scale: 0.9, y: 15, pointerEvents: 'none' });
         }
       });
+
+      // Step 0 starts with mockup on LEFT (x = -phoneOffset)
+      gsap.set(phoneContainerRef.current, { x: -phoneOffset });
 
       // Master Scrubbed Timeline
       const totalSteps = PANELS.length - 1;
       const stepDuration = 1.0;
+
       const masterTl = gsap.timeline({
         scrollTrigger: {
-          trigger: container,
+          trigger: pinTarget,
           start: 'top top',
-          end: () => `+=${PANELS.length * 750}`,
+          end: () => `+=${PANELS.length * 800}`,
           pin: pinTarget,
           pinSpacing: true,
           scrub: 0.8,
@@ -931,7 +856,12 @@ export default function PinnedShowcase({ onOpenAuth }) {
             const current = Math.min(Math.floor(raw), PANELS.length - 1);
             setActiveIndex(current);
 
-            // Update progress bar width
+            // Update top-right vertical progress bar
+            if (verticalProgressRef.current) {
+              verticalProgressRef.current.style.height = `${self.progress * 100}%`;
+            }
+
+            // Update bottom horizontal progress bar
             if (progressBarRef.current) {
               progressBarRef.current.style.width = `${self.progress * 100}%`;
             }
@@ -939,7 +869,10 @@ export default function PinnedShowcase({ onOpenAuth }) {
         },
       });
 
-      // Construct sequential scrubbed cross-fades for steps 0 -> 1 -> 2 -> ... -> 9
+      scrollTriggerInstanceRef.current = masterTl.scrollTrigger;
+
+      // Construct sequential transitions:
+      // Seamless overlapping cross-fade ensures NO BLANK FRAMES mid-scroll
       for (let i = 0; i < totalSteps; i++) {
         const currentText = textElementsRef.current[i];
         const nextText = textElementsRef.current[i + 1];
@@ -950,37 +883,59 @@ export default function PinnedShowcase({ onOpenAuth }) {
 
         const stepTime = i * stepDuration;
 
-        // Animate current out
+        const nextIsRight = (i + 1) % 2 === 1;
+        const nextX = nextIsRight ? phoneOffset : -phoneOffset;
+
+        // 1. Phone smoothly glides across the stage between left and right
+        masterTl.to(
+          phoneContainerRef.current,
+          {
+            x: nextX,
+            duration: stepDuration * 0.85,
+            ease: 'power2.inOut',
+          },
+          stepTime + stepDuration * 0.08
+        );
+
+        // 2. Animate current text out
         masterTl.to(
           currentText,
           {
             opacity: 0,
-            y: -35,
+            y: -25,
             scale: 0.96,
-            duration: stepDuration * 0.5,
+            duration: stepDuration * 0.45,
             ease: 'power2.inOut',
             onStart: () => {
               if (currentText) currentText.style.pointerEvents = 'none';
             },
           },
-          stepTime
+          stepTime + stepDuration * 0.05
         );
 
+        // 3. Current screen cross-fade OUT with overlap:
+        // Stays visible and only fades out as next screen is already well underway
         masterTl.to(
           currentScreen,
           {
             opacity: 0,
-            scale: 0.96,
-            filter: 'blur(4px)',
+            scale: 0.98,
             duration: stepDuration * 0.5,
             ease: 'power2.inOut',
             onStart: () => {
-              if (currentScreen) currentScreen.style.pointerEvents = 'none';
+              if (currentScreen) currentScreen.style.zIndex = '5';
+            },
+            onComplete: () => {
+              if (currentScreen) {
+                currentScreen.style.pointerEvents = 'none';
+                currentScreen.style.zIndex = '1';
+              }
             },
           },
-          stepTime
+          stepTime + stepDuration * 0.35
         );
 
+        // 4. Current badges fade out
         if (currentBadges) {
           masterTl.to(
             currentBadges,
@@ -991,14 +946,38 @@ export default function PinnedShowcase({ onOpenAuth }) {
               duration: stepDuration * 0.4,
               ease: 'power2.inOut',
             },
-            stepTime
+            stepTime + stepDuration * 0.1
           );
         }
 
-        // Animate next in
+        // 5. Next screen cross-fade IN with overlap:
+        // Starts early (at 0.18) so at mid-scroll (0.45) both screens overlap seamlessly! Never blank!
+        masterTl.fromTo(
+          nextScreen,
+          { opacity: 0, scale: 1.02, y: 15 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: stepDuration * 0.52,
+            ease: 'power2.inOut',
+            onStart: () => {
+              if (nextScreen) nextScreen.style.zIndex = '10';
+            },
+            onComplete: () => {
+              if (nextScreen) {
+                nextScreen.style.pointerEvents = 'auto';
+                nextScreen.style.zIndex = '10';
+              }
+            },
+          },
+          stepTime + stepDuration * 0.18
+        );
+
+        // 6. Animate next text in on its opposite side
         masterTl.fromTo(
           nextText,
-          { opacity: 0, y: 35, scale: 0.96 },
+          { opacity: 0, y: 25, scale: 0.96 },
           {
             opacity: 1,
             y: 0,
@@ -1009,25 +988,10 @@ export default function PinnedShowcase({ onOpenAuth }) {
               if (nextText) nextText.style.pointerEvents = 'auto';
             },
           },
-          stepTime + stepDuration * 0.4
+          stepTime + stepDuration * 0.38
         );
 
-        masterTl.fromTo(
-          nextScreen,
-          { opacity: 0, scale: 1.04, filter: 'blur(4px)' },
-          {
-            opacity: 1,
-            scale: 1,
-            filter: 'blur(0px)',
-            duration: stepDuration * 0.5,
-            ease: 'power2.inOut',
-            onComplete: () => {
-              if (nextScreen) nextScreen.style.pointerEvents = 'auto';
-            },
-          },
-          stepTime + stepDuration * 0.4
-        );
-
+        // 7. Floating badges pop in around the phone
         if (nextBadges) {
           masterTl.fromTo(
             nextBadges,
@@ -1039,7 +1003,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
               duration: stepDuration * 0.45,
               ease: 'back.out(1.4)',
             },
-            stepTime + stepDuration * 0.45
+            stepTime + stepDuration * 0.42
           );
         }
       }
@@ -1051,9 +1015,14 @@ export default function PinnedShowcase({ onOpenAuth }) {
     };
   }, []);
 
+  // Quick navigation jump when clicking a step number
   const handleJumpToStep = (index) => {
     setActiveIndex(index);
-    if (!isDesktop) {
+    if (isDesktop && scrollTriggerInstanceRef.current) {
+      const st = scrollTriggerInstanceRef.current;
+      const targetScroll = st.start + (index / (PANELS.length - 1)) * (st.end - st.start) + 2;
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    } else {
       const el = document.getElementById(`mobile-feature-card-${index}`);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1065,125 +1034,123 @@ export default function PinnedShowcase({ onOpenAuth }) {
     <section
       id="rail"
       ref={containerRef}
-      className="relative w-full bg-[#f8fafc] text-slate-900 border-y border-slate-200"
+      className="relative w-full bg-[#fbfaf7] text-slate-900 border-y border-slate-200/80"
     >
-      <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-50" />
+      {/* ── DESKTOP INTRO HEADER (Moved upwards before pinning so it scrolls naturally) ── */}
+      <div className="hidden lg:block max-w-7xl mx-auto px-8 lg:px-12 pt-28 pb-14 text-center">
+        <div className="inline-flex items-center gap-2 text-[#b5853a] text-xs font-mono font-bold uppercase tracking-widest mb-3 px-3.5 py-1.5 bg-amber-50 rounded-full border border-amber-200/60 shadow-xs">
+          <span>02 · THE PINNED SHOWCASE</span>
+        </div>
+        <h2 className="text-4xl xl:text-5xl font-black text-[#143428] tracking-tight mb-4">
+          Unified Human Intelligence in <span className="text-[#b5853a]">Ten Dimensions</span>
+        </h2>
+        <p className="text-base text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+          Scroll through to explore every dimension of physiological, metabolic, and cognitive telemetry.
+        </p>
+      </div>
 
-      {/* ── DESKTOP PINNED VIEWPORT (1024px+) ── */}
+      {/* ── DESKTOP PINNED VIEWPORT (1024px+) — Full screen mobile view ── */}
       <div 
         ref={pinTargetRef}
-        className="hidden lg:flex flex-col justify-between h-screen w-full max-w-7xl mx-auto px-8 lg:px-12 py-8 relative z-10 overflow-hidden"
+        className="hidden lg:flex flex-col justify-between h-screen w-full max-w-7xl mx-auto px-8 lg:px-12 pt-20 pb-6 relative z-10 select-none"
       >
-        {/* Top Header Rail Bar */}
-        <div className="flex items-center justify-between pb-5 border-b border-slate-200 shrink-0">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-1">
-              <Zap className="w-3.5 h-3.5" />
-              <span>THE PINNED PRODUCT SHOWCASE</span>
-            </div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-              Unified Human Intelligence in <span className="text-blue-600">Ten Dimensions</span>
-            </h2>
-          </div>
-
-          {/* Dimension Counter & Step Selector */}
-          <div className="flex items-center gap-6">
-            <div className="text-right">
-              <span className="text-[10px] text-slate-400 uppercase tracking-widest block font-bold">Dimension</span>
-              <span className="text-2xl font-black font-mono text-blue-600">
-                {String(activeIndex + 1).padStart(2, '0')}{' '}
-                <span className="text-xs text-slate-400 font-normal">/ 10</span>
-              </span>
-            </div>
-
-            {/* Clickable Quick Jump Indicator Dots */}
-            <div className="flex items-center gap-1.5 bg-white p-1.5 rounded-full border border-slate-200 shadow-sm">
-              {PANELS.map((p, idx) => (
-                <button
-                  key={p.id}
-                  onClick={() => handleJumpToStep(idx)}
-                  className={`h-2.5 rounded-full transition-all duration-300 ${
-                    activeIndex === idx
-                      ? 'w-7 bg-blue-600 shadow-sm'
-                      : 'w-2.5 bg-slate-200 hover:bg-slate-300'
-                  }`}
-                  aria-label={`Jump to dimension ${p.step}: ${p.title}`}
+        {/* Sleek Top Status Bar — flips sides based on phone position */}
+        <div className={`flex items-center pb-3 border-b border-slate-200/60 shrink-0 transition-all duration-300 ${
+          activeIndex % 2 === 0 ? 'justify-end' : 'justify-start'
+        }`}>
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">
+              Dimension {PANELS[activeIndex]?.step} / {PANELS.length} · {PANELS[activeIndex]?.category}
+            </span>
+            <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200/90 shadow-sm ml-4">
+              <div className="w-1 h-7 bg-slate-200 rounded-full overflow-hidden flex flex-col justify-start">
+                <div 
+                  ref={verticalProgressRef}
+                  className="w-full bg-[#b5853a] rounded-full transition-all duration-75"
+                  style={{ height: `${((activeIndex + 1) / PANELS.length) * 100}%` }}
                 />
-              ))}
+              </div>
+              <span className="text-xs font-mono font-bold text-slate-700 tracking-tight">
+                {activeIndex + 1}/{PANELS.length}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Middle Stage: Left Text Storytelling & Right Realistic Mockup */}
-        <div className="flex-1 grid grid-cols-12 gap-12 items-center my-auto py-4 relative">
-          {/* Left Column: Stacked Text Panels that cross-fade with GSAP scrub */}
-          <div className="col-span-6 relative h-[380px] flex items-center pr-4">
-            {PANELS.map((panel, idx) => {
-              const PanelIcon = panel.icon;
-              return (
-                <div
-                  key={panel.id}
-                  ref={(el) => (textElementsRef.current[idx] = el)}
-                  className="absolute inset-x-0 flex flex-col justify-center"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2.5 rounded-xl bg-blue-600 text-white shadow-sm">
-                      <PanelIcon className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <span className="text-[11px] font-mono font-bold tracking-widest text-slate-400 block">
-                        MODULE {panel.step}
-                      </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${panel.badgeColor}`}>
-                        {panel.category}
-                      </span>
-                    </div>
+        {/* Middle Stage: Alternating Phone (Left / Right) & Text Storytelling — Full Height Stage */}
+        <div className="flex-1 relative w-full overflow-visible my-auto flex items-center justify-center">
+          {/* The 10 Text panels positioned on opposite sides */}
+          {PANELS.map((panel, idx) => {
+            // When mockup is on Right (idx 1, 3, 5, 7, 9) -> Text is on LEFT
+            // When mockup is on Left (idx 0, 2, 4, 6, 8) -> Text is on RIGHT
+            const isMockupRight = idx % 2 === 1;
+            const isTextOnLeft = isMockupRight;
+            const PanelIcon = panel.icon;
+
+            return (
+              <div
+                key={panel.id}
+                ref={(el) => (textElementsRef.current[idx] = el)}
+                className={`absolute top-1/2 -translate-y-1/2 w-[46%] max-w-xl z-20 transition-all ${
+                  isTextOnLeft ? 'left-0 pr-8 text-left' : 'right-0 pl-8 text-left'
+                }`}
+              >
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="p-2 rounded-xl bg-[#143428] text-white shadow-sm">
+                    <PanelIcon className="w-4 h-4 text-white" />
                   </div>
-
-                  <h3 className="text-3xl xl:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-3">
-                    {panel.title}
-                  </h3>
-
-                  <p className="text-base font-semibold text-slate-700 mb-3 leading-snug">
-                    {panel.headline}
-                  </p>
-
-                  <p className="text-sm text-slate-500 leading-relaxed font-normal mb-6 max-w-lg">
-                    {panel.description}
-                  </p>
-
-                  <div className="flex items-center gap-4 pt-1">
-                    <button
-                      onClick={() => onOpenAuth('signup')}
-                      type="button"
-                      className="px-6 py-3 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
-                    >
-                      <span>Request Early Access</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>Synchronous multi-sensor telemetry</span>
-                    </div>
+                  <div>
+                    <span className="text-[10px] font-mono font-bold tracking-widest text-[#b5853a] uppercase block">
+                      {panel.step} · {panel.category}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Right Column: Realistic Silver Phone Frame with Stacked Screens */}
-          <div className="col-span-6 flex items-center justify-center relative">
-            <div className="relative w-[310px] sm:w-[330px] h-[600px] select-none mx-auto">
-              {/* Silver Metallic Bezel Outer Layer */}
-              <div 
-                className="absolute -inset-[3px] rounded-[50px] bg-gradient-to-b from-slate-200 via-slate-400 to-slate-300 shadow-2xl shadow-slate-900/10"
-              />
+                <h3 className="text-3xl xl:text-4xl font-extrabold text-[#143428] tracking-tight leading-tight mb-3">
+                  {panel.title}
+                </h3>
 
-              {/* Chassis Layer */}
-              <div className="absolute inset-0 rounded-[48px] bg-white border-[4px] border-slate-300 overflow-hidden flex flex-col shadow-inner">
+                <p className="text-base font-semibold text-slate-800 mb-3 leading-snug">
+                  {panel.headline}
+                </p>
+
+                <p className="text-sm text-slate-500 leading-relaxed font-normal mb-6 max-w-lg">
+                  {panel.description}
+                </p>
+
+                <div className="flex items-center gap-4 pt-1">
+                  <button
+                    onClick={() => onOpenAuth('signup')}
+                    type="button"
+                    className="px-6 py-2.5 rounded-xl font-semibold text-xs text-white bg-[#143428] hover:bg-[#1a4435] shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                  >
+                    <span>Request Early Access</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>Synchronous multi-sensor telemetry</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* The Single Realistic iPhone Frame that glides Left and Right */}
+          <div
+            ref={phoneContainerRef}
+            className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-30 select-none will-change-transform pointer-events-auto"
+          >
+            <div className="relative w-[280px] sm:w-[300px] h-[520px]">
+              {/* Outer Titanium Bezel */}
+              <div className="absolute -inset-[3px] rounded-[50px] bg-gradient-to-b from-slate-200 via-slate-400 to-slate-300 shadow-2xl shadow-slate-900/10" />
+
+              {/* Chassis — seamless: background matches the inner screen */}
+              <div className="absolute inset-0 rounded-[48px] bg-[#f8fafc] overflow-hidden flex flex-col">
                 {/* Dynamic Island Speaker Pill */}
-                <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-28 h-6 bg-slate-950 rounded-full z-40 flex items-center justify-between px-2.5">
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-slate-950 rounded-full z-40 flex items-center justify-between px-2.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-800 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500/70" />
                   </div>
@@ -1191,7 +1158,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
                 </div>
 
                 {/* Inner Screen Display Area */}
-                <div className="relative w-full h-full pt-8 pb-4 flex-1 overflow-hidden bg-[#f8fafc]">
+                <div className="relative w-full h-full pt-7 pb-4 flex-1 overflow-hidden bg-[#f8fafc]">
                   {PANELS.map((panel, idx) => {
                     const ScreenComponent = panel.mockupComponent;
                     return (
@@ -1212,95 +1179,99 @@ export default function PinnedShowcase({ onOpenAuth }) {
                 </div>
               </div>
 
-              {/* Floating Dynamic Badges that animate with GSAP */}
+              {/* Dynamic Floating Badges surrounding the phone */}
               {PANELS.map((panel, idx) => (
                 <div
                   key={`badges-${panel.id}`}
                   ref={(el) => (badgeElementsRef.current[idx] = el)}
                   className="absolute inset-0 pointer-events-none"
                 >
-                  {panel.floatingBadges.map((badge, bIdx) => (
-                    <div
-                      key={badge.text}
-                      className={`absolute z-30 px-3.5 py-2 rounded-xl bg-white border ${badge.color} shadow-lg pointer-events-none ${
-                        bIdx === 0 
-                          ? '-left-12 top-16 -rotate-2' 
-                          : '-right-10 bottom-24 rotate-3'
-                      }`}
-                    >
-                      <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-bold">{badge.text}</span>
-                      <span className="text-xs font-black tracking-tight">{badge.value}</span>
-                    </div>
-                  ))}
+                  {panel.floatingBadges.map((badge, bIdx) => {
+                    const isMockupRight = idx % 2 === 1;
+                    // Badges positioned safely away from the text column:
+                    const positionClass = isMockupRight
+                      ? bIdx === 0 ? '-left-20 top-12 -rotate-2' : '-right-10 bottom-24 rotate-2'
+                      : bIdx === 0 ? '-left-10 top-12 -rotate-2' : '-right-20 bottom-24 rotate-2';
+
+                    return (
+                      <div
+                        key={badge.text}
+                        className={`absolute z-40 px-3.5 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border ${badge.color} shadow-xl pointer-events-none ${positionClass}`}
+                      >
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#b5853a]" />
+                          <span className="text-[9px] uppercase tracking-wider text-slate-500 block font-bold font-mono">
+                            {badge.text}
+                          </span>
+                        </div>
+                        <span className="text-xs font-black tracking-tight text-slate-900 block">
+                          {badge.value}
+                        </span>
+                        {badge.sub && (
+                          <span className="text-[8.5px] text-slate-500 font-normal block leading-tight mt-0.5">
+                            {badge.sub}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Bottom Status Ticker Bar with Continuous Progress Fill */}
-        <div className="pt-4 border-t border-slate-200 flex flex-col gap-3 shrink-0">
-          <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
-            <div 
-              ref={progressBarRef}
-              className="bg-blue-600 h-full transition-all duration-100 ease-out"
-              style={{ width: `${((activeIndex + 1) / PANELS.length) * 100}%` }}
-            />
-          </div>
-
-          <div className="flex items-center justify-between text-xs text-slate-500">
-            <div className="flex items-center gap-3 font-mono text-[11px]">
-              <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
-                <ShieldCheck className="w-3.5 h-3.5" /> HIPAA COMPLIANT PIPELINE
-              </span>
-              <span className="text-slate-300">|</span>
-              <span>Illustrative biometric simulation</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] text-slate-500 font-medium">Scroll to scrub through 10 dimensions</span>
-              <div className="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center animate-bounce">
-                <span className="text-[9px] text-slate-500">↓</span>
-              </div>
-            </div>
-          </div>
+        {/* Vertical Step Numbers Rail — Right Side */}
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-0.5 py-3 px-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-lg shadow-slate-900/5">
+          {PANELS.map((p, idx) => (
+            <button
+              key={p.id}
+              onClick={() => handleJumpToStep(idx)}
+              type="button"
+              className={`font-mono text-[11px] w-8 h-7 flex items-center justify-center rounded-lg transition-all duration-200 ${
+                activeIndex === idx
+                  ? 'text-white bg-[#b5853a] font-black shadow-sm'
+                  : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100/80 font-semibold'
+              }`}
+              aria-label={`Jump to step ${p.step}`}
+            >
+              {p.step}
+            </button>
+          ))}
         </div>
+
+
       </div>
 
-      {/* ── TABLET & MOBILE: ALTERNATING LEFT / RIGHT SCROLL REVEAL ── */}
+      {/* ── TABLET & MOBILE: ALTERNATING CARDS ── */}
       <div className="lg:hidden relative overflow-hidden">
         {/* Section Header */}
-        <div className="text-center px-4 pt-14 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-4">
+        <div className="text-center px-4 pt-12 pb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#b5853a] text-xs font-bold uppercase tracking-wider mb-3">
             <Zap className="w-3.5 h-3.5" />
             <span>PRODUCT SHOWCASE</span>
           </div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight leading-tight">
-            Unified Health in{' '}
-            <span className="text-blue-600">Ten Dimensions</span>
+          <h2 className="text-3xl font-black text-[#143428] tracking-tight leading-tight">
+            Unified Health in <span className="text-[#b5853a]">Ten Dimensions</span>
           </h2>
-          <p className="text-sm text-slate-500 mt-3 max-w-xs mx-auto leading-relaxed">
-            Scroll to explore every dimension of your biology, intelligently connected.
+          <p className="text-xs text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed">
+            Scroll to scrub through every dimension with alternating telemetry views.
           </p>
         </div>
 
-        {/* Vertical Journey Line */}
-        <div className="absolute left-1/2 top-48 bottom-24 -translate-x-1/2 w-px bg-gradient-to-b from-blue-200 via-blue-400 to-transparent opacity-40 pointer-events-none" />
-
-        {/* Alternating Cards */}
+        {/* Alternating Cards for Mobile */}
         <MobileAlternatingCards panels={PANELS} onOpenAuth={onOpenAuth} />
 
         {/* Bottom CTA strip */}
-        <div className="px-6 pb-14 pt-6 text-center">
+        <div className="px-6 pb-12 pt-4 text-center">
           <button
             onClick={() => onOpenAuth('signup')}
             type="button"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-xs text-white bg-[#143428] hover:bg-[#1a4435] shadow-md transition-all duration-200"
           >
             <span>Request Early Access</span>
             <ArrowRight className="w-4 h-4" />
           </button>
-          <p className="text-xs text-slate-400 mt-3">No credit card required · Free beta access</p>
         </div>
       </div>
     </section>

@@ -1,206 +1,217 @@
-import { useRef, useEffect } from 'react';
-import { 
-  Unplug, 
-  ArrowDown, 
-  Sparkles, 
-  CheckCircle2, 
-  FileText, 
-  Activity, 
-  Moon, 
-  Utensils, 
-  Watch,
-  AlertTriangle,
-  Zap
-} from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// 9 Isolated Silos matching primate.health
+const FRAGMENTED_CARDS = [
+  {
+    id: 'wearable',
+    category: 'WEARABLE',
+    dotColor: 'bg-blue-500',
+    headline: 'Knows your sleep. Not your food.',
+    sub: 'Tracks recovery without context of dietary fuel or inflammation.',
+    scatter: { rotate: -4.2, x: -14, y: -10 },
+  },
+  {
+    id: 'calorie',
+    category: 'CALORIE TRACKER',
+    dotColor: 'bg-amber-500',
+    headline: 'Counts calories. Guesses at dal.',
+    sub: 'Manual estimate silos disconnected from sleep architecture.',
+    scatter: { rotate: 3.2, x: 10, y: 12 },
+  },
+  {
+    id: 'nutritionist',
+    category: 'NUTRITIONIST',
+    dotColor: 'bg-emerald-600',
+    headline: 'Writes a plan. Never sees your sleep.',
+    sub: 'Prescribes macros in a vacuum unaware of nightly HRV or cortisol dips.',
+    scatter: { rotate: -3.5, x: 16, y: -8 },
+  },
+  {
+    id: 'trainer',
+    category: 'TRAINER',
+    dotColor: 'bg-orange-500',
+    headline: "Programs Monday. Can't see Sunday night.",
+    sub: 'Demands max effort when your central nervous system is depleted.',
+    scatter: { rotate: 4.0, x: -18, y: 10 },
+  },
+  {
+    id: 'lab',
+    category: 'LAB REPORT',
+    dotColor: 'bg-yellow-500',
+    headline: 'A PDF from January, unread since January.',
+    sub: 'Critical biomarker blood metrics locked in an unindexed email attachment.',
+    scatter: { rotate: -2.2, x: 8, y: -12 },
+  },
+  {
+    id: 'cycle',
+    category: 'CYCLE TRACKER',
+    dotColor: 'bg-purple-500',
+    headline: 'Predicts your phase. Tells your trainer nothing.',
+    sub: 'Hormonal fluctuations hidden from strength programming algorithms.',
+    scatter: { rotate: 4.4, x: 14, y: 14 },
+  },
+  {
+    id: 'journal',
+    category: 'HEALTH JOURNAL',
+    dotColor: 'bg-teal-500',
+    headline: 'Notes everything. Connects nothing.',
+    sub: 'Subjective notes with zero automated cross-correlation to biometric trends.',
+    scatter: { rotate: -4.0, x: -12, y: 8 },
+  },
+  {
+    id: 'workout',
+    category: 'WORKOUT APP',
+    dotColor: 'bg-rose-500',
+    headline: 'Counts your reps. Not your recovery.',
+    sub: 'Pushes volume milestones while recovery indices are plummeting.',
+    scatter: { rotate: 2.8, x: 12, y: -14 },
+  },
+  {
+    id: 'chatbot',
+    category: 'AI CHATBOT',
+    dotColor: 'bg-amber-400',
+    headline: 'Smart about everything. Blind to you.',
+    sub: 'Generic wellness advice with zero access to your actual telemetry history.',
+    scatter: { rotate: -2.8, x: -8, y: 10 },
+  },
+];
+
+
+
 export default function FragmentedProblem() {
   const sectionRef = useRef(null);
+  const pinContainerRef = useRef(null);
   const cardsRef = useRef([]);
+  const [isArranged, setIsArranged] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardsRef.current,
-        { opacity: 0, y: 30, scale: 0.96 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.7,
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-            end: 'center center',
-            toggleActions: 'play none none reverse',
+      // Set initial scattered positions
+      cardsRef.current.forEach((el, index) => {
+        if (!el) return;
+        const config = FRAGMENTED_CARDS[index].scatter;
+        gsap.set(el, {
+          rotation: config.rotate,
+          x: config.x,
+          y: config.y,
+          transformOrigin: 'center center',
+        });
+      });
+
+      // Pin the section while scrolling: first scattered -> then neatly arranged -> phone peeks up
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '+=900',
+          pin: pinContainerRef.current,
+          pinSpacing: true,
+          scrub: 0.8,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            setIsArranged(self.progress > 0.45);
           },
-        }
-      );
+        },
+      });
+
+      // Phase 1: Straighten and arrange all 9 cards into a pristine systematic grid
+      tl.to(cardsRef.current, {
+        rotation: 0,
+        x: 0,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.03,
+        ease: 'power2.inOut',
+      }, 0);
+
+
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const fragmentedApps = [
-    {
-      icon: Moon,
-      name: 'Sleep Ring / Tracker',
-      data: 'Deep sleep, HRV, Sleep debt',
-      flaw: 'Blind to daytime carbohydrate intake, workouts, and inflammation.',
-      badge: 'ISOLATED SILO',
-    },
-    {
-      icon: Watch,
-      name: 'Fitness Strap / Watch',
-      data: 'Heart rate zones, strain, active calories',
-      flaw: 'Blind to systemic lab biomarkers and hormone fluctuations.',
-      badge: 'ISOLATED SILO',
-    },
-    {
-      icon: Utensils,
-      name: 'Diet & Calorie App',
-      data: 'Macros, calories, meal timing',
-      flaw: 'Manual entry with zero correlation to sleep architecture or recovery.',
-      badge: 'ISOLATED SILO',
-    },
-    {
-      icon: FileText,
-      name: 'Annual Lab Work PDF',
-      data: 'ApoB, hs-CRP, fasting insulin, lipids',
-      flaw: 'Trapped in email attachments; never informs daily training decisions.',
-      badge: 'ISOLATED SILO',
-    },
-  ];
+  // Quick manual toggle for user to test transition
+  const toggleArrangement = () => {
+    const nextArranged = !isArranged;
+    setIsArranged(nextArranged);
+    cardsRef.current.forEach((el, index) => {
+      if (!el) return;
+      if (nextArranged) {
+        gsap.to(el, { rotation: 0, x: 0, y: 0, duration: 0.6, ease: 'power2.out' });
+      } else {
+        const config = FRAGMENTED_CARDS[index].scatter;
+        gsap.to(el, { rotation: config.rotate, x: config.x, y: config.y, duration: 0.6, ease: 'power2.out' });
+      }
+    });
+  };
 
   return (
     <section
       id="platform"
       ref={sectionRef}
-      className="py-20 md:py-32 relative overflow-hidden bg-slate-50/70 border-y border-slate-200/80"
+      className="relative w-full bg-[#fbfaf7] text-slate-900 border-b border-slate-200/80 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div 
+        ref={pinContainerRef}
+        className="w-full min-h-screen flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative select-none"
+      >
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold uppercase tracking-wider mb-4">
-            <Unplug className="w-3.5 h-3.5" />
-            <span>The Fragmented Health Problem</span>
+        <div className="text-left mb-8 max-w-3xl">
+          <div className="inline-flex items-center gap-2 text-[#b5853a] text-xs font-mono font-bold uppercase tracking-widest mb-3">
+            <span>THE PROBLEM</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            More health data than ever.{' '}
-            <span className="text-slate-400 block sm:inline">
-              Zero unified understanding.
-            </span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-[#143428] tracking-tight leading-tight">
+            Right now, your health lives in nine places that don't talk to each other.
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed font-normal">
-            Your physiological systems don't operate in silos—so why does your health
-            data live in four different apps, two wearables, and an unread PDF?
-          </p>
-        </div>
 
-        {/* The Disconnected Silos Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-          {fragmentedApps.map((app, index) => {
-            const Icon = app.icon;
-            return (
-              <div
-                key={app.name}
-                ref={(el) => (cardsRef.current[index] = el)}
-                className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-red-300 transition-all duration-300 relative group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-2.5 rounded-xl bg-red-50 text-red-600">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-bold text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
-                    {app.badge}
-                  </span>
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-1">{app.name}</h3>
-                <p className="text-xs font-mono text-slate-500 mb-3">{app.data}</p>
-                <div className="pt-3 border-t border-slate-100 flex items-start gap-2 text-xs text-slate-600">
-                  <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <span>{app.flaw}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+          <div className="flex items-center gap-4 mt-4">
+            <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+              <span className={`w-2 h-2 rounded-full transition-colors duration-300 ${isArranged ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+              {isArranged ? 'Arranged systematically into 1 unified system' : 'Scattered across 9 disjointed silos — scroll down to organize'}
+            </span>
 
-        {/* Convergence Animation Indicator */}
-        <div className="flex flex-col items-center justify-center my-8">
-          <div className="w-12 h-12 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 animate-bounce shadow-sm">
-            <ArrowDown className="w-5 h-5" />
+            <button
+              onClick={toggleArrangement}
+              type="button"
+              className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1 rounded-full shadow-sm transition-all"
+            >
+              <span>{isArranged ? 'Preview Scattered State' : 'Preview Systematic Grid'}</span>
+            </button>
           </div>
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mt-2">
-            Synthesized by Fitness Engine
-          </span>
         </div>
 
-        {/* The Connected Fitness Result */}
-        <div className="max-w-4xl mx-auto rounded-3xl bg-white border-2 border-blue-600/30 shadow-xl overflow-hidden">
-          <div className="p-6 sm:p-10">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold mb-2">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>ONE CONNECTED SYSTEM</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                  The Multi-Dimensional Health Graph
-                </h3>
-              </div>
-              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-800">
-                  Harmonizing 120+ Biometric Data Streams
+        {/* 3x3 Cards Grid: First Scattered, then Arranged Systematically */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 my-auto relative z-10">
+          {FRAGMENTED_CARDS.map((card, idx) => (
+            <div
+              key={card.id}
+              ref={(el) => (cardsRef.current[idx] = el)}
+              className="p-5 sm:p-6 rounded-2xl bg-[#f4f1eb]/85 hover:bg-white border border-[#e8e4db] shadow-sm hover:shadow-md transition-shadow duration-300 relative will-change-transform"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className={`w-2.5 h-2.5 rounded-full ${card.dotColor}`} />
+                <span className="text-[11px] font-mono font-bold tracking-widest text-slate-500 uppercase">
+                  {card.category}
                 </span>
               </div>
+              <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug mb-1.5">
+                {card.headline}
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                {card.sub}
+              </p>
             </div>
-
-            {/* Cross-Domain Correlation Insights */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
-                <div className="flex items-center gap-2 text-blue-600 text-xs font-bold uppercase mb-2">
-                  <Zap className="w-3.5 h-3.5" />
-                  <span>Sleep × Nutrition Link</span>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                  "Eating carbohydrate-heavy meals within 2.5 hours of bed reduced your REM sleep
-                  by 26% and elevated resting heart rate by 4 bpm."
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
-                <div className="flex items-center gap-2 text-blue-600 text-xs font-bold uppercase mb-2">
-                  <Activity className="w-3.5 h-3.5" />
-                  <span>Strain × Lab Biomarkers</span>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                  "Your hs-CRP dropped from 1.4 to 0.4 mg/L after replacing 2 high-intensity
-                  sessions with 45 minutes of strict Zone 2 aerobic base."
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
-                <div className="flex items-center gap-2 text-emerald-600 text-xs font-bold uppercase mb-2">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Recovery × Performance</span>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                  "With today's 88ms HRV and 1h 53m deep sleep, your central nervous system
-                  has maximum capacity for strength progression."
-                </p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
+
+
       </div>
     </section>
   );
