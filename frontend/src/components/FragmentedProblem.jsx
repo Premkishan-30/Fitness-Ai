@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 9 Isolated Silos matching primate.health
+// 9 Isolated Silos matching the Fragmented Health problem
 const FRAGMENTED_CARDS = [
   {
     id: 'wearable',
@@ -18,7 +18,7 @@ const FRAGMENTED_CARDS = [
     id: 'calorie',
     category: 'CALORIE TRACKER',
     dotColor: 'bg-amber-500',
-    headline: 'Counts calories. Guesses at dal.',
+    headline: 'Counts calories. Guesses at meals.',
     sub: 'Manual estimate silos disconnected from sleep architecture.',
     scatter: { rotate: 3.2, x: 10, y: 12 },
   },
@@ -41,7 +41,7 @@ const FRAGMENTED_CARDS = [
   {
     id: 'lab',
     category: 'LAB REPORT',
-    dotColor: 'bg-yellow-500',
+    dotColor: 'bg-indigo-500',
     headline: 'A PDF from January, unread since January.',
     sub: 'Critical biomarker blood metrics locked in an unindexed email attachment.',
     scatter: { rotate: -2.2, x: 8, y: -12 },
@@ -73,14 +73,12 @@ const FRAGMENTED_CARDS = [
   {
     id: 'chatbot',
     category: 'AI CHATBOT',
-    dotColor: 'bg-amber-400',
+    dotColor: 'bg-blue-600',
     headline: 'Smart about everything. Blind to you.',
     sub: 'Generic wellness advice with zero access to your actual telemetry history.',
     scatter: { rotate: -2.8, x: -8, y: 10 },
   },
 ];
-
-
 
 export default function FragmentedProblem() {
   const sectionRef = useRef(null);
@@ -105,7 +103,7 @@ export default function FragmentedProblem() {
         });
       });
 
-      // Pin the section while scrolling: first scattered -> then neatly arranged -> phone peeks up
+      // Pin the section while scrolling: first scattered -> then neatly arranged
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -130,8 +128,6 @@ export default function FragmentedProblem() {
         stagger: 0.03,
         ease: 'power2.inOut',
       }, 0);
-
-
     }, sectionRef);
 
     return () => ctx.revert();
@@ -156,52 +152,54 @@ export default function FragmentedProblem() {
     <section
       id="platform"
       ref={sectionRef}
-      className="relative w-full bg-[#fbfaf7] text-slate-900 border-b border-slate-200/80 overflow-hidden"
+      className="relative w-full bg-slate-50/70 text-slate-900 border-b border-slate-200/80 overflow-hidden"
     >
       <div 
         ref={pinContainerRef}
         className="w-full min-h-screen flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative select-none"
       >
-        {/* Section Header */}
+        {/* Section Header matching Figma Design */}
         <div className="text-left mb-8 max-w-3xl">
-          <div className="inline-flex items-center gap-2 text-[#b5853a] text-xs font-mono font-bold uppercase tracking-widest mb-3">
-            <span>THE PROBLEM</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3 shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+            <span>THE FRAGMENTED HEALTH PROBLEM</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-[#143428] tracking-tight leading-tight">
-            Right now, your health lives in nine places that don't talk to each other.
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Right now, your health lives in nine places that{' '}
+            <span className="text-blue-600">don't talk to each other.</span>
           </h2>
 
           <div className="flex items-center gap-4 mt-4">
             <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
-              <span className={`w-2 h-2 rounded-full transition-colors duration-300 ${isArranged ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+              <span className={`w-2 h-2 rounded-full transition-colors duration-300 ${isArranged ? 'bg-blue-600' : 'bg-amber-500'}`} />
               {isArranged ? 'Arranged systematically into 1 unified system' : 'Scattered across 9 disjointed silos — scroll down to organize'}
             </span>
 
             <button
               onClick={toggleArrangement}
               type="button"
-              className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1 rounded-full shadow-sm transition-all"
+              className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-700 bg-white hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 border border-slate-200 px-3.5 py-1 rounded-full shadow-xs transition-all"
             >
               <span>{isArranged ? 'Preview Scattered State' : 'Preview Systematic Grid'}</span>
             </button>
           </div>
         </div>
 
-        {/* 3x3 Cards Grid: First Scattered, then Arranged Systematically */}
+        {/* 3x3 Cards Grid matching Figma Light Theme: First Scattered, then Arranged Systematically */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 my-auto relative z-10">
           {FRAGMENTED_CARDS.map((card, idx) => (
             <div
               key={card.id}
               ref={(el) => (cardsRef.current[idx] = el)}
-              className="p-5 sm:p-6 rounded-2xl bg-[#f4f1eb]/85 hover:bg-white border border-[#e8e4db] shadow-sm hover:shadow-md transition-shadow duration-300 relative will-change-transform"
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all duration-300 relative will-change-transform group"
             >
               <div className="flex items-center gap-2 mb-3">
                 <span className={`w-2.5 h-2.5 rounded-full ${card.dotColor}`} />
-                <span className="text-[11px] font-mono font-bold tracking-widest text-slate-500 uppercase">
+                <span className="text-[11px] font-mono font-bold tracking-widest text-slate-400 uppercase">
                   {card.category}
                 </span>
               </div>
-              <h3 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug mb-1.5">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug mb-1.5 group-hover:text-blue-600 transition-colors">
                 {card.headline}
               </h3>
               <p className="text-xs text-slate-500 leading-relaxed font-normal">
@@ -210,8 +208,6 @@ export default function FragmentedProblem() {
             </div>
           ))}
         </div>
-
-
       </div>
     </section>
   );

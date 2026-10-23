@@ -24,19 +24,19 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────────────────
-   10 PHONE SCREEN MOCKUPS (MATCHING PRIMATE.HEALTH & FIT GRAPH)
+   10 PHONE SCREEN MOCKUPS (MATCHING FIGMA HEALTH GRAPH)
 ───────────────────────────────────────────────────────── */
 
-// 01. Capacity & Daily Readiness (Matching primate.health screenshot 2 teaser)
+// 01. Capacity & Daily Readiness
 function ScreenDailyOverview() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
       <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-wider text-[#b5853a] font-bold block">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-blue-600 font-bold block">
             DAILY CAPACITY
           </span>
-          <span className="text-sm font-black text-[#143428]">Tuesday, 14 July</span>
+          <span className="text-sm font-black text-slate-900">Tuesday, 14 July</span>
         </div>
         <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
           92 / 100 PRIME
@@ -57,8 +57,8 @@ function ScreenDailyOverview() {
           />
           <defs>
             <linearGradient id="screenGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#059669" />
+              <stop offset="0%" stopColor="#2563eb" />
+              <stop offset="100%" stopColor="#10b981" />
             </linearGradient>
           </defs>
         </svg>
@@ -85,10 +85,10 @@ function ScreenDailyOverview() {
         ))}
       </div>
 
-      <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/80 mt-auto">
+      <div className="p-2.5 rounded-xl bg-blue-50/80 border border-blue-200/80 mt-auto">
         <div className="flex items-center gap-1.5 mb-1">
-          <Sparkles className="w-3 h-3 text-[#b5853a]" />
-          <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider">CAPACITY BRIEF</span>
+          <Sparkles className="w-3 h-3 text-blue-600" />
+          <span className="text-[10px] font-bold text-blue-900 uppercase tracking-wider">CAPACITY BRIEF</span>
         </div>
         <p className="text-[10px] text-slate-700 leading-relaxed font-normal">
           "Deep sleep cleared sleep debt by 22m. Autonomic nervous system is primed for peak output before 3:00 PM."
@@ -98,7 +98,7 @@ function ScreenDailyOverview() {
   );
 }
 
-// 02. Wearables Sync (Exact match to Screenshot 3: primate.health/#rail 02 WEARABLES)
+// 02. Wearables Sync
 function ScreenWearables() {
   const devices = [
     { name: 'Apple Watch', metric: 'Sleep, HRV, workouts', status: 'SYNCED', dot: 'bg-emerald-500' },
@@ -111,9 +111,9 @@ function ScreenWearables() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
       <div className="pb-2.5 border-b border-slate-200/80">
-        <span className="text-[9px] uppercase tracking-wider text-[#b5853a] font-mono font-bold block">SOURCES</span>
-        <span className="text-base font-black text-[#143428]">Wearables</span>
-        <div className="text-[9px] text-amber-900 bg-amber-50 border border-amber-200 rounded px-2 py-0.5 inline-block mt-1 font-mono font-semibold">
+        <span className="text-[9px] uppercase tracking-wider text-blue-600 font-mono font-bold block">SOURCES</span>
+        <span className="text-base font-black text-slate-900">Wearables</span>
+        <div className="text-[9px] text-blue-700 bg-blue-50 border border-blue-200 rounded px-2 py-0.5 inline-block mt-1 font-mono font-semibold">
           All streams synced · 06:40
         </div>
       </div>
@@ -142,14 +142,14 @@ function ScreenWearables() {
   );
 }
 
-// 03. Stress Intelligence (Exact match to Screenshot 4: primate.health/#rail 03 STRESS)
+// 03. Stress Intelligence
 function ScreenStress() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
       <div className="flex items-center justify-between pb-2 border-b border-slate-200/80">
         <div>
-          <span className="text-[9px] uppercase tracking-wider text-[#b5853a] font-mono font-bold block">DAILY SIGNAL</span>
-          <span className="text-base font-black text-[#143428]">Stress</span>
+          <span className="text-[9px] uppercase tracking-wider text-blue-600 font-mono font-bold block">DAILY SIGNAL</span>
+          <span className="text-base font-black text-slate-900">Stress</span>
         </div>
         <span className="text-[10px] font-mono text-slate-500 font-medium">Tuesday, 14 July</span>
       </div>
@@ -209,13 +209,13 @@ function ScreenStress() {
       {/* Today's stress curve graph */}
       <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-sm mt-auto">
         <div className="flex justify-between items-center text-[9px] mb-1 font-semibold text-slate-700">
-          <span className="text-[#b5853a] font-bold">| Today's stress</span>
+          <span className="text-blue-600 font-bold">| Today's stress</span>
           <span className="text-slate-400 font-mono text-[8px]">12AM - 10PM</span>
         </div>
         <svg className="w-full h-8" viewBox="0 0 200 35" fill="none">
           <path
             d="M 0 25 Q 30 26 50 20 T 100 24 T 130 8 T 160 12 T 200 22"
-            stroke="#d97706"
+            stroke="#2563eb"
             strokeWidth="2"
             fill="none"
           />
@@ -563,7 +563,7 @@ const PANELS = [
     description:
       'Fitness continuously weighs sleep architecture, nocturnal HRV, dynamic cardiovascular strain, and metabolic fuel into a single operational directive for today.',
     icon: Activity,
-    badgeColor: 'text-[#b5853a] bg-amber-50 border-amber-200',
+    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
     mockupComponent: ScreenDailyOverview,
     floatingBadges: [
       { text: 'Composite Readiness', value: '92 / 100', sub: 'Optimal capacity for heavy strain', color: 'border-emerald-300 text-emerald-800' },
@@ -575,15 +575,15 @@ const PANELS = [
     step: '02',
     category: 'WEARABLES',
     title: 'Reads every wearable.',
-    headline: 'Apple Watch is ~5% of India. PRIMATE reads the other 95% too.',
+    headline: 'Apple Watch, Garmin, Whoop, Oura, and WearOS unified seamlessly.',
     description:
       'Synced seamlessly through Apple Health, Google Health Connect, and Samsung Health. We read raw physiological telemetry and calculate unified biometrics with zero duplication.',
     icon: Watch,
-    badgeColor: 'text-[#b5853a] bg-amber-50 border-amber-200',
+    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
     mockupComponent: ScreenWearables,
     floatingBadges: [
-      { text: 'ALL STREAMS', value: '06:40', sub: 'Synced via Apple Health, Health Connect', color: 'border-slate-200 text-slate-900' },
-      { text: 'COVERAGE', value: '95%', sub: "of wrists aren't Apple Watch - read anyway", color: 'border-amber-300 text-amber-900' },
+      { text: 'ALL STREAMS', value: '06:40 Realtime', sub: 'Synced via Apple Health & Health Connect', color: 'border-slate-200 text-slate-900' },
+      { text: 'INTEGRATIONS', value: '40+ Devices', sub: 'Unified biometrics without duplication', color: 'border-blue-200 text-blue-900' },
     ],
   },
   {
@@ -595,11 +595,11 @@ const PANELS = [
     description:
       'Fitness shows when stress rises across the day so you can pinpoint routines, meals, and meetings that trigger acute nervous system spikes.',
     icon: Heart,
-    badgeColor: 'text-[#b5853a] bg-amber-50 border-amber-200',
+    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
     mockupComponent: ScreenStress,
     floatingBadges: [
       { text: '7-DAY AVERAGE', value: '31 / 100', sub: 'Best day this week: 28', color: 'border-slate-200 text-slate-900' },
-      { text: 'TIME AT HIGH', value: '2 h 30 m', sub: '10% of the day - mostly 2-6 pm', color: 'border-amber-300 text-amber-900' },
+      { text: 'TIME AT HIGH', value: '2 h 30 m', sub: '10% of the day - mostly 2-6 pm', color: 'border-blue-200 text-blue-900' },
     ],
   },
   {
@@ -659,7 +659,7 @@ const PANELS = [
     description:
       'Upload blood test PDFs from any diagnostic lab. Our OCR engine extracts ApoB, hs-CRP, fasting insulin, HbA1c, and lipid panels into longitudinal trend graphs.',
     icon: FileText,
-    badgeColor: 'text-amber-700 bg-amber-50 border-amber-200',
+    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
     mockupComponent: ScreenBiomarkers,
     floatingBadges: [
       { text: 'ATHEROGENIC APOB', value: '74 mg/dL', sub: 'Cardiovascular risk: Low', color: 'border-emerald-300 text-emerald-800' },
@@ -734,7 +734,7 @@ function MobileAlternatingCards({ panels, onOpenAuth }) {
             className="rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 flex flex-col gap-4 overflow-hidden"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-[#b5853a]">
+              <span className="text-xs font-mono font-bold text-blue-600">
                 MODULE {panel.step}
               </span>
               <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${panel.badgeColor}`}>
@@ -743,7 +743,7 @@ function MobileAlternatingCards({ panels, onOpenAuth }) {
             </div>
 
             <div>
-              <h3 className="text-xl font-black text-[#143428] tracking-tight mb-1">
+              <h3 className="text-xl font-black text-slate-900 tracking-tight mb-1">
                 {panel.title}
               </h3>
               <p className="text-xs text-slate-500 leading-relaxed font-normal">
@@ -1034,17 +1034,18 @@ export default function PinnedShowcase({ onOpenAuth }) {
     <section
       id="rail"
       ref={containerRef}
-      className="relative w-full bg-[#fbfaf7] text-slate-900 border-y border-slate-200/80"
+      className="relative w-full bg-slate-50/40 text-slate-900 border-y border-slate-200/80"
     >
       {/* ── DESKTOP INTRO HEADER (Moved upwards before pinning so it scrolls naturally) ── */}
       <div className="hidden lg:block max-w-7xl mx-auto px-8 lg:px-12 pt-28 pb-14 text-center">
-        <div className="inline-flex items-center gap-2 text-[#b5853a] text-xs font-mono font-bold uppercase tracking-widest mb-3 px-3.5 py-1.5 bg-amber-50 rounded-full border border-amber-200/60 shadow-xs">
+        <div className="inline-flex items-center gap-2 text-blue-700 text-xs font-mono font-bold uppercase tracking-widest mb-3 px-3.5 py-1.5 bg-blue-50 rounded-full border border-blue-200/80 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>02 · THE PINNED SHOWCASE</span>
         </div>
-        <h2 className="text-4xl xl:text-5xl font-black text-[#143428] tracking-tight mb-4">
-          Unified Human Intelligence in <span className="text-[#b5853a]">Ten Dimensions</span>
+        <h2 className="text-4xl xl:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Unified Human Intelligence in <span className="text-blue-600">Ten Dimensions</span>
         </h2>
-        <p className="text-base text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+        <p className="text-base text-slate-500 max-w-2xl mx-auto font-normal leading-relaxed">
           Scroll through to explore every dimension of physiological, metabolic, and cognitive telemetry.
         </p>
       </div>
@@ -1059,15 +1060,15 @@ export default function PinnedShowcase({ onOpenAuth }) {
           activeIndex % 2 === 0 ? 'justify-end' : 'justify-start'
         }`}>
           <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+            <span className="text-xs font-mono font-bold text-slate-600 uppercase tracking-widest">
               Dimension {PANELS[activeIndex]?.step} / {PANELS.length} · {PANELS[activeIndex]?.category}
             </span>
             <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200/90 shadow-sm ml-4">
               <div className="w-1 h-7 bg-slate-200 rounded-full overflow-hidden flex flex-col justify-start">
                 <div 
                   ref={verticalProgressRef}
-                  className="w-full bg-[#b5853a] rounded-full transition-all duration-75"
+                  className="w-full bg-blue-600 rounded-full transition-all duration-75"
                   style={{ height: `${((activeIndex + 1) / PANELS.length) * 100}%` }}
                 />
               </div>
@@ -1097,21 +1098,21 @@ export default function PinnedShowcase({ onOpenAuth }) {
                 }`}
               >
                 <div className="flex items-center gap-2.5 mb-3">
-                  <div className="p-2 rounded-xl bg-[#143428] text-white shadow-sm">
+                  <div className="p-2 rounded-xl bg-blue-600 text-white shadow-sm shadow-blue-500/20">
                     <PanelIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono font-bold tracking-widest text-[#b5853a] uppercase block">
+                    <span className="text-[10px] font-mono font-bold tracking-widest text-blue-600 uppercase block">
                       {panel.step} · {panel.category}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="text-3xl xl:text-4xl font-extrabold text-[#143428] tracking-tight leading-tight mb-3">
+                <h3 className="text-3xl xl:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-3">
                   {panel.title}
                 </h3>
 
-                <p className="text-base font-semibold text-slate-800 mb-3 leading-snug">
+                <p className="text-base font-semibold text-slate-700 mb-3 leading-snug">
                   {panel.headline}
                 </p>
 
@@ -1123,7 +1124,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
                   <button
                     onClick={() => onOpenAuth('signup')}
                     type="button"
-                    className="px-6 py-2.5 rounded-xl font-semibold text-xs text-white bg-[#143428] hover:bg-[#1a4435] shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+                    className="px-6 py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-700 shadow-sm shadow-blue-600/25 hover:shadow-md transition-all duration-200 flex items-center gap-2"
                   >
                     <span>Request Early Access</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -1199,7 +1200,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
                         className={`absolute z-40 px-3.5 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border ${badge.color} shadow-xl pointer-events-none ${positionClass}`}
                       >
                         <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#b5853a]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
                           <span className="text-[9px] uppercase tracking-wider text-slate-500 block font-bold font-mono">
                             {badge.text}
                           </span>
@@ -1230,8 +1231,8 @@ export default function PinnedShowcase({ onOpenAuth }) {
               type="button"
               className={`font-mono text-[11px] w-8 h-7 flex items-center justify-center rounded-lg transition-all duration-200 ${
                 activeIndex === idx
-                  ? 'text-white bg-[#b5853a] font-black shadow-sm'
-                  : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100/80 font-semibold'
+                  ? 'text-white bg-blue-600 font-black shadow-md shadow-blue-600/25'
+                  : 'text-slate-400 hover:text-blue-600 hover:bg-blue-50 font-semibold'
               }`}
               aria-label={`Jump to step ${p.step}`}
             >
@@ -1239,20 +1240,18 @@ export default function PinnedShowcase({ onOpenAuth }) {
             </button>
           ))}
         </div>
-
-
       </div>
 
       {/* ── TABLET & MOBILE: ALTERNATING CARDS ── */}
       <div className="lg:hidden relative overflow-hidden">
         {/* Section Header */}
         <div className="text-center px-4 pt-12 pb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#b5853a] text-xs font-bold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
             <Zap className="w-3.5 h-3.5" />
             <span>PRODUCT SHOWCASE</span>
           </div>
-          <h2 className="text-3xl font-black text-[#143428] tracking-tight leading-tight">
-            Unified Health in <span className="text-[#b5853a]">Ten Dimensions</span>
+          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Unified Health in <span className="text-blue-600">Ten Dimensions</span>
           </h2>
           <p className="text-xs text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed">
             Scroll to scrub through every dimension with alternating telemetry views.
@@ -1267,7 +1266,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
           <button
             onClick={() => onOpenAuth('signup')}
             type="button"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-xs text-white bg-[#143428] hover:bg-[#1a4435] shadow-md transition-all duration-200"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-xs text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-600/25 transition-all duration-200"
           >
             <span>Request Early Access</span>
             <ArrowRight className="w-4 h-4" />
