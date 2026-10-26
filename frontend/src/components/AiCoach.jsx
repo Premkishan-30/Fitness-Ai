@@ -8,12 +8,14 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function AiCoach({ onOpenAuth }) {
   const sectionRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const animatedMessageCountRef = useRef(0);
   const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -74,6 +76,28 @@ export default function AiCoach({ onOpenAuth }) {
 
     return () => ctx.revert();
   }, []);
+
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+    const messagesToAnimate = Array.from(container.querySelectorAll('.coach-message'))
+      .slice(animatedMessageCountRef.current);
+    animatedMessageCountRef.current = container.querySelectorAll('.coach-message').length;
+    if (!messagesToAnimate.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(messagesToAnimate,
+        { autoAlpha: 0, y: 16, clipPath: 'inset(0 0 100% 0 round 18px)' },
+        { autoAlpha: 1, y: 0, clipPath: 'inset(0 0 0% 0 round 18px)', duration: 0.58, stagger: 0.16, ease: 'power3.out' }
+      );
+      messagesToAnimate.forEach((message) => {
+        const highlight = message.querySelector('.coach-message__highlight');
+        if (highlight) gsap.fromTo(highlight, { x: -10, opacity: 0 }, { x: 0, opacity: 1, duration: 0.38, delay: 0.3, ease: 'power2.out' });
+      });
+    }, container);
+
+    return () => ctx.revert();
+  }, [messages.length, isTyping]);
 
   const handleSelectQuestion = (item) => {
     if (isTyping) return;
@@ -170,7 +194,7 @@ export default function AiCoach({ onOpenAuth }) {
 
           {/* Right Column: Realistic Chat Preview Window (Col 7) */}
           <div className="lg:col-span-7">
-            <div className="rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[580px]">
+            <div className="rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[580px]" onPointerMove={tiltOnPointerMove} onPointerLeave={resetPointerTilt}>
               {/* Chat Top Header */}
               <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -206,7 +230,7 @@ export default function AiCoach({ onOpenAuth }) {
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`flex flex-col ${
+                    className={`coach-message flex flex-col ${
                       msg.sender === 'user' ? 'items-end' : 'items-start'
                     }`}
                   >
@@ -227,7 +251,7 @@ export default function AiCoach({ onOpenAuth }) {
                       <p className="whitespace-pre-line">{msg.text}</p>
 
                       {msg.highlight && (
-                        <div className="mt-3 pt-2.5 border-t border-blue-200/60 flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+                        <div className="coach-message__highlight mt-3 pt-2.5 border-t border-blue-200/60 flex items-center gap-1.5 text-xs font-semibold text-blue-700">
                           <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                           <span>{msg.highlight}</span>
                         </div>

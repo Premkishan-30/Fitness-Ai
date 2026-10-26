@@ -13,6 +13,7 @@ import {
   Activity 
 } from 'lucide-react';
 import gsap from 'gsap';
+import SmartwatchHeroStage from './SmartwatchHeroStage';
 
 export default function Hero({ onOpenAuth }) {
   const [activeTab, setActiveTab] = useState('morning'); // 'morning' | 'evening'
@@ -21,6 +22,7 @@ export default function Hero({ onOpenAuth }) {
   const subtitleRef = useRef(null);
   const ctaRef = useRef(null);
   const mockupRef = useRef(null);
+  const metricPanelsRef = useRef([]);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,8 +33,8 @@ export default function Hero({ onOpenAuth }) {
 
       tl.fromTo(
         headlineRef.current,
-        { opacity: 0, y: 35 },
-        { opacity: 1, y: 0, duration: 0.9, delay: 0.15 }
+        { opacity: 0, y: 52, rotationX: -9, scale: 0.96, transformPerspective: 900, transformOrigin: 'center bottom' },
+        { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 1, delay: 0.15 }
       )
       .fromTo(
         subtitleRef.current,
@@ -48,10 +50,25 @@ export default function Hero({ onOpenAuth }) {
       )
       .fromTo(
         mockupRef.current,
-        { opacity: 0, y: 40, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.95, ease: 'power2.out' },
+        { opacity: 0, y: 50, scale: 0.84, rotationX: 12, rotationY: -8, transformPerspective: 1200, transformOrigin: 'center center' },
+        { opacity: 1, y: 0, scale: 1, rotationX: 0, rotationY: 0, duration: 1.35, ease: 'power3.out' },
         '-=0.5'
       );
+
+      tl.fromTo(
+        metricPanelsRef.current,
+        { opacity: 0, y: 28, scale: 0.94, rotationY: -8 },
+        { opacity: 1, y: 0, scale: 1, rotationY: 0, duration: 0.72, stagger: 0.12, ease: 'power3.out' },
+        '-=0.8'
+      );
+
+      gsap.to('.hero-ambient__ring', {
+        rotation: 360,
+        duration: 32,
+        repeat: -1,
+        ease: 'none',
+        transformOrigin: 'center center',
+      });
     }, heroRef);
 
     return () => ctx.revert();
@@ -68,13 +85,49 @@ export default function Hero({ onOpenAuth }) {
   return (
     <section
       ref={heroRef}
-      className="relative pt-32 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/70 via-slate-50/40 to-white"
+      className="hero-landing relative overflow-hidden bg-gradient-to-b from-blue-50/70 via-slate-50/40 to-white"
     >
-      {/* Background Subtle Light Grid */}
-      <div className="absolute inset-0 bg-grid-light pointer-events-none opacity-60" />
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-blue-100/60 blur-[120px] rounded-full pointer-events-none" />
+      <div className="hero-ambient" aria-hidden="true">
+        <div className="hero-ambient__ring hero-ambient__ring--outer"><i /><i /><i /><i /></div>
+        <div className="hero-ambient__ring hero-ambient__ring--inner"><i /><i /><i /></div>
+        <div className="hero-ambient__core" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="hero-opening">
+          <div className="hero-opening__copy">
+            <div className="hero-opening__eyebrow">
+              <span className="hero-opening__pulse" />
+              <Sparkles className="h-4 w-4" />
+              <span>YOUR PERSONAL HEALTH INTELLIGENCE</span>
+            </div>
+            <h1 ref={headlineRef} className="hero-opening__title">
+              Your Health.<br />
+              <span>One Connected Picture.</span>
+            </h1>
+            <p ref={subtitleRef} className="hero-opening__description">
+              Sleep, recovery, nutrition, and activity—understood together, so you can make better decisions about your day.
+            </p>
+            <div ref={ctaRef} className="hero-opening__actions">
+              <button className="hero-opening__primary" onClick={() => onOpenAuth('signup')} type="button">
+                Get Started <ArrowRight className="h-4 w-4" />
+              </button>
+              <a className="hero-opening__secondary" href="#rail" onClick={handleExploreClick}>
+                Explore the Platform <ChevronRight className="h-4 w-4" />
+              </a>
+            </div>
+            <div className="hero-opening__trust">
+              <span><ShieldCheck /> Private by design</span>
+              <i />
+              <span><Activity /> Your health, in context</span>
+            </div>
+          </div>
+
+          <SmartwatchHeroStage animationRef={mockupRef} panelRefs={metricPanelsRef} />
+        </div>
+
+        <div className="hidden" aria-hidden="true">
         {/* Top Tag matching Figma */}
         <div className="flex justify-center mb-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs sm:text-sm font-semibold shadow-sm">
@@ -87,7 +140,6 @@ export default function Hero({ onOpenAuth }) {
         {/* Headline */}
         <div className="text-center max-w-4xl mx-auto mb-6">
           <h1
-            ref={headlineRef}
             className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.08]"
           >
             Your health.{' '}
@@ -100,7 +152,6 @@ export default function Hero({ onOpenAuth }) {
         {/* Supporting Message */}
         <div className="text-center max-w-2xl mx-auto mb-10">
           <p
-            ref={subtitleRef}
             className="text-lg sm:text-xl text-slate-600 leading-relaxed font-normal"
           >
             Sleep, recovery, nutrition and activity—understood together, so you can
@@ -110,7 +161,6 @@ export default function Hero({ onOpenAuth }) {
 
         {/* Primary and Secondary CTAs */}
         <div
-          ref={ctaRef}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14"
         >
           <button
@@ -151,7 +201,6 @@ export default function Hero({ onOpenAuth }) {
 
         {/* HERO PRODUCT PREVIEW SHOWCASE (Clean Light Aesthetic) */}
         <div
-          ref={mockupRef}
           className="relative max-w-5xl mx-auto rounded-3xl p-1 bg-gradient-to-b from-blue-100/60 to-slate-200/40 shadow-xl"
         >
           <div className="rounded-[22px] bg-white border border-slate-200/80 p-5 sm:p-8 overflow-hidden relative shadow-sm">
@@ -433,6 +482,7 @@ export default function Hero({ onOpenAuth }) {
         <p className="text-center text-[11px] text-slate-500 mt-4 tracking-wide font-medium">
           Illustrative biometric telemetry data. Non-diagnostic wellness intelligence platform.
         </p>
+        </div>
       </div>
     </section>
   );

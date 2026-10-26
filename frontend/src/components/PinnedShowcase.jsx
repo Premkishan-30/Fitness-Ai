@@ -11,12 +11,10 @@ import {
   Bot, 
   Layers, 
   ArrowRight, 
+  ChevronRight,
   CheckCircle2, 
   Zap, 
   Sparkles,
-  ShieldCheck,
-  ChevronRight,
-  ArrowUp
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -142,89 +140,45 @@ function ScreenWearables() {
   );
 }
 
-// 03. Stress Intelligence
-function ScreenStress() {
+// Biological age
+function ScreenBiologicalAge() {
   return (
     <div className="flex flex-col h-full bg-[#f8fafc] text-slate-900 p-4 select-none">
       <div className="flex items-center justify-between pb-2 border-b border-slate-200/80">
         <div>
-          <span className="text-[9px] uppercase tracking-wider text-blue-600 font-mono font-bold block">DAILY SIGNAL</span>
-          <span className="text-base font-black text-slate-900">Stress</span>
+          <span className="text-[9px] uppercase tracking-wider text-blue-600 font-mono font-bold block">LONGEVITY INSIGHT</span>
+          <span className="text-base font-black text-slate-900">Biological age</span>
         </div>
-        <span className="text-[10px] font-mono text-slate-500 font-medium">Tuesday, 14 July</span>
+        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-1">IMPROVING</span>
       </div>
 
-      {/* Radial Semi-Circle Gauge */}
-      <div className="relative my-2 flex flex-col items-center justify-center">
-        <svg className="w-36 h-20" viewBox="0 0 100 55">
-          <path
-            d="M 12 50 A 38 38 0 0 1 88 50"
-            fill="none"
-            stroke="#e2e8f0"
-            strokeWidth="7"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 12 50 A 38 38 0 0 1 88 50"
-            fill="none"
-            stroke="url(#stressGrad2)"
-            strokeWidth="7"
-            strokeDasharray="120"
-            strokeDashoffset="75"
-            strokeLinecap="round"
-          />
-          <defs>
-            <linearGradient id="stressGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="60%" stopColor="#f59e0b" />
-              <stop offset="100%" stopColor="#ef4444" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <div className="text-center -mt-4">
-          <div className="text-2xl font-black text-slate-900 tracking-tight">
-            32 <span className="text-xs font-normal text-slate-400">/ 100</span>
+      <div className="my-auto flex flex-col items-center text-center">
+        <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-[10px] border-blue-100">
+          <div className="absolute inset-[-10px] rounded-full border-[10px] border-transparent border-t-blue-600 border-r-emerald-500 rotate-[28deg]" />
+          <div>
+            <span className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">YOUR AGE</span>
+            <span className="block text-4xl font-black tracking-tight text-slate-900">32</span>
+            <span className="text-[9px] font-semibold text-slate-500">years</span>
           </div>
-          <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 block mt-0.5">
-            LOW · Target: under 33
-          </span>
         </div>
+        <p className="mt-3 text-[10px] font-semibold text-emerald-700">−4.2 years vs. calendar age</p>
       </div>
 
-      {/* 7-day avg and Best day cards */}
-      <div className="grid grid-cols-2 gap-2 mb-2 text-center">
-        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-sm">
-          <span className="text-[8px] text-slate-400 uppercase font-bold block">7-day avg</span>
-          <span className="text-sm font-black text-slate-900">31</span>
-          <span className="text-[7px] text-slate-400 block font-mono">vs last week -</span>
-        </div>
-        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-sm">
-          <span className="text-[8px] text-slate-400 uppercase font-bold block">Best day</span>
-          <span className="text-sm font-black text-emerald-600">28</span>
-          <span className="text-[7px] text-slate-400 block font-mono">lowest this week -</span>
-        </div>
+      <div className="space-y-1.5 text-[9px]">
+        {[
+          ['Cardiovascular', '−5.1 yr', 'bg-blue-500'],
+          ['Metabolic health', '−3.8 yr', 'bg-emerald-500'],
+          ['Recovery trend', '−2.4 yr', 'bg-indigo-500'],
+        ].map(([label, value, bar]) => (
+          <div key={label} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-2 shadow-sm">
+            <span className={`h-2 w-2 rounded-full ${bar}`} />
+            <span className="flex-1 font-medium text-slate-600">{label}</span>
+            <span className="font-bold text-emerald-700">{value}</span>
+          </div>
+        ))}
       </div>
-
-      {/* Today's stress curve graph */}
-      <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-sm mt-auto">
-        <div className="flex justify-between items-center text-[9px] mb-1 font-semibold text-slate-700">
-          <span className="text-blue-600 font-bold">| Today's stress</span>
-          <span className="text-slate-400 font-mono text-[8px]">12AM - 10PM</span>
-        </div>
-        <svg className="w-full h-8" viewBox="0 0 200 35" fill="none">
-          <path
-            d="M 0 25 Q 30 26 50 20 T 100 24 T 130 8 T 160 12 T 200 22"
-            stroke="#2563eb"
-            strokeWidth="2"
-            fill="none"
-          />
-        </svg>
-        <div className="grid grid-cols-3 gap-1 text-[8px] text-center pt-1 border-t border-slate-100 font-medium">
-          <span className="text-emerald-700">Low 54% (13h)</span>
-          <span className="text-amber-700">Mod 35% (8h)</span>
-          <span className="text-rose-700">High 10% (2.5h)</span>
-        </div>
+      <div className="mt-2 rounded-xl border border-blue-200 bg-blue-50 p-2.5 text-[9px] leading-relaxed text-slate-700">
+        Your sleep consistency and cardiovascular fitness are moving your long-term trend in a positive direction.
       </div>
     </div>
   );
@@ -587,51 +541,51 @@ const PANELS = [
     ],
   },
   {
-    id: 'stress',
-    step: '03',
-    category: 'STRESS',
-    title: 'Stress, with names attached.',
-    headline: 'Not a mood ring. Spot patterns across your day.',
-    description:
-      'Fitness shows when stress rises across the day so you can pinpoint routines, meals, and meetings that trigger acute nervous system spikes.',
-    icon: Heart,
-    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
-    mockupComponent: ScreenStress,
-    floatingBadges: [
-      { text: '7-DAY AVERAGE', value: '31 / 100', sub: 'Best day this week: 28', color: 'border-slate-200 text-slate-900' },
-      { text: 'TIME AT HIGH', value: '2 h 30 m', sub: '10% of the day - mostly 2-6 pm', color: 'border-blue-200 text-blue-900' },
-    ],
-  },
-  {
     id: 'sleep',
-    step: '04',
-    category: 'SLEEP ARCHITECTURE',
+    step: '03',
+    category: 'SLEEP INTELLIGENCE',
     title: 'Sleep, deeply deciphered.',
-    headline: 'Continuous hypnograms and real-time circadian phase alignment.',
+    headline: 'See the patterns behind a truly restorative night.',
     description:
-      'Track REM, deep, light, and micro-wake periods. Fitness calculates cumulative sleep debt down to the minute and prescribes optimal bedtime windows based on evening cortisol dips.',
+      'Track REM, deep, light, and wake periods while Fitness connects sleep debt and circadian timing to the choices that shape tomorrow.',
     icon: Moon,
     badgeColor: 'text-indigo-700 bg-indigo-50 border-indigo-200',
     mockupComponent: ScreenSleep,
     floatingBadges: [
-      { text: 'DEEP SLEEP RATIO', value: '24% (1h 53m)', sub: '+22m vs weekly average', color: 'border-indigo-300 text-indigo-800' },
-      { text: 'SLEEP EFFICIENCY', value: '94% Restorative', sub: 'Zero micro-arousals detected', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'DEEP SLEEP', value: '1h 53m', sub: '+22m vs weekly average', color: 'border-indigo-300 text-indigo-800' },
+      { text: 'SLEEP EFFICIENCY', value: '94%', sub: 'A restorative night, in context', color: 'border-emerald-300 text-emerald-800' },
     ],
   },
   {
     id: 'recovery',
-    step: '05',
-    category: 'AUTONOMIC RECOVERY',
-    title: 'Central Nervous System Tone.',
-    headline: 'Parasympathetic balance calculated from continuous HRV trends.',
+    step: '04',
+    category: 'RECOVERY',
+    title: 'Know when you’re ready.',
+    headline: 'Recovery built from your own changing baseline.',
     description:
-      'Quantify autonomic nervous system recovery through rMSSD high-frequency heart rate variability. Know immediately whether your body is primed for record strain or active recovery.',
+      'Follow HRV, resting heart rate, and autonomic balance together to understand whether today calls for a hard push or a lighter touch.',
     icon: Heart,
     badgeColor: 'text-emerald-700 bg-emerald-50 border-emerald-200',
     mockupComponent: ScreenRecovery,
     floatingBadges: [
-      { text: 'BASELINE RMSSD', value: '88 ms (+14%)', sub: 'Parasympathetic dominant', color: 'border-emerald-300 text-emerald-800' },
-      { text: 'RESTING PULSE', value: '48 bpm', sub: '-3 bpm nocturnal drop', color: 'border-blue-300 text-blue-800' },
+      { text: 'BASELINE HRV', value: '88 ms · +14%', sub: 'Above your personal baseline', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'RESTING HEART RATE', value: '48 bpm', sub: 'A steady overnight recovery trend', color: 'border-blue-300 text-blue-800' },
+    ],
+  },
+  {
+    id: 'activity',
+    step: '05',
+    category: 'ACTIVITY & STRAIN',
+    title: 'Train with the day you have.',
+    headline: 'A strain target shaped by your recovery headroom.',
+    description:
+      'Balance cardiovascular load and daily movement with a responsive training budget—without treating every day like the same day.',
+    icon: Flame,
+    badgeColor: 'text-amber-700 bg-amber-50 border-amber-200',
+    mockupComponent: ScreenActivity,
+    floatingBadges: [
+      { text: 'TODAY’S STRAIN', value: '15.2 / 16.5', sub: 'Zone 2 base: 45 min completed', color: 'border-amber-300 text-amber-800' },
+      { text: 'ENERGY BURNED', value: '2,420 kcal', sub: 'Daily activity, made visible', color: 'border-blue-300 text-blue-800' },
     ],
   },
   {
@@ -667,19 +621,19 @@ const PANELS = [
     ],
   },
   {
-    id: 'activity',
+    id: 'biological-age',
     step: '08',
-    category: 'CARDIO STRAIN',
-    title: 'Dynamic Strain Prescription.',
-    headline: 'Cardiovascular load calibrated to today’s recovery headroom.',
+    category: 'BIOLOGICAL AGE',
+    title: 'A longer view of your health.',
+    headline: 'Understand how your daily signals shape the bigger picture.',
     description:
-      'Stop blindly chasing 10,000 steps. Fitness dynamically scales your daily cardiovascular strain budget so you accumulate progressive overload without autonomic burnout.',
-    icon: Flame,
-    badgeColor: 'text-rose-700 bg-rose-50 border-rose-200',
-    mockupComponent: ScreenActivity,
+      'Bring long-term cardiovascular, metabolic, sleep, and recovery trends together for a thoughtful estimate of biological age—not just a snapshot of today.',
+    icon: TrendingUp,
+    badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
+    mockupComponent: ScreenBiologicalAge,
     floatingBadges: [
-      { text: 'TARGET STRAIN', value: '15.2 / 16.5', sub: 'Zone 2 base: 45 min completed', color: 'border-rose-300 text-rose-800' },
-      { text: 'CALORIC EXPENDITURE', value: '2,420 kcal', sub: 'Basal 1,740 + Active 680', color: 'border-amber-300 text-amber-800' },
+      { text: 'BIOLOGICAL AGE', value: '−4.2 years', sub: 'Compared with calendar age', color: 'border-emerald-300 text-emerald-800' },
+      { text: 'LONG-TERM VIEW', value: '3 key systems', sub: 'Cardio · metabolic · recovery', color: 'border-blue-300 text-blue-800' },
     ],
   },
   {
@@ -716,68 +670,603 @@ const PANELS = [
   },
 ];
 
-/* ─────────────────────────────────────────────────────────
-   MOBILE ALTERNATING LEFT / RIGHT SCROLL REVEAL COMPONENT
-───────────────────────────────────────────────────────── */
-function MobileAlternatingCards({ panels, onOpenAuth }) {
+const FEATURE_USE_CASES = {
+  overview: 'Choose whether today is best for a demanding workout or a lighter recovery session.',
+  wearables: 'Bring overnight sleep and today’s movement together without switching between apps.',
+  sleep: 'Spot a short night early and adjust your training or bedtime before the pattern repeats.',
+  recovery: 'Use your HRV and resting-heart-rate trends to decide when to push and when to recover.',
+  activity: 'Set a realistic movement target that reflects your current recovery headroom.',
+  nutrition: 'Connect meals, hydration, and glucose patterns with how you feel and perform.',
+  biomarkers: 'Review lab markers alongside everyday wellness trends, with report ranges kept in context.',
+  'biological-age': 'See how long-term sleep, cardio, and recovery trends change your overall health picture.',
+  aicoach: 'Ask a practical training or recovery question using the context already in your connected data.',
+  dashboard: 'Start the day with sleep, recovery, activity, and nutrition signals in one place.',
+};
+
+function animateScreenGraphics(timeline, screen, position) {
+  screen.querySelectorAll('svg path[d]').forEach((path) => {
+    const length = path.getTotalLength();
+    timeline.fromTo(path,
+      { strokeDasharray: length, strokeDashoffset: length },
+      { strokeDasharray: length, strokeDashoffset: 0, duration: 0.62, ease: 'power1.out' },
+      position
+    );
+  });
+
+  screen.querySelectorAll('svg circle[stroke-dasharray]').forEach((circle) => {
+    const length = circle.getTotalLength();
+    const targetOffset = Number(circle.getAttribute('stroke-dashoffset')) || 0;
+    timeline.fromTo(circle,
+      { strokeDashoffset: length },
+      { strokeDashoffset: targetOffset, duration: 0.7, ease: 'power1.out' },
+      position
+    );
+  });
+}
+
+function animateBenefitCounters(timeline, story, position) {
+  story.querySelectorAll('.feature-benefit__value').forEach((element) => {
+    const originalText = element.textContent.trim();
+    const match = originalText.match(/^([^\d]*)([\d,]+(?:\.\d+)?)(.*)$/);
+    if (!match) return;
+    const target = Number(match[2].replace(/,/g, ''));
+    const counter = { value: 0 };
+    timeline.fromTo(counter,
+      { value: 0 },
+      {
+        value: target,
+        duration: 0.62,
+        ease: 'power1.out',
+        onUpdate: () => {
+          const formatted = Number.isInteger(target)
+            ? Math.round(counter.value).toLocaleString('en-US')
+            : counter.value.toFixed(1);
+          element.textContent = `${match[1]}${formatted}${match[3]}`;
+        },
+      },
+      position
+    );
+  });
+}
+
+const PHONE_SCREEN_CONTEXT = {
+  overview: { caption: 'READINESS TREND', detail: 'A balanced day starts with sleep, recovery, and movement in context.', path: 'M0 32 C18 29 22 12 42 19 S66 43 84 28 S112 8 132 19 S160 38 182 20 S214 12 240 8', color: '#3b82f6' },
+  wearables: { caption: 'SYNC HEALTH', detail: 'Your connected sources are organized into one readable timeline.', path: 'M0 26 C25 26 18 17 42 17 S63 22 82 22 S109 10 130 14 S159 28 180 20 S213 17 240 9', color: '#10b981' },
+  sleep: { caption: 'SLEEP QUALITY · 7 DAYS', detail: 'Sleep stages and consistency help explain how restored you feel.', path: 'M0 34 C17 32 17 18 37 22 S60 38 78 28 S98 14 118 18 S149 37 167 24 S202 16 240 7', color: '#6366f1' },
+  recovery: { caption: 'RECOVERY BASELINE', detail: 'Compare today’s recovery signals with your own recent baseline.', path: 'M0 29 C22 26 28 30 43 20 S71 13 88 21 S111 33 131 20 S161 12 180 19 S213 24 240 8', color: '#10b981' },
+  activity: { caption: 'ACTIVITY LOAD · TODAY', detail: 'Movement and strain are paced against your available headroom.', path: 'M0 34 C18 30 24 22 41 27 S59 14 77 19 S99 31 118 20 S143 9 162 17 S202 24 220 14 S232 12 240 8', color: '#f59e0b' },
+  nutrition: { caption: 'FUEL & HYDRATION', detail: 'See how meals, hydration, and energy fit into the whole day.', path: 'M0 27 C18 25 23 17 40 19 S60 29 78 26 S99 11 119 15 S141 29 160 20 S185 12 206 15 S226 17 240 8', color: '#3b82f6' },
+  biomarkers: { caption: 'MARKER HISTORY', detail: 'Review the values from uploaded reports alongside their stated ranges.', path: 'M0 29 C18 27 25 22 42 24 S65 21 81 22 S104 14 121 17 S142 21 160 16 S192 18 211 10 S230 12 240 8', color: '#10b981' },
+  'biological-age': { caption: 'LONG-TERM TREND', detail: 'Long-term patterns add context; this estimate is informational, not a diagnosis.', path: 'M0 35 C21 32 22 25 43 27 S64 31 82 23 S107 23 124 20 S150 23 169 15 S198 17 216 11 S232 13 240 6', color: '#3b82f6' },
+  aicoach: { caption: 'PERSONAL CONTEXT', detail: 'Explore your own signals with reflective, non-diagnostic guidance.', path: 'M0 30 C18 30 20 20 40 20 S61 26 80 19 S101 14 120 22 S143 29 161 20 S185 12 204 16 S226 12 240 7', color: '#6366f1' },
+  dashboard: { caption: 'CONNECTED HEALTH · 7 DAYS', detail: 'Your overview brings daily and long-term signals together.', path: 'M0 31 C18 26 23 19 42 23 S60 27 79 20 S100 12 120 17 S142 25 161 19 S183 10 203 15 S226 10 240 6', color: '#10b981' },
+};
+
+function FeaturePhoneAppScreen({ panel, ScreenComponent }) {
+  const [activeTab, setActiveTab] = useState('Today');
+  const [selectedInsight, setSelectedInsight] = useState(null);
+  const context = PHONE_SCREEN_CONTEXT[panel.id] || PHONE_SCREEN_CONTEXT.overview;
+
   return (
-    <div className="px-4 sm:px-6 pb-8 space-y-6">
-      {panels.map((panel, idx) => {
-        const ScreenComponent = panel.mockupComponent;
-        const Icon = panel.icon;
-        const isMockupRight = idx % 2 === 1;
+    <div className="feature-phone-ui">
+      <div className="feature-phone-ui__status" data-phone-reveal>
+        <span className="feature-phone-ui__brand"><Activity /> FITNESS</span>
+        <span className="feature-phone-ui__date">TUE · 9:41</span>
+        <span className="feature-phone-ui__live"><i /> LIVE</span>
+      </div>
 
-        return (
-          <div
-            id={`mobile-feature-card-${idx}`}
-            key={panel.id}
-            className="rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 flex flex-col gap-4 overflow-hidden"
+      <div className="feature-phone-ui__legacy" data-phone-reveal>
+        <ScreenComponent />
+      </div>
+
+      <section className="feature-phone-ui__trend">
+        <div className="feature-phone-ui__trend-heading" data-phone-reveal>
+          <span>{context.caption}</span>
+          <strong>THIS WEEK <ChevronRight /></strong>
+        </div>
+        <p className="feature-phone-ui__trend-description" data-phone-reveal>{context.detail}</p>
+        <svg className="feature-phone-ui__chart" data-phone-reveal viewBox="0 0 240 44" role="img" aria-label={`${context.caption} trend chart`}>
+          <path className="feature-phone-ui__chart-grid" d="M0 10H240 M0 22H240 M0 34H240" />
+          <path className="feature-phone-ui__chart-line" d={context.path} stroke={context.color} />
+          <circle cx="240" cy="8" r="3" fill={context.color} />
+        </svg>
+        <div className="feature-phone-ui__insights">
+          {panel.floatingBadges.map((item, index) => (
+            <button
+              className={`feature-phone-ui__insight ${selectedInsight === index ? 'is-selected' : ''}`}
+              data-phone-reveal
+              type="button"
+              key={item.text}
+              onClick={() => setSelectedInsight(selectedInsight === index ? null : index)}
+            >
+              <span>{item.text}</span>
+              <strong data-phone-count>{item.value}</strong>
+            </button>
+          ))}
+        </div>
+        {selectedInsight !== null && (
+          <p className="feature-phone-ui__detail" role="status">{panel.floatingBadges[selectedInsight].sub}</p>
+        )}
+      </section>
+
+      <nav className="feature-phone-ui__nav" aria-label="Fitness app navigation" data-phone-reveal>
+        {[
+          { label: 'Today', icon: Activity },
+          { label: 'Sleep', icon: Moon },
+          { label: 'Coach', icon: Bot },
+          { label: 'Health', icon: Heart },
+        ].map(({ label, icon: Icon }) => (
+          <button
+            className={activeTab === label ? 'is-active' : ''}
+            key={label}
+            type="button"
+            aria-pressed={activeTab === label}
+            onClick={() => setActiveTab(label)}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-blue-600">
-                MODULE {panel.step}
-              </span>
-              <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${panel.badgeColor}`}>
-                {panel.category}
-              </span>
-            </div>
+            <Icon />
+            <span>{label}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  );
+}
 
-            <div>
-              <h3 className="text-xl font-black text-slate-900 tracking-tight mb-1">
-                {panel.title}
-              </h3>
-              <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                {panel.headline}
-              </p>
-            </div>
+function animateScreenCounters(timeline, screen, position) {
+  screen.querySelectorAll('[data-phone-count]').forEach((element) => {
+    const originalText = element.textContent.trim();
+    const match = originalText.match(/^([^\d]*)([\d,]+(?:\.\d+)?)(.*)$/);
+    if (!match) return;
+    const target = Number(match[2].replace(/,/g, ''));
+    const counter = { value: 0 };
+    timeline.fromTo(counter,
+      { value: 0 },
+      {
+        value: target,
+        duration: 0.72,
+        ease: 'power1.out',
+        onUpdate: () => {
+          const formatted = Number.isInteger(target)
+            ? Math.round(counter.value).toLocaleString('en-US')
+            : counter.value.toFixed(1);
+          element.textContent = `${match[1]}${formatted}${match[3]}`;
+        },
+      },
+      position
+    );
+  });
+}
 
-            {/* Mockup Preview Inside Card */}
-            <div className="w-full max-w-[280px] h-[360px] mx-auto rounded-[36px] bg-slate-900 p-2 shadow-xl border-2 border-slate-300 relative overflow-hidden">
-              <div className="w-full h-full rounded-[28px] overflow-hidden bg-[#f8fafc]">
-                <ScreenComponent />
+/* ─────────────────────────────────────────────────────────
+  RESPONSIVE SCROLL-LINKED FEATURE DECK
+───────────────────────────────────────────────────────── */
+function FeatureStackCards({ panels, onOpenAuth }) {
+  const stackRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const stack = stackRef.current;
+    if (!stack) return undefined;
+
+    const media = gsap.matchMedia();
+    media.add('(max-width: 1023px) and (prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray('.feature-stack-card', stack);
+
+      cards.forEach((card, index) => {
+        const surface = card.querySelector('.feature-stack-card__surface');
+        const eyebrow = card.querySelector('.feature-stack-card__eyebrow');
+        const heading = card.querySelector('.feature-stack-card__title');
+        const supportingCopy = card.querySelectorAll(
+          '.feature-stack-card__headline, .feature-stack-card__description'
+        );
+        const action = card.querySelector('.feature-stack-card__copy > button');
+        const phone = card.querySelector('.feature-phone');
+        const screenItems = card.querySelectorAll('[data-phone-reveal]');
+        const metrics = card.querySelectorAll('.feature-metric');
+        const badges = card.querySelectorAll('.feature-float');
+
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom',
+            end: 'top top+=8%',
+            scrub: 0.7,
+            invalidateOnRefresh: true,
+            onEnter: () => setActiveIndex(index),
+            onEnterBack: () => setActiveIndex(index),
+          },
+        });
+
+        timeline.fromTo(
+          surface,
+          { y: 76, scale: 0.985, opacity: 0.84 },
+          { y: 0, scale: 1, opacity: 1, duration: 0.7, ease: 'none' },
+          0
+        );
+        timeline.fromTo(
+          eyebrow,
+          { y: 22, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.34, ease: 'power2.out' },
+          0.08
+        );
+        timeline.fromTo(
+          heading,
+          { y: 64, scale: 0.88, rotationX: 8, opacity: 0, transformOrigin: 'left bottom' },
+          { y: 0, scale: 1, rotationX: 0, opacity: 1, duration: 0.56, ease: 'power3.out' },
+          0.16
+        );
+        timeline.fromTo(
+          supportingCopy,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.42, stagger: 0.15, ease: 'power2.out' },
+          0.29
+        );
+        timeline.fromTo(
+          phone,
+          { y: 34, scale: 0.94, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 0.52, ease: 'power3.out' },
+          0.22
+        );
+        timeline.fromTo(
+          screenItems,
+          { y: 9, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.28, stagger: 0.045, ease: 'power2.out' },
+          0.34
+        );
+        animateScreenCounters(timeline, card, 0.42);
+        timeline.fromTo(
+          metrics,
+          { y: 12, scale: 0.97, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 0.34, stagger: 0.12, ease: 'power2.out' },
+          0.46
+        );
+        timeline.fromTo(
+          action,
+          { y: 34, scale: 0.78, rotation: -3, opacity: 0, transformOrigin: 'left center' },
+          { y: 0, scale: 1, rotation: 0, opacity: 1, duration: 0.42, ease: 'power3.out' },
+          0.58
+        );
+        timeline.fromTo(
+          badges,
+          {
+            x: (badgeIndex) => (badgeIndex === 0 ? -62 : 62),
+            y: 30,
+            scale: 0.72,
+            rotation: (badgeIndex) => (badgeIndex === 0 ? -6 : 6),
+            opacity: 0,
+          },
+          { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1, duration: 0.42, stagger: 0.16, ease: 'power3.out' },
+          0.46
+        );
+
+        if (index > 0) {
+          const previousCard = cards[index - 1];
+          const previousHeading = previousCard.querySelector('.feature-stack-card__title');
+          const previousCopy = previousCard.querySelectorAll(
+            '.feature-stack-card__eyebrow, .feature-stack-card__headline, .feature-stack-card__description, .feature-stack-card__metrics, .feature-stack-card__copy > button'
+          );
+          const previousPhone = previousCard.querySelector('.feature-phone');
+          const previousBadges = previousCard.querySelectorAll('.feature-float');
+
+          gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'top top+=8%',
+              scrub: 0.7,
+              invalidateOnRefresh: true,
+            },
+          })
+            .to(previousHeading, { y: -42, scale: 0.9, rotationX: -5, opacity: 0, duration: 0.56, ease: 'power2.in' }, 0.04)
+            .to(previousCopy, { y: -24, opacity: 0, duration: 0.46, stagger: 0.065, ease: 'power1.in' }, 0.12)
+            .to(previousPhone, { y: -34, scale: 0.91, opacity: 0, duration: 0.62, ease: 'power2.in' }, 0.08)
+            .to(
+              previousBadges,
+              {
+                x: (badgeIndex) => (badgeIndex === 0 ? -52 : 52),
+                y: -24,
+                scale: 0.78,
+                rotation: (badgeIndex) => (badgeIndex === 0 ? -5 : 5),
+                opacity: 0,
+                duration: 0.48,
+                stagger: 0.11,
+                ease: 'power2.in',
+              },
+              0.18
+            );
+        }
+      });
+      }, stack);
+
+      return () => ctx.revert();
+    });
+
+    return () => media.revert();
+  }, []);
+
+  return (
+    <div className="feature-deck-content">
+      <header className="feature-deck-heading">
+        <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-blue-700">
+          <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+          <span>YOUR HEALTH, IN CONTEXT</span>
+        </div>
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl">
+              One connected picture. <span className="text-blue-600">Ten ways to feel it.</span>
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-500 sm:text-base">
+              Scroll through the signals that help make every training, recovery, and health decision feel more personal.
+            </p>
+          </div>
+          <span className="shrink-0 font-mono text-xs font-bold tracking-wider text-slate-500" aria-live="polite">
+            {String(activeIndex + 1).padStart(2, '0')} <span className="text-slate-300">/ 10</span>
+          </span>
+        </div>
+      </header>
+
+      <div className="feature-stack" ref={stackRef}>
+        {panels.map((panel, idx) => {
+          const ScreenComponent = panel.mockupComponent;
+          const Icon = panel.icon;
+
+          return (
+            <article
+              className={`feature-stack-card ${idx % 2 === 0 ? 'feature-stack-card--phone-left' : 'feature-stack-card--phone-right'}`}
+              id={`feature-${panel.id}`}
+              key={panel.id}
+              style={{ '--stack-index': idx, zIndex: idx + 1 }}
+              aria-label={`${panel.step}: ${panel.category}`}
+            >
+              <div className="feature-stack-card__surface">
+                <div className="feature-stack-card__copy">
+                  <div className="feature-stack-card__eyebrow">
+                    <span className={`feature-stack-card__icon ${panel.badgeColor}`}>
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span>{panel.step} <span className="text-slate-300">/</span> {panel.category}</span>
+                  </div>
+                  <h3 className="feature-stack-card__title">{panel.title}</h3>
+                  <p className="feature-stack-card__headline">{panel.headline}</p>
+                  <p className="feature-stack-card__description">{panel.description}</p>
+
+                  <div className="feature-stack-card__metrics">
+                    {panel.floatingBadges.map((badge) => (
+                      <div className="feature-metric" key={badge.text}>
+                        <span className="feature-metric__label">{badge.text}</span>
+                        <span className="feature-metric__value">{badge.value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => onOpenAuth('signup')}
+                    type="button"
+                    className="mt-6 inline-flex w-fit items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-xs font-bold text-white shadow-md shadow-blue-600/20 transition-colors hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  >
+                    Explore Fitness <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <div className="feature-stack-card__visual">
+                  <div className="feature-phone">
+                    <div className="feature-phone__bezel" />
+                    <div className="feature-phone__screen">
+                      <div className="feature-phone__island"><span /></div>
+                      <div className="feature-phone__app"><FeaturePhoneAppScreen panel={panel} ScreenComponent={ScreenComponent} /></div>
+                      <div className="feature-phone__home"><span /></div>
+                    </div>
+                  </div>
+
+                  {panel.floatingBadges.map((badge, badgeIndex) => (
+                    <div className={`feature-float feature-float--${badgeIndex + 1}`} key={badge.text}>
+                      <span className="feature-float__label">{badge.text}</span>
+                      <strong>{badge.value}</strong>
+                      <span className="feature-float__sub">{badge.sub}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PinnedDesktopShowcase({ panels, onOpenAuth }) {
+  const stageRef = useRef(null);
+  const storyRefs = useRef([]);
+  const screenRefs = useRef([]);
+  const progressRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return undefined;
+
+    const media = gsap.matchMedia();
+    media.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+      const stories = storyRefs.current;
+      const screens = screenRefs.current;
+      gsap.set(screens, { autoAlpha: 0, scale: 0.97, y: 18 });
+
+      let lastActiveIndex = -1;
+      const stepDuration = 1;
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: stage,
+          start: 'top top',
+          end: () => `+=${(panels.length - 1) * 900}`,
+          pin: stage,
+          pinSpacing: true,
+          scrub: 0.8,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (trigger) => {
+            const index = Math.min(Math.floor(trigger.progress * (panels.length - 0.001)), panels.length - 1);
+            if (index !== lastActiveIndex) {
+              lastActiveIndex = index;
+              setActiveIndex(index);
+            }
+            if (progressRef.current) progressRef.current.style.transform = `scaleX(${trigger.progress})`;
+          },
+        },
+      });
+
+      const firstScreen = screens[0];
+      timeline.fromTo(firstScreen,
+        { autoAlpha: 0, scale: 0.95, y: 26 },
+        { autoAlpha: 1, scale: 1, y: 0, duration: 0.58, ease: 'power3.out' },
+        0.08
+      );
+      const firstScreenItems = firstScreen.querySelectorAll('[data-phone-reveal]');
+      timeline.fromTo(firstScreenItems,
+        { autoAlpha: 0, y: 14 },
+        { autoAlpha: 1, y: 0, duration: 0.28, stagger: 0.055, ease: 'power2.out' },
+        0.2
+      );
+      animateScreenGraphics(timeline, firstScreen, 0.24);
+      animateScreenCounters(timeline, firstScreen, 0.26);
+      animateBenefitCounters(timeline, stories[0], 0.28);
+
+      for (let index = 1; index < panels.length; index += 1) {
+        const position = (index - 1) * stepDuration;
+        const nextStory = stories[index];
+        const previousScreen = screens[index - 1];
+        const nextScreen = screens[index];
+        const screenItems = nextScreen.querySelectorAll('[data-phone-reveal]');
+
+        timeline.to(previousScreen, {
+          autoAlpha: 0,
+          scale: 0.96,
+          y: -10,
+          duration: 0.3,
+          ease: 'power2.inOut',
+        }, position + 0.08);
+        timeline.fromTo(nextScreen,
+          { autoAlpha: 0, scale: 1.035, y: 22 },
+          { autoAlpha: 1, scale: 1, y: 0, duration: 0.42, ease: 'power3.out' },
+          position + 0.2
+        );
+        timeline.fromTo(screenItems,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.28, stagger: 0.055, ease: 'power2.out' },
+          position + 0.34
+        );
+
+        // Draw chart traces and progress rings as each app screen arrives.
+        animateScreenGraphics(timeline, nextScreen, position + 0.36);
+        animateScreenCounters(timeline, nextScreen, position + 0.38);
+        animateBenefitCounters(timeline, nextStory, position + 0.38);
+      }
+      }, stage);
+
+      return () => ctx.revert();
+    });
+
+    return () => media.revert();
+  }, [panels]);
+
+  return (
+    <div className="feature-pinned-showcase">
+      <header className="feature-pinned-intro">
+        <span className="feature-pinned-kicker"><Sparkles className="h-4 w-4" /> HEALTH, CONNECTED</span>
+        <h2>One health picture. <span>Ten dimensions.</span></h2>
+        <p>Move through your day with the signals that help you understand what your body needs.</p>
+      </header>
+
+      <div className="feature-pinned-stage" ref={stageRef}>
+        <div className="feature-pinned-status">
+          <span className="feature-pinned-live"><i /> FITNESS INTELLIGENCE</span>
+          <span className="feature-pinned-count">{String(activeIndex + 1).padStart(2, '0')} <em>/ {panels.length}</em></span>
+        </div>
+        <div className="feature-pinned-progress"><span ref={progressRef} /></div>
+
+        <div className="feature-pinned-layout">
+          {panels.map((panel, index) => {
+            const Icon = panel.icon;
+            return (
+              <article
+                className={`feature-pinned-story ${activeIndex === index ? 'is-active' : ''}`}
+                key={panel.id}
+                ref={(element) => { storyRefs.current[index] = element; }}
+                aria-label={`${panel.title}: ${panel.headline}`}
+                aria-hidden={activeIndex !== index}
+              >
+                <div className="feature-pinned-story__panel feature-pinned-story__panel--left">
+                  <div className="feature-pinned-story__eyebrow">
+                    <span className={`feature-pinned-story__icon ${panel.badgeColor}`}><Icon className="h-4 w-4" /></span>
+                    <span>{panel.step} <b>/</b> {panel.category}</span>
+                  </div>
+                  <h3 className="feature-pinned-story__title">{panel.title}</h3>
+                  <p className="feature-pinned-story__definition">{panel.headline}</p>
+                </div>
+
+                <div className="feature-pinned-story__panel feature-pinned-story__panel--right">
+                  <p className="feature-pinned-story__description">{panel.description}</p>
+                  <div className="feature-pinned-benefits">
+                    {panel.floatingBadges.map((benefit) => (
+                      <div className="feature-pinned-benefit" key={benefit.text}>
+                        <span>{benefit.text}</span>
+                        <strong className="feature-benefit__value">{benefit.value}</strong>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="feature-pinned-usecase">
+                    <span>IN PRACTICE</span>
+                    <p>{FEATURE_USE_CASES[panel.id]}</p>
+                  </div>
+                  <button className="feature-pinned-cta" type="button" onClick={() => onOpenAuth('signup')}>
+                    Explore Fitness <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+
+          <div className="feature-center-phone" aria-label="Fitness mobile app preview">
+            <div className="feature-phone">
+              <div className="feature-phone__bezel" />
+              <div className="feature-phone__screen">
+                <div className="feature-phone__island"><span /></div>
+                <div className="feature-phone__app">
+                  {panels.map((panel, index) => {
+                    const ScreenComponent = panel.mockupComponent;
+                    return (
+                      <div
+                        className={`feature-pinned-screen ${activeIndex === index ? 'is-active' : ''}`}
+                        key={panel.id}
+                        ref={(element) => { screenRefs.current[index] = element; }}
+                        aria-hidden={activeIndex !== index}
+                      >
+                        <FeaturePhoneAppScreen panel={panel} ScreenComponent={ScreenComponent} />
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="feature-phone__home"><span /></div>
               </div>
             </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-              <span className="text-[10px] font-mono text-slate-400">Position: {isMockupRight ? 'Right Frame' : 'Left Frame'}</span>
-              <button
-                onClick={() => onOpenAuth('signup')}
-                type="button"
-                className="text-blue-600 font-bold flex items-center gap-1 hover:text-blue-700"
-              >
-                <span>Learn more</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
           </div>
-        );
-      })}
+        </div>
+
+        <div className="feature-pinned-footer">
+          <span>SCROLL TO EXPLORE</span>
+          <div>{panels.map((panel, index) => <i className={activeIndex === index ? 'is-active' : ''} key={panel.id} />)}</div>
+          <span>{String(panels.length).padStart(2, '0')} FEATURES</span>
+        </div>
+      </div>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────
-   MAIN PINNED SHOWCASE WITH ALTERNATING MOCKUP & NAVIGATION
+  MAIN STACKED FEATURE SHOWCASE
 ───────────────────────────────────────────────────────── */
 export default function PinnedShowcase({ onOpenAuth }) {
   const containerRef = useRef(null);
@@ -809,7 +1298,9 @@ export default function PinnedShowcase({ onOpenAuth }) {
 
     const container = containerRef.current;
     const pinTarget = pinTargetRef.current;
-    if (!container || !pinTarget) return () => window.removeEventListener('resize', checkWidth);
+    if (!container || !pinTarget || pinTarget.offsetParent === null) {
+      return () => window.removeEventListener('resize', checkWidth);
+    }
 
     const ctx = gsap.context(() => {
       // Offset from center for the phone: 
@@ -1037,7 +1528,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
       className="relative w-full bg-slate-50/40 text-slate-900 border-y border-slate-200/80"
     >
       {/* ── DESKTOP INTRO HEADER (Moved upwards before pinning so it scrolls naturally) ── */}
-      <div className="hidden lg:block max-w-7xl mx-auto px-8 lg:px-12 pt-28 pb-14 text-center">
+      <div className="hidden max-w-7xl mx-auto px-8 lg:px-12 pt-28 pb-14 text-center">
         <div className="inline-flex items-center gap-2 text-blue-700 text-xs font-mono font-bold uppercase tracking-widest mb-3 px-3.5 py-1.5 bg-blue-50 rounded-full border border-blue-200/80 shadow-xs">
           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>02 · THE PINNED SHOWCASE</span>
@@ -1053,7 +1544,7 @@ export default function PinnedShowcase({ onOpenAuth }) {
       {/* ── DESKTOP PINNED VIEWPORT (1024px+) — Full screen mobile view ── */}
       <div 
         ref={pinTargetRef}
-        className="hidden lg:flex flex-col justify-between h-screen w-full max-w-7xl mx-auto px-8 lg:px-12 pt-20 pb-6 relative z-10 select-none"
+        className="hidden"
       >
         {/* Sleek Top Status Bar — flips sides based on phone position */}
         <div className={`flex items-center pb-3 border-b border-slate-200/60 shrink-0 transition-all duration-300 ${
@@ -1242,24 +1733,15 @@ export default function PinnedShowcase({ onOpenAuth }) {
         </div>
       </div>
 
-      {/* ── TABLET & MOBILE: ALTERNATING CARDS ── */}
-      <div className="lg:hidden relative overflow-hidden">
-        {/* Section Header */}
-        <div className="text-center px-4 pt-12 pb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
-            <Zap className="w-3.5 h-3.5" />
-            <span>PRODUCT SHOWCASE</span>
-          </div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Unified Health in <span className="text-blue-600">Ten Dimensions</span>
-          </h2>
-          <p className="text-xs text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed">
-            Scroll to scrub through every dimension with alternating telemetry views.
-          </p>
+      {/* Responsive feature-card deck */}
+      <div className="relative">
+        <div className="hidden lg:block">
+          <PinnedDesktopShowcase panels={PANELS} onOpenAuth={onOpenAuth} />
         </div>
 
-        {/* Alternating Cards for Mobile */}
-        <MobileAlternatingCards panels={PANELS} onOpenAuth={onOpenAuth} />
+        <div className="lg:hidden">
+          <FeatureStackCards panels={PANELS} onOpenAuth={onOpenAuth} />
+        </div>
 
         {/* Bottom CTA strip */}
         <div className="px-6 pb-12 pt-4 text-center">

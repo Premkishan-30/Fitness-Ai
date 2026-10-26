@@ -70,7 +70,7 @@ export default function Navbar({ onOpenAuth }) {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className="px-3 py-1 text-xs lg:text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-white rounded-full transition-all duration-200"
+                className="site-nav-link px-3 py-1 text-xs lg:text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-white rounded-full transition-all duration-200"
               >
                 {link.name}
               </a>

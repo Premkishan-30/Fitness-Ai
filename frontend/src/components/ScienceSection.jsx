@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,20 +19,35 @@ export default function ScienceSection() {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.science-stat-card',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          },
-        }
+      const timeline = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+      });
+      timeline.fromTo('.science-stat-card',
+        { clipPath: 'inset(0 0 100% 0 round 18px)', y: 24, rotateX: 8, opacity: 0 },
+        { clipPath: 'inset(0 0 0% 0 round 18px)', y: 0, rotateX: 0, opacity: 1, duration: 0.72, stagger: 0.13, ease: 'power3.out' }
       );
+      timeline.fromTo('.science-pillar-card',
+        { x: -22, opacity: 0, scale: 0.97 },
+        { x: 0, opacity: 1, scale: 1, duration: 0.58, stagger: 0.14, ease: 'power2.out' },
+        '-=0.16'
+      );
+
+      gsap.utils.toArray('.science-stat-value').forEach((element) => {
+        const match = element.textContent.trim().match(/^([^\d]*)([\d,]+(?:\.\d+)?)(.*)$/);
+        if (!match) return;
+        const target = Number(match[2].replace(/,/g, ''));
+        const count = { value: 0 };
+        gsap.fromTo(count, { value: 0 }, {
+          value: target,
+          duration: 1.05,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: element, start: 'top 86%' },
+          onUpdate: () => {
+            const value = Number.isInteger(target) ? Math.round(count.value).toLocaleString('en-US') : count.value.toFixed(1);
+            element.textContent = `${match[1]}${value}${match[3]}`;
+          },
+        });
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -105,9 +121,11 @@ export default function ScienceSection() {
           {stats.map((stat, idx) => (
             <div
               key={idx}
+              onPointerMove={tiltOnPointerMove}
+              onPointerLeave={resetPointerTilt}
               className="science-stat-card p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-300"
             >
-              <div className="text-4xl sm:text-5xl font-black text-blue-600 font-mono tracking-tight mb-2">
+              <div className="science-stat-value text-4xl sm:text-5xl font-black text-blue-600 font-mono tracking-tight mb-2">
                 {stat.value}
               </div>
               <h3 className="text-sm font-bold text-slate-900 mb-2">{stat.label}</h3>
@@ -121,7 +139,9 @@ export default function ScienceSection() {
           {pillars.map((pillar, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-300"
+              onPointerMove={tiltOnPointerMove}
+              onPointerLeave={resetPointerTilt}
+              className="science-pillar-card p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-300"
             >
               <span className="text-[10px] font-mono font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full uppercase tracking-wider mb-3 inline-block">
                 {pillar.tag}

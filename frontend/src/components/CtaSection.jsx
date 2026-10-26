@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { 
   ArrowRight, 
   Sparkles, 
@@ -7,10 +7,35 @@ import {
   Activity, 
   Lock
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function CtaSection({ onOpenAuth }) {
+  const sectionRef = useRef(null);
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const ctx = gsap.context(() => {
+      const entrance = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 78%' },
+      });
+      entrance.fromTo('.cta-heading',
+        { clipPath: 'inset(0 0 100% 0)', y: 24, opacity: 0 },
+        { clipPath: 'inset(0 0 0% 0)', y: 0, opacity: 1, duration: 0.76, ease: 'power3.out' }
+      );
+      entrance.fromTo('.cta-reveal',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.52, stagger: 0.12, ease: 'power2.out' },
+        '-=0.32'
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,16 +44,16 @@ export default function CtaSection({ onOpenAuth }) {
   };
 
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden bg-gradient-to-b from-white via-blue-50/40 to-blue-50/70 border-b border-slate-200">
+    <section ref={sectionRef} className="py-20 md:py-32 relative overflow-hidden bg-gradient-to-b from-white via-blue-50/40 to-blue-50/70 border-b border-slate-200">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-semibold mb-6 shadow-sm">
+        <div className="cta-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-semibold mb-6 shadow-sm">
           <Sparkles className="w-4 h-4 text-blue-600" />
           <span>JOIN THE CONNECTED HEALTH PLATFORM</span>
         </div>
 
         {/* Large Headline */}
-        <h2 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
+        <h2 className="cta-heading text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
           Your health is too important for{' '}
           <span className="text-blue-600 block sm:inline">
             fragmented data.
@@ -36,7 +61,7 @@ export default function CtaSection({ onOpenAuth }) {
         </h2>
 
         {/* Supporting Message */}
-        <p className="text-base sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+        <p className="cta-reveal text-base sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
           Connect your wearables, synchronize your lab biomarkers, and let the Fitness AI
           orchestrate your daily sleep, recovery, and training in one connected picture.
         </p>
@@ -54,7 +79,7 @@ export default function CtaSection({ onOpenAuth }) {
             </p>
           </div>
         ) : (
-          <div className="max-w-md mx-auto">
+          <div className="cta-reveal cta-tilt-surface max-w-md mx-auto" onPointerMove={tiltOnPointerMove} onPointerLeave={resetPointerTilt}>
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2.5">
               <input
                 type="email"
@@ -87,7 +112,7 @@ export default function CtaSection({ onOpenAuth }) {
         )}
 
         {/* Guarantees */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 mt-12 pt-8 border-t border-slate-200">
+        <div className="cta-reveal flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 mt-12 pt-8 border-t border-slate-200">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>14-day risk-free evaluation</span>

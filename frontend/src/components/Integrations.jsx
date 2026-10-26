@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,16 +81,30 @@ export default function Integrations({ onOpenAuth }) {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.integration-card',
-        { opacity: 0, y: 25 },
+        { opacity: 0, y: 38, rotateX: 12, scale: 0.94, transformOrigin: 'center bottom' },
         {
           opacity: 1,
           y: 0,
-          duration: 0.55,
-          stagger: 0.08,
+          rotateX: 0,
+          scale: 1,
+          duration: 0.72,
+          stagger: 0.1,
+          ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 75%',
           },
+        }
+      );
+      gsap.fromTo('.integration-stream__beam',
+        { scaleX: 0, opacity: 0.3 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.85,
+          stagger: 0.12,
+          ease: 'power2.inOut',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 72%' },
         }
       );
     }, sectionRef);
@@ -155,11 +170,22 @@ export default function Integrations({ onOpenAuth }) {
           </button>
         </div>
 
+        <div className="integration-stream" aria-hidden="true">
+          <i className="integration-stream__node" />
+          <span className="integration-stream__beam" />
+          <i className="integration-stream__node" />
+          <span className="integration-stream__beam integration-stream__beam--second" />
+          <i className="integration-stream__node integration-stream__node--hub"><Zap /></i>
+          <span>DEVICE SIGNALS · FITNESS INTELLIGENCE</span>
+        </div>
+
         {/* Integration Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
           {integrations.map((item) => (
             <div
               key={item.name}
+              onPointerMove={tiltOnPointerMove}
+              onPointerLeave={resetPointerTilt}
               className={`integration-card p-5 rounded-2xl bg-white border transition-all duration-300 relative group shadow-sm hover:shadow-md ${
                 item.highlight
                   ? 'border-blue-300 hover:border-blue-500'

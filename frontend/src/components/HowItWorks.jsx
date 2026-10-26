@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,19 +21,21 @@ export default function HowItWorks({ onOpenAuth }) {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.step-card',
-        { opacity: 0, y: 35 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          },
-        }
+      const reveal = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+      });
+      reveal.fromTo('.steps-connector',
+        { scaleX: 0, transformOrigin: 'left center' },
+        { scaleX: 1, duration: 0.9, ease: 'power2.inOut' },
+        0
+      );
+      reveal.fromTo('.step-card',
+        { clipPath: 'inset(0 0 100% 0 round 24px)', opacity: 0, y: 30, rotateY: 7, scale: 0.96 },
+        { clipPath: 'inset(0 0 0% 0 round 24px)', opacity: 1, y: 0, rotateY: 0, scale: 1, duration: 0.8, stagger: 0.16, ease: 'power3.out' },
+        0.12
       );
     }, sectionRef);
 
@@ -106,7 +109,7 @@ export default function HowItWorks({ onOpenAuth }) {
 
         {/* 3 Step Connected Cards */}
         <div className="relative">
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -translate-y-12 z-0" />
+          <div className="steps-connector hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -translate-y-12 z-0" />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
             {steps.map((item) => {
@@ -114,6 +117,8 @@ export default function HowItWorks({ onOpenAuth }) {
               return (
                 <div
                   key={item.step}
+                  onPointerMove={tiltOnPointerMove}
+                  onPointerLeave={resetPointerTilt}
                   className="step-card p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/90 hover:border-blue-400 hover:shadow-md transition-all duration-300 flex flex-col justify-between group shadow-sm"
                 >
                   <div>

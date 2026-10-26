@@ -1,213 +1,258 @@
 import { useRef, useEffect, useState } from 'react';
+import {
+  Activity,
+  Bot,
+  BookOpen,
+  Calendar,
+  Dumbbell,
+  FileText,
+  HeartPulse,
+  Sparkles,
+  Utensils,
+  UserRound,
+  Watch,
+} from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 9 Isolated Silos matching the Fragmented Health problem
-const FRAGMENTED_CARDS = [
+const HEALTH_SOURCES = [
   {
-    id: 'wearable',
-    category: 'WEARABLE',
-    dotColor: 'bg-blue-500',
-    headline: 'Knows your sleep. Not your food.',
-    sub: 'Tracks recovery without context of dietary fuel or inflammation.',
-    scatter: { rotate: -4.2, x: -14, y: -10 },
+    id: 'wearables',
+    name: 'Wearables',
+    category: 'SENSORS',
+    icon: Watch,
+    x: 50,
+    y: 9,
+    measures: 'Sleep, heart rate, HRV, and daily movement.',
+    contributes: 'Adds an ongoing view of activity and recovery patterns.',
   },
   {
     id: 'calorie',
-    category: 'CALORIE TRACKER',
-    dotColor: 'bg-amber-500',
-    headline: 'Counts calories. Guesses at meals.',
-    sub: 'Manual estimate silos disconnected from sleep architecture.',
-    scatter: { rotate: 3.2, x: 10, y: 12 },
+    name: 'Calorie tracking',
+    category: 'FOOD LOG',
+    icon: Utensils,
+    x: 76,
+    y: 16,
+    measures: 'Meals, portions, energy, and estimated macros.',
+    contributes: 'Connects meal timing and food choices with daily routines.',
   },
   {
     id: 'nutritionist',
-    category: 'NUTRITIONIST',
-    dotColor: 'bg-emerald-600',
-    headline: 'Writes a plan. Never sees your sleep.',
-    sub: 'Prescribes macros in a vacuum unaware of nightly HRV or cortisol dips.',
-    scatter: { rotate: -3.5, x: 16, y: -8 },
+    name: 'Nutritionists',
+    category: 'EXPERT NOTES',
+    icon: UserRound,
+    x: 89,
+    y: 40,
+    measures: 'Plans, preferences, and notes you choose to share.',
+    contributes: 'Keeps nutrition guidance alongside your broader health context.',
   },
   {
     id: 'trainer',
-    category: 'TRAINER',
-    dotColor: 'bg-orange-500',
-    headline: "Programs Monday. Can't see Sunday night.",
-    sub: 'Demands max effort when your central nervous system is depleted.',
-    scatter: { rotate: 4.0, x: -18, y: 10 },
+    name: 'Trainers',
+    category: 'COACHING',
+    icon: Dumbbell,
+    x: 84,
+    y: 72,
+    measures: 'Training plans, session goals, and coaching notes.',
+    contributes: 'Adds the intent behind a workout to activity trends.',
   },
   {
     id: 'lab',
-    category: 'LAB REPORT',
-    dotColor: 'bg-indigo-500',
-    headline: 'A PDF from January, unread since January.',
-    sub: 'Critical biomarker blood metrics locked in an unindexed email attachment.',
-    scatter: { rotate: -2.2, x: 8, y: -12 },
+    name: 'Lab reports',
+    category: 'HEALTH RECORDS',
+    icon: FileText,
+    x: 62,
+    y: 90,
+    measures: 'Values and reference ranges from reports you upload.',
+    contributes: 'Makes report results easier to review over time; it does not diagnose.',
   },
   {
     id: 'cycle',
-    category: 'CYCLE TRACKER',
-    dotColor: 'bg-purple-500',
-    headline: 'Predicts your phase. Tells your trainer nothing.',
-    sub: 'Hormonal fluctuations hidden from strength programming algorithms.',
-    scatter: { rotate: 4.4, x: 14, y: 14 },
+    name: 'Cycle tracking',
+    category: 'OPTIONAL CONTEXT',
+    icon: Calendar,
+    x: 38,
+    y: 90,
+    measures: 'Cycle dates, phase estimates, and symptoms you record.',
+    contributes: 'Adds optional personal context to your own health journal.',
   },
   {
     id: 'journal',
-    category: 'HEALTH JOURNAL',
-    dotColor: 'bg-teal-500',
-    headline: 'Notes everything. Connects nothing.',
-    sub: 'Subjective notes with zero automated cross-correlation to biometric trends.',
-    scatter: { rotate: -4.0, x: -12, y: 8 },
+    name: 'Health journals',
+    category: 'PERSONAL NOTES',
+    icon: BookOpen,
+    x: 16,
+    y: 72,
+    measures: 'Energy, mood, symptoms, and notes you enter.',
+    contributes: 'Provides subjective context for patterns you want to explore.',
   },
   {
     id: 'workout',
-    category: 'WORKOUT APP',
-    dotColor: 'bg-rose-500',
-    headline: 'Counts your reps. Not your recovery.',
-    sub: 'Pushes volume milestones while recovery indices are plummeting.',
-    scatter: { rotate: 2.8, x: 12, y: -14 },
+    name: 'Workout apps',
+    category: 'ACTIVITY',
+    icon: Activity,
+    x: 11,
+    y: 40,
+    measures: 'Sessions, duration, exercise, and effort you record.',
+    contributes: 'Places training activity beside rest and recovery trends.',
   },
   {
     id: 'chatbot',
-    category: 'AI CHATBOT',
-    dotColor: 'bg-blue-600',
-    headline: 'Smart about everything. Blind to you.',
-    sub: 'Generic wellness advice with zero access to your actual telemetry history.',
-    scatter: { rotate: -2.8, x: -8, y: 10 },
+    name: 'AI chatbots',
+    category: 'USER-SHARED',
+    icon: Bot,
+    x: 24,
+    y: 16,
+    measures: 'Health conversations or guidance notes you choose to add.',
+    contributes: 'Keeps shared advice with your information without claiming a live integration.',
   },
 ];
 
 export default function FragmentedProblem() {
   const sectionRef = useRef(null);
-  const pinContainerRef = useRef(null);
-  const cardsRef = useRef([]);
-  const [isArranged, setIsArranged] = useState(false);
+  const networkRef = useRef(null);
+  const [activeSourceId, setActiveSourceId] = useState(HEALTH_SOURCES[0].id);
+  const activeSource = HEALTH_SOURCES.find((source) => source.id === activeSourceId) || HEALTH_SOURCES[0];
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    const network = networkRef.current;
+    if (prefersReducedMotion || !network) return undefined;
 
     const ctx = gsap.context(() => {
-      // Set initial scattered positions
-      cardsRef.current.forEach((el, index) => {
-        if (!el) return;
-        const config = FRAGMENTED_CARDS[index].scatter;
-        gsap.set(el, {
-          rotation: config.rotate,
-          x: config.x,
-          y: config.y,
-          transformOrigin: 'center center',
+      const nodes = gsap.utils.toArray('.health-network-node', network);
+      const lines = gsap.utils.toArray('.health-network-line', network);
+
+      gsap.fromTo(nodes,
+        { autoAlpha: 0, y: 24, scale: 0.94 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.055,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: network,
+            start: 'top 78%',
+            end: 'center 42%',
+            scrub: 0.75,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
+      gsap.fromTo(lines,
+        { autoAlpha: 0.08, strokeDashoffset: 48 },
+        {
+          autoAlpha: 0.76,
+          strokeDashoffset: 0,
+          stagger: 0.045,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: network,
+            start: 'top 76%',
+            end: 'center 38%',
+            scrub: 0.9,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
+      HEALTH_SOURCES.forEach((source, index) => {
+        const node = nodes[index];
+        if (!node) return;
+        ScrollTrigger.create({
+          trigger: node,
+          start: 'top 64%',
+          end: 'bottom 36%',
+          onEnter: () => setActiveSourceId(source.id),
+          onEnterBack: () => setActiveSourceId(source.id),
         });
       });
-
-      // Pin the section while scrolling: first scattered -> then neatly arranged
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=900',
-          pin: pinContainerRef.current,
-          pinSpacing: true,
-          scrub: 0.8,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            setIsArranged(self.progress > 0.45);
-          },
-        },
-      });
-
-      // Phase 1: Straighten and arrange all 9 cards into a pristine systematic grid
-      tl.to(cardsRef.current, {
-        rotation: 0,
-        x: 0,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.03,
-        ease: 'power2.inOut',
-      }, 0);
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Quick manual toggle for user to test transition
-  const toggleArrangement = () => {
-    const nextArranged = !isArranged;
-    setIsArranged(nextArranged);
-    cardsRef.current.forEach((el, index) => {
-      if (!el) return;
-      if (nextArranged) {
-        gsap.to(el, { rotation: 0, x: 0, y: 0, duration: 0.6, ease: 'power2.out' });
-      } else {
-        const config = FRAGMENTED_CARDS[index].scatter;
-        gsap.to(el, { rotation: config.rotate, x: config.x, y: config.y, duration: 0.6, ease: 'power2.out' });
-      }
-    });
-  };
-
   return (
     <section
       id="platform"
       ref={sectionRef}
-      className="relative w-full bg-slate-50/70 text-slate-900 border-b border-slate-200/80 overflow-hidden"
+      className="health-network-section relative w-full border-b border-slate-200/80 bg-slate-50/70 text-slate-900"
     >
-      <div 
-        ref={pinContainerRef}
-        className="w-full min-h-screen flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative select-none"
-      >
-        {/* Section Header matching Figma Design */}
-        <div className="text-left mb-8 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3 shadow-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-            <span>THE FRAGMENTED HEALTH PROBLEM</span>
+      <div className="health-network-content">
+        <header className="health-network-heading">
+          <span className="health-network-kicker"><HeartPulse className="h-4 w-4" /> THE FRAGMENTED HEALTH PROBLEM</span>
+          <h2>Right now, your health lives in <span>nine places that don’t talk to each other.</span></h2>
+          <p>Each source sees one part of you. Fitness connects the signals so your health makes more sense together.</p>
+        </header>
+
+        <div className="health-network-orbit" ref={networkRef}>
+          <svg className="health-network-lines" viewBox="0 0 1000 680" preserveAspectRatio="none" aria-hidden="true">
+            {HEALTH_SOURCES.map((source) => {
+              const x = source.x * 10;
+              const y = source.y * 6.8;
+              const curve = source.x < 50 ? -28 : 28;
+              const controlX = 500 + ((x - 500) / 2) + curve;
+              const controlY = 340 + ((y - 340) / 2);
+              return (
+                <path
+                  className={`health-network-line ${activeSourceId === source.id ? 'is-active' : ''}`}
+                  d={`M 500 340 Q ${controlX} ${controlY} ${x} ${y}`}
+                  key={source.id}
+                />
+              );
+            })}
+          </svg>
+
+          <div className="health-network-hub" aria-label="Fitness intelligence hub">
+            <div className="health-network-hub__orbit health-network-hub__orbit--outer" />
+            <div className="health-network-hub__orbit health-network-hub__orbit--inner" />
+            <span className="health-network-hub__icon"><Sparkles className="h-6 w-6" /></span>
+            <strong>FITNESS</strong>
+            <small>HEALTH INTELLIGENCE</small>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Right now, your health lives in nine places that{' '}
-            <span className="text-blue-600">don't talk to each other.</span>
-          </h2>
 
-          <div className="flex items-center gap-4 mt-4">
-            <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
-              <span className={`w-2 h-2 rounded-full transition-colors duration-300 ${isArranged ? 'bg-blue-600' : 'bg-amber-500'}`} />
-              {isArranged ? 'Arranged systematically into 1 unified system' : 'Scattered across 9 disjointed silos — scroll down to organize'}
-            </span>
-
-            <button
-              onClick={toggleArrangement}
-              type="button"
-              className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-700 bg-white hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 border border-slate-200 px-3.5 py-1 rounded-full shadow-xs transition-all"
-            >
-              <span>{isArranged ? 'Preview Scattered State' : 'Preview Systematic Grid'}</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 3x3 Cards Grid matching Figma Light Theme: First Scattered, then Arranged Systematically */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 my-auto relative z-10">
-          {FRAGMENTED_CARDS.map((card, idx) => (
-            <div
-              key={card.id}
-              ref={(el) => (cardsRef.current[idx] = el)}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all duration-300 relative will-change-transform group"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className={`w-2.5 h-2.5 rounded-full ${card.dotColor}`} />
-                <span className="text-[11px] font-mono font-bold tracking-widest text-slate-400 uppercase">
-                  {card.category}
+          {HEALTH_SOURCES.map((source, index) => {
+            const Icon = source.icon;
+            const isActive = activeSourceId === source.id;
+            return (
+              <button
+                className={`health-network-node ${isActive ? 'is-active' : ''}`}
+                key={source.id}
+                type="button"
+                style={{ '--node-x': `${source.x}%`, '--node-y': `${source.y}%`, '--node-order': index }}
+                aria-pressed={isActive}
+                onMouseEnter={() => setActiveSourceId(source.id)}
+                onFocus={() => setActiveSourceId(source.id)}
+                onClick={() => setActiveSourceId(source.id)}
+              >
+                <span className="health-network-node__icon"><Icon className="h-4 w-4" /></span>
+                <span className="health-network-node__copy">
+                  <small>{source.category}</small>
+                  <strong>{source.name}</strong>
                 </span>
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug mb-1.5 group-hover:text-blue-600 transition-colors">
-                {card.headline}
-              </h3>
-              <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                {card.sub}
-              </p>
-            </div>
-          ))}
+                <span className="health-network-node__dot" />
+              </button>
+            );
+          })}
         </div>
+
+        <aside className="health-network-insight" aria-live="polite">
+          <div className="health-network-insight__source">
+            <span>CONNECTED SOURCE</span>
+            <strong>{activeSource.name}</strong>
+          </div>
+          <p><b>Measures</b>{activeSource.measures}</p>
+          <p><b>Contributes</b>{activeSource.contributes}</p>
+        </aside>
+
+        <p className="health-network-conclusion">
+          <span>ONE CONNECTED PICTURE</span>
+          Fitness brings your health information together—so the whole story is easier to see.
+        </p>
       </div>
     </section>
   );

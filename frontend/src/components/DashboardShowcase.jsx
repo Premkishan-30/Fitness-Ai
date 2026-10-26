@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,19 +64,27 @@ export default function DashboardShowcase({ onOpenAuth }) {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.dashboard-card',
-        { opacity: 0, y: 25 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          },
-        }
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+          once: true,
+        },
+      });
+
+      timeline.fromTo('.dashboard-card',
+        { autoAlpha: 0, y: 34, rotateX: 9, scale: 0.96, transformOrigin: 'center bottom' },
+        { autoAlpha: 1, y: 0, rotateX: 0, scale: 1, duration: 0.72, stagger: 0.11, ease: 'power3.out' }
+      );
+      timeline.fromTo('.dashboard-progress-fill',
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.7, stagger: 0.07, ease: 'power2.out', transformOrigin: 'left center' },
+        0.2
+      );
+      timeline.fromTo('.dashboard-chart-bar',
+        { scaleY: 0, autoAlpha: 0.55 },
+        { scaleY: 1, autoAlpha: 1, duration: 0.62, stagger: 0.055, ease: 'power3.out', transformOrigin: 'center bottom' },
+        0.32
       );
     }, sectionRef);
 
@@ -154,7 +163,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
           {/* Core Metrics Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
             {/* 1. Recovery Score */}
-            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-emerald-300 transition-all">
+            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-emerald-300 transition-all" onPointerMove={tiltOnPointerMove} onPointerLeave={resetPointerTilt}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                   Recovery Score
@@ -171,7 +180,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
                 </span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-2">
-                <div className="bg-emerald-500 h-full w-[94%]" />
+                <div className="dashboard-progress-fill bg-emerald-500 h-full w-[94%]" />
               </div>
               <p className="text-[11px] text-slate-500 font-medium">
                 Parasympathetic dominant. Prime CNS capacity for maximal training stimulus.
@@ -179,7 +188,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
             </div>
 
             {/* 2. Sleep Score & Duration */}
-            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-indigo-300 transition-all">
+            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-indigo-300 transition-all" onPointerMove={tiltOnPointerMove} onPointerLeave={resetPointerTilt}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                   Sleep Architecture
@@ -206,7 +215,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
             </div>
 
             {/* 3. HRV & Resting Heart Rate */}
-            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-blue-300 transition-all">
+            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-blue-300 transition-all" onPointerMove={tiltOnPointerMove} onPointerLeave={resetPointerTilt}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                   HRV & Resting HR
@@ -226,7 +235,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
                 </div>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-2">
-                <div className="bg-blue-600 h-full w-[86%]" />
+                <div className="dashboard-progress-fill bg-blue-600 h-full w-[86%]" />
               </div>
               <p className="text-[11px] text-slate-500 font-medium">
                 Autonomic balance indicates negligible systemic inflammation.
@@ -234,7 +243,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
             </div>
 
             {/* 4. Activity & Strain */}
-            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-amber-300 transition-all">
+            <div className="dashboard-card p-5 rounded-2xl bg-white border border-slate-200 shadow-sm relative group hover:border-amber-300 transition-all" onPointerMove={tiltOnPointerMove} onPointerLeave={resetPointerTilt}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                   Dynamic Strain
@@ -251,7 +260,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
                 </span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-2">
-                <div className="bg-amber-500 h-full w-[72%]" />
+                <div className="dashboard-progress-fill bg-amber-500 h-full w-[72%]" />
               </div>
               <p className="text-[11px] text-slate-500 font-medium">
                 Target strain budget: 14.0 - 16.5 based on 94% recovery.
@@ -317,7 +326,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
                       <div className="flex items-end gap-1.5 h-36">
                         <div
                           style={{ height: `${recoveryHeight}%` }}
-                          className={`w-3.5 sm:w-5 rounded-t-md transition-all duration-500 ${
+                          className={`dashboard-chart-bar w-3.5 sm:w-5 rounded-t-md transition-all duration-500 ${
                             isSelected
                               ? 'bg-emerald-500 shadow-sm'
                               : 'bg-emerald-200 group-hover:bg-emerald-300'
@@ -325,7 +334,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
                         />
                         <div
                           style={{ height: `${strainHeight}%` }}
-                          className={`w-3.5 sm:w-5 rounded-t-md transition-all duration-500 ${
+                          className={`dashboard-chart-bar w-3.5 sm:w-5 rounded-t-md transition-all duration-500 ${
                             isSelected
                               ? 'bg-amber-500 shadow-sm'
                               : 'bg-amber-200 group-hover:bg-amber-300'
@@ -459,7 +468,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
                 <span className="text-xs font-mono text-blue-600 font-bold">2.8L / 3.2L</span>
               </div>
               <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-2">
-                <div className="bg-blue-600 h-full w-[87%]" />
+                <div className="dashboard-progress-fill bg-blue-600 h-full w-[87%]" />
               </div>
               <p className="text-[11px] text-slate-500">
                 Remaining 400ml water + 300mg sodium recommended before 8:00 PM based on 45m sweat loss.
