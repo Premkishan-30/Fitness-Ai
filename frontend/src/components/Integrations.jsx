@@ -1,238 +1,32 @@
-import { useState, useRef, useEffect } from 'react';
-import { 
-  CheckCircle2, 
-  Zap, 
-  RefreshCw 
-} from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Activity, ArrowRight, Check, ChevronRight, Droplets, HeartPulse, LockKeyhole, RefreshCw, Search, Smartphone, Sparkles, Watch, Waves, X } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { resetPointerTilt, tiltOnPointerMove } from '../utils/tiltMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const FILTERS = ['All', 'Wearables', 'Sleep & Recovery', 'Nutrition', 'Clinical Data'];
+const INTEGRATIONS = [
+  { name: 'Apple HealthKit', category: 'Wearables', description: 'Steps, heart rate, sleep analysis, and workouts.', status: 'Available', icon: Smartphone, color: 'blue' }, { name: 'WHOOP', category: 'Wearables', description: 'Strain, recovery, skin temperature, and heart rate.', status: 'Available', icon: Activity, color: 'violet' }, { name: 'Oura Ring', category: 'Sleep & Recovery', description: 'Readiness, sleep stages, nocturnal HRV, and timing.', status: 'Available', icon: Waves, color: 'indigo' }, { name: 'Garmin Connect', category: 'Wearables', description: 'Training status, activity, performance, and GPS data.', status: 'Available', icon: Watch, color: 'sky' }, { name: 'Dexcom / Abbott', category: 'Nutrition', description: 'Compatible glucose trends and metabolic context.', status: 'Available', icon: Droplets, color: 'amber' }, { name: 'Withings', category: 'Clinical Data', description: 'Body composition, vascular age, and ECG results.', status: 'Available', icon: HeartPulse, color: 'emerald' }, { name: 'Eight Sleep', category: 'Sleep & Recovery', description: 'Sleep environment and overnight heart-rate trends.', status: 'Available', icon: Waves, color: 'violet' }, { name: 'Clinical lab results', category: 'Clinical Data', description: 'Import eligible lab documents for personal context.', status: 'Needs review', icon: LockKeyhole, color: 'slate' },
+];
+const STAGES = { idle: ['Ready for preview', 'See your data in one place', 'A simulated preview of a connected health day.', 0], waking: ['Waking watch', 'Your health picture is waking up', 'Illuminating the sample Fitness AI watch face.', 16], detecting: ['Detecting signals', 'Reading the rhythm of your day', 'Sample sleep, recovery, and activity signals are arriving.', 35], syncing: ['Syncing health data', 'Organizing your daily signals', 'Bringing three illustrative health metrics into context.', 69], analyzing: ['AI analysis', 'Connecting the dots', 'Connecting the dots between your health signals.', 86], complete: ['Sync Preview Complete', 'Your sample health picture is ready', 'This illustrative preview did not access a real device or health data.', 100] };
+
+function ConnectionHub({ stage, score, activeMetric, metrics, onSync, onReset }) {
+  const [status, title, detail, progress] = STAGES[stage]; const running = !['idle', 'complete'].includes(stage);
+  const tilt = (event) => { const rect = event.currentTarget.getBoundingClientRect(); event.currentTarget.style.setProperty('--tilt-x', `${((event.clientX - rect.left) / rect.width - .5) * 8}deg`); event.currentTarget.style.setProperty('--tilt-y', `${((event.clientY - rect.top) / rect.height - .5) * -7}deg`); };
+  return <aside className="integrations-hub"><span className="integrations-hub__eyebrow"><i /> CONNECTION HUB</span><h2>Connect your devices. <em>See the bigger picture.</em></h2><p>Bring the health sources you choose into one clearer daily view.</p>
+    <div className={`hub-watch hub-watch--${stage}`} onPointerMove={tilt} onPointerLeave={(event) => { event.currentTarget.style.setProperty('--tilt-x', '0deg'); event.currentTarget.style.setProperty('--tilt-y', '0deg'); }} aria-label="Illustrative interactive smartwatch preview"><div className="hub-watch__scan" /><div className="hub-watch__band hub-watch__band--top" /><div className="hub-watch__case"><div className="hub-watch__screen"><span>FITNESS AI</span><div className="hub-watch__score"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="25" /><circle className="hub-watch__score-ring" cx="32" cy="32" r="25" style={{ strokeDashoffset: 157 - (157 * score) / 100 }} /></svg><b>{score}</b></div><small>{stage === 'analyzing' ? 'AI ANALYSIS' : stage === 'complete' ? 'HEALTH SCORE' : 'TODAY'}</small><div className="hub-watch__ecg"><i /><i /><i /><i /><i /></div>{stage === 'syncing' && <div className="hub-watch__metric-pips">{metrics.map((metric, index) => <span key={metric[0]} className={index <= activeMetric ? 'is-active' : ''}>{metric[1]}</span>)}</div>}{stage === 'analyzing' && <div className="hub-watch__analysis"><Sparkles size={11} /> AI</div>}{stage === 'complete' && <div className="hub-watch__success"><Check size={13} /></div>}</div></div><div className="hub-watch__band hub-watch__band--bottom" /><b className="hub-watch__signal hub-watch__signal--one" /><b className="hub-watch__signal hub-watch__signal--two" /><b className="hub-watch__signal hub-watch__signal--three" /></div>
+    <div className="hub-status"><span><i className={running ? 'is-live' : ''} /> {status}</span><b>{progress}%</b></div><div className="hub-progress"><span style={{ transform: `scaleX(${progress / 100})` }} /></div><div className="hub-live-copy"><strong>{title}</strong><p>{detail}</p></div>
+    {stage === 'syncing' && <div className="hub-sync-metrics">{metrics.map((metric, index) => <span key={metric[0]} className={index <= activeMetric ? 'is-active' : ''}><small>{metric[0]}</small><b>{index <= activeMetric ? metric[1] : '—'}</b><i><em style={{ transform: `scaleX(${index <= activeMetric ? 1 : 0})` }} /></i></span>)}</div>}
+    <div className="hub-metrics"><span><b>Sample</b><small>data streams</small></span><span><b>Preview</b><small>sync status</small></span><span><b>Private</b><small>by design</small></span></div><div className="hub-actions"><button type="button" onClick={stage === 'complete' ? onReset : onSync} disabled={running}>{stage === 'complete' ? 'Replay preview' : running ? status : 'Simulate Sync'} {stage === 'complete' ? <RefreshCw size={15} /> : <ArrowRight size={15} />}</button>{stage !== 'idle' && <button type="button" onClick={onReset} disabled={running} aria-label="Reset sync preview"><RefreshCw size={15} /></button>}</div><small className="integrations-hub__disclaimer">Illustrative only — no device or health data is accessed.</small></aside>;
+}
+
 export default function Integrations({ onOpenAuth }) {
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [syncedCount, setSyncedCount] = useState(120);
-  const sectionRef = useRef(null);
-
-  const integrations = [
-    {
-      name: 'Apple HealthKit',
-      type: 'Mobile Ecosystem',
-      data: 'Steps, Resting HR, Sleep Analysis, Respiration',
-      badge: 'Continuous 1s Telemetry',
-      highlight: true,
-    },
-    {
-      name: 'Whoop 4.0 Strap',
-      type: 'Performance Sensor',
-      data: 'Dynamic Strain, Recovery, Skin Temp, Heart Rate',
-      badge: 'High Frequency',
-      highlight: true,
-    },
-    {
-      name: 'Oura Ring Gen 3',
-      type: 'Sleep & Temperature',
-      data: 'Nocturnal HRV, Readiness, Sleep Stages, Circadian',
-      badge: 'Thermal Accuracy',
-      highlight: true,
-    },
-    {
-      name: 'Garmin Connect',
-      type: 'Endurance GPS',
-      data: 'VO2 Max, Training Status, Elevation, Power Output',
-      badge: 'Athlete Metrics',
-      highlight: false,
-    },
-    {
-      name: 'Dexcom G7 / Abbott',
-      type: 'Continuous Glucose',
-      data: 'Real-time Interstitial Glucose, Glycemic Volatility',
-      badge: 'Metabolic Curve',
-      highlight: true,
-    },
-    {
-      name: 'Withings Body Scan',
-      type: 'Clinical Scale & ECG',
-      data: 'Segmental Body Composition, Vascular Age, 6-Lead ECG',
-      badge: 'Clinical Grade',
-      highlight: false,
-    },
-    {
-      name: 'Eight Sleep Pod 4',
-      type: 'Dynamic Sleep Surface',
-      data: 'Bi-thermal Temperature Regulation, Sleep Stage HR',
-      badge: 'Autonomic Tuning',
-      highlight: false,
-    },
-    {
-      name: 'Clinical Lab Blood Work',
-      type: 'Direct PDF & HL7 OCR',
-      data: 'Comprehensive Metabolic Panel, ApoB, hs-CRP, Hormones',
-      badge: 'Cellular Baselines',
-      highlight: true,
-    },
-  ];
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.integration-card',
-        { opacity: 0, y: 38, rotateX: 12, scale: 0.94, transformOrigin: 'center bottom' },
-        {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          scale: 1,
-          duration: 0.72,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          },
-        }
-      );
-      gsap.fromTo('.integration-stream__beam',
-        { scaleX: 0, opacity: 0.3 },
-        {
-          scaleX: 1,
-          opacity: 1,
-          duration: 0.85,
-          stagger: 0.12,
-          ease: 'power2.inOut',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 72%' },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const handleSimulateSync = () => {
-    setIsSyncing(true);
-    setTimeout(() => {
-      setIsSyncing(false);
-      setSyncedCount((prev) => prev + 14);
-    }, 1200);
-  };
-
-  return (
-    <section
-      id="integrations"
-      ref={sectionRef}
-      className="py-20 md:py-32 relative overflow-hidden bg-slate-50/70 border-b border-slate-200"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-4">
-            <Zap className="w-3.5 h-3.5" />
-            <span>WEARABLE & DEVICE CONNECTIONS</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Engineered to connect with{' '}
-            <span className="text-blue-600">your existing hardware</span>
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed font-normal">
-            No proprietary lock-in. Fitness brings together the world's most advanced consumer
-            and clinical sensors into one synchronized, encrypted telemetry pipeline.
-          </p>
-        </div>
-
-        {/* Live Synchronized Pipeline Telemetry Ribbon */}
-        <div className="max-w-4xl mx-auto mb-12 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-3 h-3 rounded-full bg-emerald-500 animate-ping absolute" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-slate-900 block">
-                Biometric Ingestion Pipeline Status
-              </span>
-              <span className="text-[11px] text-slate-500 font-mono">
-                {syncedCount} telemetry streams harmonized • Average pipeline latency: 0.84s
-              </span>
-            </div>
-          </div>
-
-          <button
-            onClick={handleSimulateSync}
-            disabled={isSyncing}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all flex items-center gap-2 shrink-0"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-blue-600' : ''}`} />
-            <span>{isSyncing ? 'Syncing Ecosystem...' : 'Simulate Device Sync'}</span>
-          </button>
-        </div>
-
-        <div className="integration-stream" aria-hidden="true">
-          <i className="integration-stream__node" />
-          <span className="integration-stream__beam" />
-          <i className="integration-stream__node" />
-          <span className="integration-stream__beam integration-stream__beam--second" />
-          <i className="integration-stream__node integration-stream__node--hub"><Zap /></i>
-          <span>DEVICE SIGNALS · FITNESS INTELLIGENCE</span>
-        </div>
-
-        {/* Integration Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
-          {integrations.map((item) => (
-            <div
-              key={item.name}
-              onPointerMove={tiltOnPointerMove}
-              onPointerLeave={resetPointerTilt}
-              className={`integration-card p-5 rounded-2xl bg-white border transition-all duration-300 relative group shadow-sm hover:shadow-md ${
-                item.highlight
-                  ? 'border-blue-300 hover:border-blue-500'
-                  : 'border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">
-                  {item.type}
-                </span>
-                <span className="text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
-                  {item.badge}
-                </span>
-              </div>
-
-              <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                {item.name}
-              </h3>
-              <p className="text-xs text-slate-500 mb-4 leading-relaxed font-normal">
-                {item.data}
-              </p>
-
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Verified API Pipeline</span>
-                </span>
-                <span className="text-slate-400 font-mono text-[10px]">AES-256</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom Hardware CTA */}
-        <div className="text-center max-w-xl mx-auto">
-          <p className="text-xs sm:text-sm text-slate-500 mb-4 font-normal">
-            Don't see your continuous monitor or smart device? We add new integrations monthly.
-          </p>
-          <button
-            onClick={() => onOpenAuth('signup')}
-            type="button"
-            className="px-6 py-2.5 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-sm transition-all"
-          >
-            Request Device Integration
-          </button>
-        </div>
-      </div>
-    </section>
-  );
+  const [query, setQuery] = useState(''); const [filter, setFilter] = useState('All'); const [stage, setStage] = useState('idle'); const [score, setScore] = useState(0); const [activeMetric, setActiveMetric] = useState(-1); const [syncValues, setSyncValues] = useState([['Sleep score', '84'], ['Recovery', '86'], ['Activity', '74%']]); const sectionRef = useRef(null); const timersRef = useRef([]);
+  const integrations = useMemo(() => INTEGRATIONS.filter((item) => (filter === 'All' || item.category === filter) && `${item.name} ${item.category} ${item.description}`.toLowerCase().includes(query.toLowerCase().trim())), [filter, query]);
+  const clearTimers = () => { timersRef.current.forEach((id) => { window.clearTimeout(id); window.clearInterval(id); }); timersRef.current = []; };
+  useEffect(() => { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => clearTimers(); const context = gsap.context(() => { gsap.fromTo('.integrations-split__right, .integrations-hub', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .65, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 76%' } }); }, sectionRef); return () => { context.revert(); clearTimers(); }; }, []);
+  const resetSync = () => { clearTimers(); setStage('idle'); setScore(0); setActiveMetric(-1); };
+  const simulateSync = () => { clearTimers(); const nextScore = Math.floor(Math.random() * 19) + 76; const nextValues = [['Sleep score', String(Math.floor(Math.random() * 17) + 78)], ['Recovery', String(Math.floor(Math.random() * 20) + 76)], ['Activity', `${Math.floor(Math.random() * 27) + 68}%`]]; setSyncValues(nextValues); setScore(0); setActiveMetric(-1); setStage('waking'); if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setScore(nextScore); setActiveMetric(2); setStage('complete'); return; } const counter = window.setInterval(() => setScore((value) => value >= nextScore ? nextScore : Math.min(nextScore, value + 2)), 24); timersRef.current.push(counter); const at = (time, callback) => timersRef.current.push(window.setTimeout(callback, time)); at(1050, () => { window.clearInterval(counter); setScore(nextScore); setStage('detecting'); }); at(2050, () => { setStage('syncing'); setActiveMetric(0); }); at(2760, () => setActiveMetric(1)); at(3470, () => setActiveMetric(2)); at(4300, () => setStage('analyzing')); at(5650, () => setStage('complete')); };
+  return <section id="integrations" className="integrations-minimal" ref={sectionRef}><div className="integrations-split"><ConnectionHub stage={stage} score={score} activeMetric={activeMetric} metrics={syncValues} onSync={simulateSync} onReset={resetSync} /><div className="integrations-split__right"><header className="integrations-minimal__heading"><span><Sparkles size={14} /> INTEGRATIONS</span><h2>Your Health. <em>All Connected.</em></h2><p>Connect wearable devices, health platforms, and clinical data sources in one place.</p><div><b>{INTEGRATIONS.length}</b><small>available integrations</small><i /><b>One</b><small>connected health view</small></div></header><div className="integrations-minimal__controls"><label><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search integrations" aria-label="Search integrations" />{query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search"><X size={14} /></button>}</label><nav aria-label="Integration categories">{FILTERS.map((item) => <button key={item} type="button" className={filter === item ? 'is-active' : ''} onClick={() => setFilter(item)}>{item}</button>)}</nav></div><div className="integration-minimal-grid">{integrations.map((item) => { const Icon = item.icon; return <article className={`integration-minimal-card integration-minimal-card--${item.color}`} key={item.name}><div><span className="integration-minimal-card__icon"><Icon size={19} /></span><i className={item.status === 'Needs review' ? 'is-review' : ''}>{item.status}</i></div><h3>{item.name}</h3><p>{item.description}</p><button type="button" onClick={() => onOpenAuth('signup')}>{item.status === 'Needs review' ? 'View Details' : 'Connect'} <ChevronRight size={14} /></button></article>; })}</div>{!integrations.length && <div className="integration-minimal-empty"><Search size={20} /><strong>No integrations found</strong><span>Try another search or clear your filter.</span><button type="button" onClick={() => { setQuery(''); setFilter('All'); }}>Show all</button></div>}</div></div></section>;
 }

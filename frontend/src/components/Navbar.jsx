@@ -4,6 +4,7 @@ import { Activity, Menu, X, ArrowRight } from 'lucide-react';
 export default function Navbar({ onOpenAuth }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('rail');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,13 +14,26 @@ export default function Navbar({ onOpenAuth }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const sections = ['platform', 'rail', 'showcase', 'integrations']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    if (!sections.length) return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActiveSection(visible.target.id);
+    }, { rootMargin: '-92px 0px -52% 0px', threshold: [0.05, 0.2, 0.5] });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   const navLinks = [
     { name: 'Platform', href: '#platform' },
-    { name: 'Features', href: '#rail' },
-    { name: 'Dashboard', href: '#dashboard' },
-    { name: 'AI Coach', href: '#coach' },
+    { name: 'Experience', href: '#rail' },
+    { name: 'App', href: '#showcase' },
     { name: 'Integrations', href: '#integrations' },
-    { name: 'How It Works', href: '#how-it-works' },
   ];
 
   const handleLinkClick = (e, href) => {
@@ -27,7 +41,8 @@ export default function Navbar({ onOpenAuth }) {
     setMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const target = element.getBoundingClientRect().top + window.scrollY - 92;
+      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
     }
   };
 
@@ -43,7 +58,8 @@ export default function Navbar({ onOpenAuth }) {
         <div className="flex items-center justify-between">
           {/* Brand Wordmark matching Figma */}
           <a
-            href="#"
+            href="#rail"
+            onClick={(e) => handleLinkClick(e, '#rail')}
             className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1"
             aria-label="Fitness Homepage"
           >
@@ -70,6 +86,7 @@ export default function Navbar({ onOpenAuth }) {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
+                aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
                 className="site-nav-link px-3 py-1 text-xs lg:text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-white rounded-full transition-all duration-200"
               >
                 {link.name}
@@ -125,6 +142,7 @@ export default function Navbar({ onOpenAuth }) {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
+                  aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
                   className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
                 >
                   {link.name}

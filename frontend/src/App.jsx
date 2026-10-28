@@ -7,12 +7,8 @@ import { Activity, HeartPulse, Sparkles } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import FragmentedProblem from './components/FragmentedProblem';
-import PinnedShowcase from './components/PinnedShowcase';
-import DashboardShowcase from './components/DashboardShowcase';
-import AiCoach from './components/AiCoach';
+import MobileShowcase from './components/MobileShowcase';
 import Integrations from './components/Integrations';
-import HowItWorks from './components/HowItWorks';
-import ScienceSection from './components/ScienceSection';
 import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
 import EarlyAccessModal from './components/EarlyAccessModal';
@@ -21,12 +17,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const [authModal, setAuthModal] = useState({ open: false, mode: 'signup' });
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const introTimelineRef = useRef(null);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShowIntro(false);
       return undefined;
     }
 
@@ -149,12 +144,8 @@ export default function App() {
       <main className="flex-1 w-full overflow-x-clip">
         <Hero onOpenAuth={handleOpenAuth} />
         <FragmentedProblem />
-        <PinnedShowcase onOpenAuth={handleOpenAuth} />
-        <DashboardShowcase onOpenAuth={handleOpenAuth} />
-        <AiCoach onOpenAuth={handleOpenAuth} />
+        <MobileShowcase onOpenAuth={handleOpenAuth} />
         <Integrations onOpenAuth={handleOpenAuth} />
-        <HowItWorks onOpenAuth={handleOpenAuth} />
-        <ScienceSection />
         <CtaSection onOpenAuth={handleOpenAuth} />
       </main>
 
