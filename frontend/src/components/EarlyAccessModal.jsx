@@ -7,7 +7,7 @@ import {
   Lock 
 } from 'lucide-react';
 
-export default function EarlyAccessModal({ isOpen, mode, onClose }) {
+export default function EarlyAccessModal({ isOpen, mode, onClose, onContinue }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [wearable, setWearable] = useState('Apple HealthKit / Apple Watch');
@@ -40,6 +40,7 @@ export default function EarlyAccessModal({ isOpen, mode, onClose }) {
     setName('');
     setEmail('');
     onClose();
+    onContinue?.();
   };
 
   return (
@@ -110,10 +111,11 @@ export default function EarlyAccessModal({ isOpen, mode, onClose }) {
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode !== 'signin' && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="access-name" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                     Full Name
                   </label>
                   <input
+                    id="access-name"
                     type="text"
                     required
                     value={name}
@@ -125,10 +127,11 @@ export default function EarlyAccessModal({ isOpen, mode, onClose }) {
               )}
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label htmlFor="access-email" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                   Email Address
                 </label>
                 <input
+                  id="access-email"
                   type="email"
                   required
                   value={email}
@@ -141,10 +144,11 @@ export default function EarlyAccessModal({ isOpen, mode, onClose }) {
               {mode !== 'signin' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label htmlFor="access-wearable" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                       Primary Wearable / Sensor
                     </label>
                     <select
+                      id="access-wearable"
                       value={wearable}
                       onChange={(e) => setWearable(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -161,10 +165,11 @@ export default function EarlyAccessModal({ isOpen, mode, onClose }) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label htmlFor="access-goal" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                       Primary Focus Area
                     </label>
                     <select
+                      id="access-goal"
                       value={goal}
                       onChange={(e) => setGoal(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"

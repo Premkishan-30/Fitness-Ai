@@ -12,15 +12,35 @@ import Integrations from './components/Integrations';
 import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
 import EarlyAccessModal from './components/EarlyAccessModal';
+import AppWorkspace from './app/AppWorkspace';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
+  const [pathname, setPathname] = useState(() => window.location.pathname);
   const [authModal, setAuthModal] = useState({ open: false, mode: 'signup' });
-  const [showIntro, setShowIntro] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [showIntro, setShowIntro] = useState(() => (
+    !window.location.pathname.startsWith('/app')
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ));
   const introTimelineRef = useRef(null);
 
   useEffect(() => {
+    const handlePopState = () => setPathname(window.location.pathname);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (path, replace = false) => {
+    if (window.location.pathname === path) return;
+    if (replace) window.history.replaceState({}, '', path);
+    else window.history.pushState({}, '', path);
+    setPathname(path);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  };
+
+  useEffect(() => {
+    if (window.location.pathname.startsWith('/app')) return undefined;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return undefined;
     }
@@ -69,9 +89,10 @@ export default function App() {
       timeline.kill();
       introTimelineRef.current = null;
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
+    if (window.location.pathname.startsWith('/app')) return undefined;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -107,7 +128,11 @@ export default function App() {
       lenis.destroy();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
-  }, []);
+  }, [pathname]);
+
+  if (pathname.startsWith('/app')) {
+    return <AppWorkspace pathname={pathname} onNavigate={navigate} />;
+  }
 
   const handleOpenAuth = (mode = 'signup') => {
     setAuthModal({ open: true, mode });
@@ -155,6 +180,7 @@ export default function App() {
         isOpen={authModal.open}
         mode={authModal.mode}
         onClose={handleCloseAuth}
+        onContinue={() => navigate('/app')}
       />
     </div>
   );
