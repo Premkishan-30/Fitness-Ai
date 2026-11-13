@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import * as THREE from 'three';
+import { getThemeColor } from '../utils/themeColors';
 
 const INITIAL_ROTATION = { x: -0.04, y: 0.04 };
 const SCREEN_WIDTH = 512;
@@ -76,32 +77,32 @@ function WatchModel({ activeIndex, rotation, reducedMotion, isScanning, drawScre
   return (
     <group ref={assembly} scale={1.2} rotation={[INITIAL_ROTATION.x, INITIAL_ROTATION.y, -0.01]}>
       <mesh geometry={geometry.strap} position={[0, 1.52, -0.085]} castShadow>
-        <meshStandardMaterial color="#26364a" roughness={0.78} metalness={0.12} />
+        <meshStandardMaterial color={getThemeColor('dark')} roughness={0.78} metalness={0.12} />
       </mesh>
       <mesh geometry={geometry.strap} position={[0, -1.52, -0.085]} castShadow>
-        <meshStandardMaterial color="#26364a" roughness={0.78} metalness={0.12} />
+        <meshStandardMaterial color={getThemeColor('dark')} roughness={0.78} metalness={0.12} />
       </mesh>
       {[-1.95, -1.79, -1.63, 1.63, 1.79, 1.95].map((y) => (
         <mesh key={y} position={[0, y, 0.018]}>
           <boxGeometry args={[0.77, 0.018, 0.022]} />
-          <meshStandardMaterial color="#56677d" roughness={0.55} metalness={0.28} />
+          <meshStandardMaterial color={getThemeColor('dark')} roughness={0.55} metalness={0.28} />
         </mesh>
       ))}
       <mesh position={[0, 1.12, 0.02]} castShadow>
         <torusGeometry args={[0.46, 0.065, 12, 40]} />
-        <meshStandardMaterial color="#9aaabd" metalness={0.88} roughness={0.22} />
+        <meshStandardMaterial color={getThemeColor('light-bg')} metalness={0.88} roughness={0.22} />
       </mesh>
       <mesh position={[0, 2.12, -0.025]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.28, 0.035, 10, 36]} />
-        <meshStandardMaterial color="#8698ac" metalness={0.82} roughness={0.27} />
+        <meshStandardMaterial color={getThemeColor('light-bg')} metalness={0.82} roughness={0.27} />
       </mesh>
 
       <mesh geometry={geometry.case} castShadow receiveShadow>
-        <meshStandardMaterial color="#aebdcd" metalness={0.91} roughness={0.2} />
+        <meshStandardMaterial color={getThemeColor('light-bg')} metalness={0.91} roughness={0.2} />
       </mesh>
       <mesh position={[1.035, 0.45, -0.015]} rotation={[0, 0, Math.PI / 2]} castShadow>
         <cylinderGeometry args={[0.16, 0.16, 0.16, 32]} />
-        <meshStandardMaterial color="#9aaabd" metalness={0.95} roughness={0.2} />
+        <meshStandardMaterial color={getThemeColor('light-bg')} metalness={0.95} roughness={0.2} />
       </mesh>
       {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
         <mesh
@@ -110,15 +111,15 @@ function WatchModel({ activeIndex, rotation, reducedMotion, isScanning, drawScre
           rotation={[0, 0, Math.PI / 2]}
         >
           <cylinderGeometry args={[0.164, 0.164, 0.008, 32]} />
-          <meshStandardMaterial color="#74869a" metalness={0.88} roughness={0.28} />
+          <meshStandardMaterial color={getThemeColor('light-bg')} metalness={0.88} roughness={0.28} />
         </mesh>
       ))}
       <mesh position={[1.025, -0.14, 0.005]} castShadow>
         <boxGeometry args={[0.12, 0.23, 0.2]} />
-        <meshStandardMaterial color="#899bad" metalness={0.89} roughness={0.23} />
+        <meshStandardMaterial color={getThemeColor('light-bg')} metalness={0.89} roughness={0.23} />
       </mesh>
       <mesh geometry={geometry.screen} position={[0, 0, 0.194]}>
-        <meshStandardMaterial color="#07111d" roughness={0.18} metalness={0.16} />
+        <meshStandardMaterial color={getThemeColor('dark')} roughness={0.18} metalness={0.16} />
       </mesh>
       <mesh
         position={[0, 0, 0.22]}
@@ -135,7 +136,7 @@ function WatchModel({ activeIndex, rotation, reducedMotion, isScanning, drawScre
         <planeGeometry args={[1.58, 1.86]} />
         <meshStandardMaterial
           map={screen.texture}
-          emissive="#ffffff"
+          emissive={getThemeColor('card')}
           emissiveMap={screen.texture}
           emissiveIntensity={0.28}
           roughness={0.22}
@@ -144,7 +145,7 @@ function WatchModel({ activeIndex, rotation, reducedMotion, isScanning, drawScre
       </mesh>
       <mesh geometry={geometry.glass} position={[0, 0, 0.243]}>
         <meshPhysicalMaterial
-          color="#c6e0ff"
+          color={getThemeColor('light-bg')}
           transparent
           opacity={0.13}
           roughness={0.08}
@@ -156,7 +157,7 @@ function WatchModel({ activeIndex, rotation, reducedMotion, isScanning, drawScre
       </mesh>
       <mesh position={[-0.59, 0.91, 0.254]}>
         <sphereGeometry args={[0.025, 16, 16]} />
-        <meshBasicMaterial color="#63d2b1" />
+        <meshBasicMaterial color={getThemeColor('primary')} />
       </mesh>
     </group>
   );
@@ -173,10 +174,10 @@ export default function WatchScene({ activeIndex, rotation, reducedMotion, isSca
       aria-label="Three-dimensional Fitness AI smartwatch. Drag to rotate."
     >
       <ambientLight intensity={0.9} />
-      <directionalLight position={[3, 4, 5]} intensity={2.25} color="#ffffff" />
-      <pointLight position={[-3, 1.5, 2.4]} intensity={30} color="#73aaff" />
-      <pointLight position={[3, -2, 2]} intensity={18} color="#7be5cb" />
-      <spotLight position={[0, 4, 4]} intensity={22} angle={0.58} penumbra={0.72} color="#dceaff" />
+      <directionalLight position={[3, 4, 5]} intensity={2.25} color={getThemeColor('card')} />
+      <pointLight position={[-3, 1.5, 2.4]} intensity={30} color={getThemeColor('primary')} />
+      <pointLight position={[3, -2, 2]} intensity={18} color={getThemeColor('primary')} />
+      <spotLight position={[0, 4, 4]} intensity={22} angle={0.58} penumbra={0.72} color={getThemeColor('light-bg')} />
       <WatchModel
         activeIndex={activeIndex}
         rotation={rotation}

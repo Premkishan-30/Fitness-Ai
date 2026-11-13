@@ -44,7 +44,7 @@ export default function CtaSection({ onOpenAuth }) {
   };
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-32 relative overflow-hidden bg-gradient-to-b from-white via-blue-50/40 to-blue-50/70 border-b border-slate-200">
+    <section ref={sectionRef} className="cta-band py-20 md:py-32 relative overflow-hidden border-b border-slate-200">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {/* Badge */}
         <div className="cta-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-semibold mb-6 shadow-sm">
@@ -91,7 +91,7 @@ export default function CtaSection({ onOpenAuth }) {
               />
               <button
                 type="submit"
-                className="px-7 py-3.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 group whitespace-nowrap"
+                className="px-7 py-3.5 rounded-xl text-sm font-semibold text-white bg-accent hover:bg-accent-hover transition-all shadow-md shadow-[0_8px_18px_var(--accent-glow)] flex items-center justify-center gap-2 group whitespace-nowrap"
               >
                 <span>Get Started</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

@@ -97,7 +97,7 @@ export default function DashboardShowcase({ onOpenAuth }) {
     <section
       id="dashboard"
       ref={sectionRef}
-      className="py-20 md:py-32 relative overflow-hidden bg-white border-b border-slate-200"
+      className="py-20 md:py-32 relative overflow-hidden bg-light-bg border-b border-slate-200"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}

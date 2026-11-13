@@ -127,7 +127,7 @@ function MetricCard({ label, value, unit, change, icon: Icon, tone = 'blue', det
   );
 }
 
-function LineChart({ data, labels = weekDays, color = '#3e69e8', height = 184 }) {
+function LineChart({ data, labels = weekDays, color = 'var(--brand-primary)', height = 184 }) {
   const max = Math.max(...data);
   const min = Math.min(...data);
   const range = Math.max(max - min, 1);
@@ -159,7 +159,7 @@ function LineChart({ data, labels = weekDays, color = '#3e69e8', height = 184 })
   );
 }
 
-function BarChart({ data, labels = weekDays, color = '#6f8ef0' }) {
+function BarChart({ data, labels = weekDays, color = 'var(--brand-primary)' }) {
   return (
     <div className="workspace-bar-chart">
       {data.map((value, index) => (
@@ -309,7 +309,7 @@ function SleepPage() {
       <div className="workspace-grid workspace-grid--main">
         <Card>
           <CardTitle title="Sleep duration" detail={`Illustrative trend · ${range}`} action={<Badge tone="green">Trending up</Badge>} />
-          <LineChart data={range === '7 days' ? [63, 71, 68, 84, 76, 80, 78] : [58, 62, 70, 68, 75, 80, 82]} labels={weekDays} color="#7c75d9" height={225} />
+          <LineChart data={range === '7 days' ? [63, 71, 68, 84, 76, 80, 78] : [58, 62, 70, 68, 75, 80, 82]} labels={weekDays} color='var(--brand-primary)' height={225} />
           <div className="workspace-chart-legend"><span><i className="is-violet" /> Hours asleep</span><span className="workspace-muted">Target: 8 hours</span></div>
         </Card>
         <Card>
@@ -361,7 +361,7 @@ function RecoveryPage() {
         <MetricCard label="Skin temperature" value="+0.1" unit="°C" change="Stable" icon={Zap} tone="amber" detail="Change from baseline" />
       </div>
       <div className="workspace-grid workspace-grid--main">
-        <Card><CardTitle title="Recovery trend" detail={`Daily score · ${range.toLowerCase()}`} /><LineChart data={[68, 75, 71, 83, 74, 81, 78]} labels={weekDays} color="#39a77c" height={215} /><div className="workspace-chart-legend"><span><i className="is-green" /> Recovery score</span><span className="workspace-muted">Illustrative range</span></div></Card>
+        <Card><CardTitle title="Recovery trend" detail={`Daily score · ${range.toLowerCase()}`} /><LineChart data={[68, 75, 71, 83, 74, 81, 78]} labels={weekDays} color='var(--brand-primary)' height={215} /><div className="workspace-chart-legend"><span><i className="is-green" /> Recovery score</span><span className="workspace-muted">Illustrative range</span></div></Card>
         <Card><CardTitle title="What’s influencing recovery" detail="Context for your latest reading" /><div className="workspace-factor-list"><Factor label="Sleep" value="82%" detail="Above your recent average" tone="green" /><Factor label="HRV" value="54 ms" detail="Within your usual range" tone="blue" /><Factor label="Resting heart rate" value="58 bpm" detail="Slightly below your average" tone="violet" /></div></Card>
       </div>
       <Card className="workspace-note"><Sparkles size={17} /><p><strong>Listen to how you feel.</strong> Wearable signals are only one part of recovery. Rest, hydration, stress, and personal context matter too.</p></Card>
@@ -454,7 +454,7 @@ function BiomarkersPage() {
       </div>
       <Card className="workspace-bio-age">
         <CardTitle title="Biological age trend" detail="Illustrative estimate over sample check-ins" action={<Badge tone="violet">Example estimate</Badge>} />
-        <LineChart data={[35, 34, 33, 32, 32, 31, 31]} labels={['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr']} color="#8177cf" height={145} />
+        <LineChart data={[35, 34, 33, 32, 32, 31, 31]} labels={['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr']} color='var(--brand-primary)' height={145} />
         <p className="workspace-bio-age-note">Example estimate only. Biological-age calculations vary and should not be used to diagnose or predict health outcomes.</p>
       </Card>
       <Card>

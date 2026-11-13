@@ -1,6 +1,7 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Activity, ArrowRight, Check, ChevronRight, CircleHelp, Heart, ShieldCheck, Sparkles, Watch, X } from 'lucide-react';
+import { getThemeColor } from '../utils/themeColors';
 import './Hero.css';
 
 const WatchScene = lazy(() => import('./WatchScene'));
@@ -61,16 +62,16 @@ function line(ctx, points, color, width = 3) {
 }
 
 function drawHeader(ctx, title, label, time) {
-  text(ctx, 'F', 35, 44, 21, '#8ab9ff', 800);
-  text(ctx, 'FITNESS AI', 65, 43, 12, '#dce9f8', 700);
-  text(ctx, '09:41', 477, 43, 11, '#8999ad', 600, 'right');
-  line(ctx, [[35, 62], [477, 62]], 'rgba(177, 201, 230, .13)', 1);
-  text(ctx, label.toUpperCase(), 37, 91, 10, '#76aaff', 700);
-  text(ctx, title, 37, 126, 23, '#f4f8ff', 700);
+  text(ctx, 'F', 35, 44, 21, getThemeColor('primary'), 800);
+  text(ctx, 'FITNESS AI', 65, 43, 12, getThemeColor('light-bg'), 700);
+  text(ctx, '09:41', 477, 43, 11, getThemeColor('light-bg'), 600, 'right');
+  line(ctx, [[35, 62], [477, 62]], getThemeColor('light-bg', 0.13), 1);
+  text(ctx, label.toUpperCase(), 37, 91, 10, getThemeColor('primary'), 700);
+  text(ctx, title, 37, 126, 23, getThemeColor('light-bg'), 700);
   if (time > 0) {
     ctx.beginPath();
     ctx.arc(463, 83, 4 + Math.sin(time * 2) * 1.1, 0, Math.PI * 2);
-    ctx.fillStyle = '#50d7ad';
+    ctx.fillStyle = getThemeColor('primary');
     ctx.fill();
   }
 }
@@ -78,7 +79,7 @@ function drawHeader(ctx, title, label, time) {
 function drawMiniChart(ctx, x, y, width, height, color, points, progress = 1) {
   for (let index = 0; index < 3; index += 1) {
     const guideY = y + (height / 2) * index;
-    line(ctx, [[x, guideY], [x + width, guideY]], 'rgba(191, 212, 240, .09)', 1);
+    line(ctx, [[x, guideY], [x + width, guideY]], getThemeColor('light-bg', 0.09), 1);
   }
   const visible = Math.max(2, Math.ceil(points.length * progress));
   const coordinates = points.slice(0, visible).map((value, index) => [
@@ -96,7 +97,7 @@ function drawMiniChart(ctx, x, y, width, height, color, points, progress = 1) {
 function drawRing(ctx, x, y, radius, progress, color, width = 11, reveal = 1) {
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(191, 212, 240, .13)';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
   ctx.lineWidth = width;
   ctx.stroke();
   ctx.beginPath();
@@ -108,7 +109,7 @@ function drawRing(ctx, x, y, radius, progress, color, width = 11, reveal = 1) {
 }
 
 function drawFeatureScreen(ctx, index, transition, time, isScanning) {
-  ctx.fillStyle = '#081321';
+  ctx.fillStyle = getThemeColor('dark');
   ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   const reveal = 1 - ((1 - transition) ** 3);
   ctx.save();
@@ -117,40 +118,40 @@ function drawFeatureScreen(ctx, index, transition, time, isScanning) {
 
   if (index === 0) {
     drawHeader(ctx, 'Health overview', 'YOUR HEALTH, CONNECTED', time);
-    drawRing(ctx, 256, 245, 76, 0.82, '#63a6ff', 12, reveal);
-    drawRing(ctx, 256, 245, 57, 0.73, '#4ed6ae', 9, reveal);
-    drawRing(ctx, 256, 245, 38, 0.68, '#efbc70', 8, reveal);
-    text(ctx, '82', 256, 251, 38, '#f4f8ff', 800, 'center');
-    text(ctx, 'OVERALL HEALTH', 256, 360, 11, '#b8c8dc', 700, 'center');
+    drawRing(ctx, 256, 245, 76, 0.82, getThemeColor('accent'), 12, reveal);
+    drawRing(ctx, 256, 245, 57, 0.73, getThemeColor('accent'), 9, reveal);
+    drawRing(ctx, 256, 245, 38, 0.68, getThemeColor('accent'), 8, reveal);
+    text(ctx, '82', 256, 251, 38, getThemeColor('accent'), 800, 'center');
+    text(ctx, 'OVERALL HEALTH', 256, 360, 11, getThemeColor('light-bg'), 700, 'center');
     const tiles = [
-      ['SLEEP', '84', '#a58aff'],
-      ['RECOVERY', '86', '#50d7ad'],
-      ['ACTIVITY', '74%', '#63a6ff'],
+      ['SLEEP', '84', getThemeColor('primary')],
+      ['RECOVERY', '86', getThemeColor('primary')],
+      ['ACTIVITY', '74%', getThemeColor('primary')],
     ];
     tiles.forEach(([label, value, color], tileIndex) => {
       const x = 35 + tileIndex * 150;
-      roundedRect(ctx, x, 394, 138, 72, 14, '#101f30', '#1b3046');
-      text(ctx, label, x + 12, 418, 9, '#93a7bd', 700);
+      roundedRect(ctx, x, 394, 138, 72, 14, getThemeColor('dark'), getThemeColor('dark'));
+      text(ctx, label, x + 12, 418, 9, getThemeColor('light-bg'), 700);
       text(ctx, value, x + 12, 450, 22, color, 700);
     });
-    roundedRect(ctx, 35, 484, 442, 76, 15, '#102139', '#213b58');
-    text(ctx, 'Your health, seen as a whole.', 53, 515, 14, '#e1ecf8', 650);
-    text(ctx, 'Sleep + recovery + activity', 53, 539, 10, '#8fa4ba', 500);
-    text(ctx, 'Illustrative sample data', 256, 590, 9, '#71849a', 500, 'center');
+    roundedRect(ctx, 35, 484, 442, 76, 15, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'Your health, seen as a whole.', 53, 515, 14, getThemeColor('light-bg'), 650);
+    text(ctx, 'Sleep + recovery + activity', 53, 539, 10, getThemeColor('light-bg'), 500);
+    text(ctx, 'Illustrative sample data', 256, 590, 9, getThemeColor('light-bg'), 500, 'center');
   } else if (index === 1) {
     drawHeader(ctx, 'Sleep intelligence', 'SAMPLE · REST & RECOVERY', time);
-    drawRing(ctx, 130, 219, 54, 0.84, '#a58aff', 9, reveal);
-    text(ctx, '84', 130, 225, 28, '#f4f8ff', 800, 'center');
-    text(ctx, 'SCORE', 130, 245, 9, '#aebed0', 700, 'center');
-    text(ctx, '7h 42m', 307, 218, 27, '#e8f0fc', 700);
-    text(ctx, 'TOTAL SLEEP', 309, 241, 9, '#92a7bf', 700);
-    roundedRect(ctx, 36, 286, 440, 150, 16, '#101f30', '#1c3045');
-    text(ctx, 'SLEEP STAGES', 53, 311, 10, '#c6d5e8', 700);
+    drawRing(ctx, 130, 219, 54, 0.84, getThemeColor('accent'), 9, reveal);
+    text(ctx, '84', 130, 225, 28, getThemeColor('accent'), 800, 'center');
+    text(ctx, 'SCORE', 130, 245, 9, getThemeColor('primary'), 700, 'center');
+    text(ctx, '7h 42m', 307, 218, 27, getThemeColor('light-bg'), 700);
+    text(ctx, 'TOTAL SLEEP', 309, 241, 9, getThemeColor('primary'), 700);
+    roundedRect(ctx, 36, 286, 440, 150, 16, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'SLEEP STAGES', 53, 311, 10, getThemeColor('light-bg'), 700);
     const stages = [
-      { name: 'Awake', mins: 24, color: '#f0b765' },
-      { name: 'REM', mins: 96, color: '#987ef4' },
-      { name: 'Light', mins: 218, color: '#63a6ff' },
-      { name: 'Deep', mins: 124, color: '#43d0aa' },
+      { name: 'Awake', mins: 24, color: getThemeColor('primary') },
+      { name: 'REM', mins: 96, color: getThemeColor('primary') },
+      { name: 'Light', mins: 218, color: getThemeColor('primary') },
+      { name: 'Deep', mins: 124, color: getThemeColor('primary') },
     ];
     let stageX = 53;
     stages.forEach((stage) => {
@@ -164,111 +165,111 @@ function drawFeatureScreen(ctx, index, transition, time, isScanning) {
       ctx.arc(58, y - 4, 3.5, 0, Math.PI * 2);
       ctx.fillStyle = stage.color;
       ctx.fill();
-      text(ctx, stage.name, 71, y, 9, '#aebed0', 500);
-      text(ctx, `${stage.mins} min`, 456, y, 9, '#e6eff9', 600, 'right');
+      text(ctx, stage.name, 71, y, 9, getThemeColor('primary'), 500);
+      text(ctx, `${stage.mins} min`, 456, y, 9, getThemeColor('light-bg'), 600, 'right');
     });
-    roundedRect(ctx, 36, 452, 440, 134, 16, '#101f30', '#1c3045');
-    text(ctx, '7-NIGHT SLEEP TREND', 53, 477, 10, '#c6d5e8', 700);
-    drawMiniChart(ctx, 55, 489, 399, 62, '#a58aff', [0.42, 0.59, 0.53, 0.75, 0.63, 0.84, 0.77], reveal);
-    ['M', 'T', 'W', 'T', 'F', 'S', 'S'].forEach((day, dayIndex) => text(ctx, day, 58 + dayIndex * 65, 573, 8, '#8194aa', 500, 'center'));
+    roundedRect(ctx, 36, 452, 440, 134, 16, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, '7-NIGHT SLEEP TREND', 53, 477, 10, getThemeColor('light-bg'), 700);
+    drawMiniChart(ctx, 55, 489, 399, 62, getThemeColor('primary'), [0.42, 0.59, 0.53, 0.75, 0.63, 0.84, 0.77], reveal);
+    ['M', 'T', 'W', 'T', 'F', 'S', 'S'].forEach((day, dayIndex) => text(ctx, day, 58 + dayIndex * 65, 573, 8, getThemeColor('light-bg'), 500, 'center'));
   } else if (index === 2) {
     drawHeader(ctx, 'Recovery & activity', 'SAMPLE · DAILY READINESS', time);
-    drawRing(ctx, 117, 230, 55, 0.86, '#50d7ad', 10, reveal);
-    text(ctx, '86', 117, 236, 29, '#f4f8ff', 800, 'center');
-    text(ctx, 'READY', 117, 256, 9, '#aebed0', 700, 'center');
-    roundedRect(ctx, 211, 176, 125, 99, 14, '#101f30', '#1c3045');
-    text(ctx, 'HRV', 226, 200, 9, '#9bacc0', 700);
-    text(ctx, '68', 226, 234, 25, '#65aaff', 700);
-    text(ctx, 'ms', 226, 252, 9, '#8194aa', 500);
-    roundedRect(ctx, 346, 176, 129, 99, 14, '#101f30', '#1c3045');
-    text(ctx, 'RESTING HR', 359, 200, 8, '#9bacc0', 700);
-    text(ctx, '54', 359, 234, 25, '#50d7ad', 700);
-    text(ctx, 'bpm', 359, 252, 9, '#8194aa', 500);
-    roundedRect(ctx, 37, 296, 438, 129, 15, '#101f30', '#1c3045');
-    text(ctx, 'MOVEMENT', 54, 323, 10, '#c6d5e8', 700);
-    text(ctx, '8,420', 54, 366, 29, '#f4f8ff', 700);
-    text(ctx, 'steps', 149, 365, 10, '#91a5bc', 500);
-    roundedRect(ctx, 54, 382, 402, 7, 4, '#24354a');
-    roundedRect(ctx, 54, 382, 402 * 0.84 * reveal, 7, 4, '#63a6ff');
-    text(ctx, '84% of daily movement goal', 54, 409, 9, '#9eafc2', 500);
-    roundedRect(ctx, 37, 442, 438, 143, 15, '#101f30', '#1c3045');
-    text(ctx, 'EXERCISE · LAST 7 DAYS', 54, 469, 10, '#c6d5e8', 700);
+    drawRing(ctx, 117, 230, 55, 0.86, getThemeColor('accent'), 10, reveal);
+    text(ctx, '86', 117, 236, 29, getThemeColor('accent'), 800, 'center');
+    text(ctx, 'READY', 117, 256, 9, getThemeColor('primary'), 700, 'center');
+    roundedRect(ctx, 211, 176, 125, 99, 14, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'HRV', 226, 200, 9, getThemeColor('light-bg'), 700);
+    text(ctx, '68', 226, 234, 25, getThemeColor('primary'), 700);
+    text(ctx, 'ms', 226, 252, 9, getThemeColor('light-bg'), 500);
+    roundedRect(ctx, 346, 176, 129, 99, 14, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'RESTING HR', 359, 200, 8, getThemeColor('light-bg'), 700);
+    text(ctx, '54', 359, 234, 25, getThemeColor('primary'), 700);
+    text(ctx, 'bpm', 359, 252, 9, getThemeColor('light-bg'), 500);
+    roundedRect(ctx, 37, 296, 438, 129, 15, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'MOVEMENT', 54, 323, 10, getThemeColor('light-bg'), 700);
+    text(ctx, '8,420', 54, 366, 29, getThemeColor('light-bg'), 700);
+    text(ctx, 'steps', 149, 365, 10, getThemeColor('light-bg'), 500);
+    roundedRect(ctx, 54, 382, 402, 7, 4, getThemeColor('dark'));
+    roundedRect(ctx, 54, 382, 402 * 0.84 * reveal, 7, 4, getThemeColor('primary'));
+    text(ctx, '84% of daily movement goal', 54, 409, 9, getThemeColor('light-bg'), 500);
+    roundedRect(ctx, 37, 442, 438, 143, 15, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'EXERCISE · LAST 7 DAYS', 54, 469, 10, getThemeColor('light-bg'), 700);
     const columns = [30, 45, 37, 62, 46, 73, 56];
     columns.forEach((height, columnIndex) => {
       const x = 67 + columnIndex * 54;
-      roundedRect(ctx, x, 556 - height * reveal, 19, height * reveal, 7, columnIndex === 5 ? '#50d7ad' : '#355879');
-      text(ctx, 'MTWTFSS'[columnIndex], x + 9, 573, 8, '#8194aa', 500, 'center');
+      roundedRect(ctx, x, 556 - height * reveal, 19, height * reveal, 7, columnIndex === 5 ? getThemeColor('primary') : getThemeColor('primary'));
+      text(ctx, 'MTWTFSS'[columnIndex], x + 9, 573, 8, getThemeColor('light-bg'), 500, 'center');
     });
-    text(ctx, 'Illustrative readiness and activity metrics', 256, 603, 8, '#71849a', 500, 'center');
+    text(ctx, 'Illustrative readiness and activity metrics', 256, 603, 8, getThemeColor('light-bg'), 500, 'center');
   } else if (index === 3) {
     drawHeader(ctx, 'Nutrition & biomarkers', 'DAILY FUEL · SAMPLE DATA', time);
-    roundedRect(ctx, 37, 153, 438, 76, 14, '#101f30', '#1c3045');
-    text(ctx, 'ENERGY', 54, 179, 9, '#aebed0', 700);
-    text(ctx, '1,840', 54, 211, 25, '#f4f8ff', 700);
-    text(ctx, 'kcal', 131, 211, 10, '#91a5bc', 500);
+    roundedRect(ctx, 37, 153, 438, 76, 14, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'ENERGY', 54, 179, 9, getThemeColor('primary'), 700);
+    text(ctx, '1,840', 54, 211, 25, getThemeColor('light-bg'), 700);
+    text(ctx, 'kcal', 131, 211, 10, getThemeColor('light-bg'), 500);
     const nutrients = [
-      ['PROTEIN', '82 g', 0.68, '#63a6ff'],
-      ['CARBS', '164 g', 0.59, '#a58aff'],
-      ['FATS', '61 g', 0.74, '#efbc70'],
+      ['PROTEIN', '82 g', 0.68, getThemeColor('primary')],
+      ['CARBS', '164 g', 0.59, getThemeColor('primary')],
+      ['FATS', '61 g', 0.74, getThemeColor('primary')],
     ];
     nutrients.forEach(([label, value, amount, color], nutrientIndex) => {
       const y = 262 + nutrientIndex * 45;
-      text(ctx, label, 46, y, 9, '#aebed0', 700);
-      text(ctx, value, 465, y, 10, '#eef4fc', 700, 'right');
-      roundedRect(ctx, 46, y + 9, 419, 7, 4, '#22344a');
+      text(ctx, label, 46, y, 9, getThemeColor('primary'), 700);
+      text(ctx, value, 465, y, 10, getThemeColor('light-bg'), 700, 'right');
+      roundedRect(ctx, 46, y + 9, 419, 7, 4, getThemeColor('dark'));
       roundedRect(ctx, 46, y + 9, 419 * amount * reveal, 7, 4, color);
     });
-    roundedRect(ctx, 37, 405, 438, 60, 14, '#101f30', '#1c3045');
-    text(ctx, 'HYDRATION', 53, 429, 9, '#aebed0', 700);
-    text(ctx, '1.8 L', 53, 452, 17, '#d9edff', 700);
+    roundedRect(ctx, 37, 405, 438, 60, 14, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'HYDRATION', 53, 429, 9, getThemeColor('primary'), 700);
+    text(ctx, '1.8 L', 53, 452, 17, getThemeColor('light-bg'), 700);
     for (let drop = 0; drop < 8; drop += 1) {
-      roundedRect(ctx, 201 + drop * 31, 433, 21, 12, 6, drop < 6 ? '#3287d4' : '#203348');
+      roundedRect(ctx, 201 + drop * 31, 433, 21, 12, 6, drop < 6 ? getThemeColor('primary') : getThemeColor('dark'));
     }
-    roundedRect(ctx, 37, 479, 438, 112, 14, '#101f30', '#1c3045');
-    text(ctx, 'BIOMARKER TRENDS', 53, 504, 9, '#c6d5e8', 700);
-    text(ctx, 'Illustrative · not a diagnosis', 457, 504, 8, '#9bacc0', 500, 'right');
-    drawMiniChart(ctx, 55, 517, 400, 48, '#63a6ff', [0.37, 0.49, 0.44, 0.64, 0.57, 0.73, 0.7], reveal);
-    ['M', 'T', 'W', 'T', 'F', 'S', 'S'].forEach((day, dayIndex) => text(ctx, day, 58 + dayIndex * 65, 580, 8, '#8194aa', 500, 'center'));
-    text(ctx, 'Example wellness visualization · consult a clinician for results', 256, 611, 7, '#71849a', 500, 'center');
+    roundedRect(ctx, 37, 479, 438, 112, 14, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'BIOMARKER TRENDS', 53, 504, 9, getThemeColor('light-bg'), 700);
+    text(ctx, 'Illustrative · not a diagnosis', 457, 504, 8, getThemeColor('light-bg'), 500, 'right');
+    drawMiniChart(ctx, 55, 517, 400, 48, getThemeColor('primary'), [0.37, 0.49, 0.44, 0.64, 0.57, 0.73, 0.7], reveal);
+    ['M', 'T', 'W', 'T', 'F', 'S', 'S'].forEach((day, dayIndex) => text(ctx, day, 58 + dayIndex * 65, 580, 8, getThemeColor('light-bg'), 500, 'center'));
+    text(ctx, 'Example wellness visualization · consult a clinician for results', 256, 611, 7, getThemeColor('light-bg'), 500, 'center');
   } else {
     drawHeader(ctx, 'AI health coach', 'A SAMPLE CONVERSATION', time);
-    roundedRect(ctx, 42, 157, 347, 65, 15, '#13253a', '#213b57');
-    text(ctx, 'YOU', 58, 181, 8, '#83b7ff', 700);
-    text(ctx, 'How should I approach today?', 58, 205, 11, '#e5eef9', 500);
-    roundedRect(ctx, 82, 239, 389, 148, 15, '#10283a', '#21483f');
-    text(ctx, 'FITNESS AI · SAMPLE', 99, 264, 8, '#63d2b1', 700);
-    text(ctx, 'Your sleep was steadier, and', 99, 294, 11, '#ecf4fb', 500);
-    text(ctx, 'you have kept up a consistent', 99, 316, 11, '#ecf4fb', 500);
-    text(ctx, 'routine. A comfortable walk', 99, 338, 11, '#ecf4fb', 500);
-    text(ctx, 'could fit well today. Listen to', 99, 360, 11, '#ecf4fb', 500);
-    text(ctx, 'how you feel, too.', 99, 378, 11, '#ecf4fb', 500);
-    roundedRect(ctx, 43, 406, 426, 49, 12, '#101f30', '#1c3045');
-    text(ctx, 'PERSONALIZED TO YOUR SAMPLE HEALTH CONTEXT', 59, 435, 8, '#c3d0df', 700);
-    roundedRect(ctx, 80, 477, 352, 62, 16, '#2866dc');
-    text(ctx, 'CONNECT A DEVICE', 256, 515, 13, '#ffffff', 800, 'center');
-    text(ctx, 'DEMO ONLY · NO LIVE DEVICE CONNECTION', 256, 564, 8, '#a9bbd0', 700, 'center');
-    text(ctx, 'Choose a wearable in the pairing preview.', 256, 585, 9, '#8194aa', 500, 'center');
+    roundedRect(ctx, 42, 157, 347, 65, 15, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'YOU', 58, 181, 8, getThemeColor('primary'), 700);
+    text(ctx, 'How should I approach today?', 58, 205, 11, getThemeColor('light-bg'), 500);
+    roundedRect(ctx, 82, 239, 389, 148, 15, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'FITNESS AI · SAMPLE', 99, 264, 8, getThemeColor('primary'), 700);
+    text(ctx, 'Your sleep was steadier, and', 99, 294, 11, getThemeColor('light-bg'), 500);
+    text(ctx, 'you have kept up a consistent', 99, 316, 11, getThemeColor('light-bg'), 500);
+    text(ctx, 'routine. A comfortable walk', 99, 338, 11, getThemeColor('light-bg'), 500);
+    text(ctx, 'could fit well today. Listen to', 99, 360, 11, getThemeColor('light-bg'), 500);
+    text(ctx, 'how you feel, too.', 99, 378, 11, getThemeColor('light-bg'), 500);
+    roundedRect(ctx, 43, 406, 426, 49, 12, getThemeColor('dark'), getThemeColor('dark'));
+    text(ctx, 'PERSONALIZED TO YOUR SAMPLE HEALTH CONTEXT', 59, 435, 8, getThemeColor('light-bg'), 700);
+    roundedRect(ctx, 80, 477, 352, 62, 16, getThemeColor('primary'));
+    text(ctx, 'CONNECT A DEVICE', 256, 515, 13, getThemeColor('card'), 800, 'center');
+    text(ctx, 'DEMO ONLY · NO LIVE DEVICE CONNECTION', 256, 564, 8, getThemeColor('primary'), 700, 'center');
+    text(ctx, 'Choose a wearable in the pairing preview.', 256, 585, 9, getThemeColor('light-bg'), 500, 'center');
   }
   ctx.restore();
 
   if (isScanning) {
-    ctx.fillStyle = 'rgba(5, 14, 26, .92)';
+    ctx.fillStyle = getThemeColor('dark', 0.92);
     ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     ctx.beginPath();
     ctx.arc(256, 249, 57 + Math.sin(time * 3) * 5, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(99, 166, 255, .3)';
+    ctx.strokeStyle = getThemeColor('primary', 0.3);
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.beginPath();
     ctx.arc(256, 249, 37, -Math.PI / 2, -Math.PI / 2 + time % (Math.PI * 2));
-    ctx.strokeStyle = '#63a6ff';
+    ctx.strokeStyle = getThemeColor('primary');
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.stroke();
-    text(ctx, 'DEMO MODE', 256, 349, 10, '#7fb4ff', 700, 'center');
-    text(ctx, 'Preparing your', 256, 384, 16, '#eef4fc', 650, 'center');
-    text(ctx, 'connection preview…', 256, 410, 16, '#eef4fc', 650, 'center');
-    text(ctx, 'No device is being scanned', 256, 455, 10, '#91a5bc', 500, 'center');
+    text(ctx, 'DEMO MODE', 256, 349, 10, getThemeColor('primary'), 700, 'center');
+    text(ctx, 'Preparing your', 256, 384, 16, getThemeColor('light-bg'), 650, 'center');
+    text(ctx, 'connection preview…', 256, 410, 16, getThemeColor('light-bg'), 650, 'center');
+    text(ctx, 'No device is being scanned', 256, 455, 10, getThemeColor('light-bg'), 500, 'center');
   }
 }
 

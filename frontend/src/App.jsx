@@ -143,7 +143,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white relative">
+    <div className="min-h-screen bg-light-bg text-dark flex flex-col font-sans selection:bg-blue-600 selection:text-white relative">
       {showIntro && (
         <div className="site-loader" role="status" aria-live="polite" aria-label="Loading Fitness health intelligence">
           <div className="site-loader__glow site-loader__glow--one" />

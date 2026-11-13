@@ -212,7 +212,7 @@ export default function HorizontalRail({ onOpenAuth }) {
             <svg className="w-full h-14" viewBox="0 0 280 60" fill="none">
               <path
                 d="M 0 35 Q 40 28 80 32 T 140 18 T 200 30 T 280 24"
-                stroke="#06B6D4"
+                stroke="var(--brand-primary)"
                 strokeWidth="2.5"
                 fill="none"
               />
@@ -223,8 +223,8 @@ export default function HorizontalRail({ onOpenAuth }) {
               />
               <defs>
                 <linearGradient id="cgmGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop stopColor="#06B6D4" />
-                  <stop offset="1" stopColor="#06B6D4" stopOpacity="0" />
+                  <stop stopColor="var(--brand-primary)" />
+                  <stop offset="1" stopColor="var(--brand-primary)" stopOpacity="0" />
                 </linearGradient>
               </defs>
             </svg>
@@ -492,7 +492,7 @@ export default function HorizontalRail({ onOpenAuth }) {
     <section
       id="rail"
       ref={containerRef}
-      className="relative w-full bg-[#060a12] text-white overflow-hidden border-y border-white/5"
+      className="relative w-full bg-dark text-white overflow-hidden border-y border-white/5"
     >
       {/* Background glow effects */}
       <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 blur-[160px] rounded-full pointer-events-none" />
@@ -563,8 +563,8 @@ export default function HorizontalRail({ onOpenAuth }) {
                 key={panel.id}
                 className={`w-[85vw] sm:w-[460px] lg:w-[500px] shrink-0 rounded-3xl p-6 sm:p-8 glass-panel border transition-all duration-500 flex flex-col justify-between ${
                   isActive
-                    ? 'border-blue-500/40 shadow-2xl shadow-blue-900/20 bg-[#0c1426]'
-                    : 'border-white/10 hover:border-white/20 bg-[#090e1b]'
+                    ? 'border-blue-500/40 shadow-2xl shadow-blue-900/20 bg-dark'
+                    : 'border-white/10 hover:border-white/20 bg-dark'
                 }`}
               >
                 {/* Panel Top Header */}
@@ -599,7 +599,7 @@ export default function HorizontalRail({ onOpenAuth }) {
                 </div>
 
                 {/* Realistic Product-Interface Preview */}
-                <div className="rounded-2xl bg-[#070b14]/90 border border-white/10 p-5 shadow-inner">
+                <div className="rounded-2xl bg-dark/90 border border-white/10 p-5 shadow-inner">
                   {panel.mockup}
                 </div>
 

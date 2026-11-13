@@ -180,7 +180,7 @@ export default function FragmentedProblem() {
     <section
       id="platform"
       ref={sectionRef}
-      className="health-network-section relative w-full border-b border-slate-200/80 bg-slate-50/70 text-slate-900"
+      className="health-network-section relative w-full border-b border-slate-200/80 bg-primary-tint text-dark"
     >
       <div className="health-network-content">
         <header className="health-network-heading">
