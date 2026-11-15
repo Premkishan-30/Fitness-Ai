@@ -129,7 +129,7 @@
 .watch-story__primary {
   background: var(--accent);
   box-shadow: 0 8px 18px var(--accent-glow);
-  color: #fff;
+  color: var(--brand-dark);
 }
 
 .watch-story__primary:hover {

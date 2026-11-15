@@ -97,7 +97,7 @@ function drawMiniChart(ctx, x, y, width, height, color, points, progress = 1) {
 function drawRing(ctx, x, y, radius, progress, color, width = 11, reveal = 1) {
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+  ctx.strokeStyle = getThemeColor('border-dark');
   ctx.lineWidth = width;
   ctx.stroke();
   ctx.beginPath();

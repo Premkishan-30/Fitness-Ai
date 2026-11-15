@@ -91,7 +91,7 @@ export default function CtaSection({ onOpenAuth }) {
               />
               <button
                 type="submit"
-                className="px-7 py-3.5 rounded-xl text-sm font-semibold text-white bg-accent hover:bg-accent-hover transition-all shadow-md shadow-[0_8px_18px_var(--accent-glow)] flex items-center justify-center gap-2 group whitespace-nowrap"
+                className="px-7 py-3.5 rounded-xl text-sm font-semibold text-dark bg-accent hover:bg-accent-hover transition-all shadow-md shadow-[0_8px_18px_var(--accent-glow)] flex items-center justify-center gap-2 group whitespace-nowrap"
               >
                 <span>Get Started</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

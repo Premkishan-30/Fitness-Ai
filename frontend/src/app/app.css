@@ -699,7 +699,7 @@
   height: 106px;
   place-items: center;
   border-radius: 50%;
-  background: conic-gradient(var(--accent) 0 77%, rgba(255, 255, 255, 0.12) 77% 100%);
+  background: conic-gradient(var(--accent) 0 77%, var(--border-dark) 77% 100%);
   transform: rotate(-90deg);
 }
 
@@ -1354,7 +1354,7 @@
 .workspace-score--compact .workspace-score-ring {
   width: 90px;
   height: 90px;
-  background: conic-gradient(var(--accent) 0 78%, rgba(255, 255, 255, 0.12) 78% 100%);
+  background: conic-gradient(var(--accent) 0 78%, var(--border-dark) 78% 100%);
 }
 
 .workspace-score--compact .workspace-score-ring::before {

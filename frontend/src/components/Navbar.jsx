@@ -106,7 +106,7 @@ export default function Navbar({ onOpenAuth }) {
             <button
               onClick={() => onOpenAuth('signup')}
               type="button"
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-accent hover:bg-accent-hover shadow-sm shadow-[0_8px_18px_var(--accent-glow)] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-dark bg-accent hover:bg-accent-hover shadow-sm shadow-[0_8px_18px_var(--accent-glow)] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4" />
@@ -117,7 +117,7 @@ export default function Navbar({ onOpenAuth }) {
           <div className="flex sm:hidden items-center gap-2">
             <button
               onClick={() => onOpenAuth('signup')}
-              className="px-3 py-1.5 rounded-xl bg-accent hover:bg-accent-hover text-white text-xs font-semibold shadow-sm"
+              className="px-3 py-1.5 rounded-xl bg-accent hover:bg-accent-hover text-dark text-xs font-semibold shadow-sm"
             >
               Get Started
             </button>
@@ -165,7 +165,7 @@ export default function Navbar({ onOpenAuth }) {
                   setMobileMenuOpen(false);
                   onOpenAuth('signup');
                 }}
-                className="w-full py-2.5 text-sm font-semibold text-white bg-accent hover:bg-accent-hover rounded-xl shadow-sm flex items-center justify-center gap-2"
+                className="w-full py-2.5 text-sm font-semibold text-dark bg-accent hover:bg-accent-hover rounded-xl shadow-sm flex items-center justify-center gap-2"
               >
                 Get Started
                 <ArrowRight className="w-4 h-4" />
