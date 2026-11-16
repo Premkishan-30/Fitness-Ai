@@ -1,93 +1,204 @@
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Activity, ArrowRight, Brain, Check, Flame, HeartPulse, Moon, Sparkles, Waves } from 'lucide-react';
+import { useRef, useState } from 'react';
+import {
+  AnimatePresence,
+  LazyMotion,
+  domAnimation,
+  m,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
+import { ArrowRight, Check, Sparkles } from 'lucide-react';
+import { useSmoothScroll } from '../smoothScrollContext';
+import MobilePhoneMockup from './MobilePhoneMockup';
+import { FEATURES } from './MobileShowcaseData';
+import './MobileShowcase.css';
 
-gsap.registerPlugin(ScrollTrigger);
+const HYSTERESIS = 0.012;
+const MOTION_EASE = [0.22, 1, 0.36, 1];
 
-const FEATURES = [
-  { title: 'Your health, in one view', label: 'OVERVIEW', description: 'See connected signals that matter today, together and without the noise.', icon: Activity, color: 'var(--brand-primary)', metric: '82', unit: 'health score', benefits: ['One clear daily snapshot', 'Signals connected in context'], useCase: 'Start every morning with a calm, useful read on your body.' },
-  { title: 'Sleep and recovery, together', label: 'SLEEP + RECOVERY', description: 'Understand sleep quality, HRV, readiness, and patterns across the week.', icon: Moon, color: 'var(--brand-primary)', metric: '84', unit: 'sleep score', benefits: ['Stage-by-stage detail', 'Readiness-led decisions'], useCase: 'Choose the right intensity for how you actually feel.' },
-  { title: 'Move, fuel, and progress', label: 'ACTIVITY + NUTRITION', description: 'Turn movement, exercise, calories, hydration, and goals into one plan.', icon: Flame, color: 'var(--brand-primary)', metric: '8,420', unit: 'steps today', benefits: ['Adaptive daily goals', 'Simple nutrition context'], useCase: 'Build consistency without chasing disconnected numbers.' },
-  { title: 'A coach that understands context', label: 'AI COACH', description: 'Ask questions and get practical guidance grounded in your own patterns.', icon: Brain, color: 'var(--brand-primary)', metric: '24/7', unit: 'contextual support', benefits: ['Answers from your trends', 'Small steps that stick'], useCase: 'Turn a confusing signal into a practical next action.' },
-  { title: 'Everything, connected', label: 'DEVICES + INSIGHTS', description: 'Bring wearables and health data together in one private, useful picture.', icon: Sparkles, color: 'var(--brand-primary)', metric: '360°', unit: 'health context', benefits: ['One connected system', 'Private by design'], useCase: 'Finish the day knowing what your body is telling you.' },
-];
+function StepPill({ index, activeIndex, progress, onSelect }) {
+  const fill = useTransform(progress, (value) => (
+    Math.min(1, Math.max(0, value * FEATURES.length - index))
+  ));
 
-function MiniChart({ color, type = 'line' }) {
-  if (type === 'bars') return <div className="mobile-phone__bars">{[38, 58, 42, 76, 52, 88, 66].map((height, i) => <i key={i} style={{ height: `${height}%`, background: i === 5 ? color : `color-mix(in srgb, ${color} 20%, transparent)` }} />)}</div>;
-  return <svg className="mobile-phone__chart" viewBox="0 0 240 74" role="img" aria-label="Illustrative trend chart"><path d="M4 62 C 35 56, 42 34, 70 43 S 105 58, 128 33 S 166 40, 188 22 S 220 22, 236 9" fill="none" stroke={color} strokeWidth="5" strokeLinecap="round" /><path d="M4 62 C 35 56, 42 34, 70 43 S 105 58, 128 33 S 166 40, 188 22 S 220 22, 236 9 V74 H4Z" fill={`color-mix(in srgb, ${color} 8%, transparent)`} /></svg>;
-}
-
-function PhoneScreen({ feature, index }) {
-  const Icon = feature.icon;
-  return <div className="mobile-phone__screen-ui" style={{ '--feature-color': feature.color }}>
-    <div className="mobile-phone__top"><span className="mobile-phone__brand"><span>F</span> FITNESS AI</span><span className="mobile-phone__time">09:41</span><Waves size={14} /></div>
-    <div className="mobile-phone__welcome"><span>GOOD MORNING</span><strong>{feature.label.toLowerCase()}</strong></div>
-    <div className="mobile-phone__hero-card">
-      <div className="mobile-phone__hero-icon"><Icon size={20} /></div>
-      <span>{feature.unit}</span>
-      <strong>{feature.metric}</strong>
-      <small>{index === 0 ? '↑ 8% from last week' : 'Illustrative sample data'}</small>
-    </div>
-    <div className="mobile-phone__section-title"><span>YOUR INSIGHT</span><Check size={14} /></div>
-    <div className="mobile-phone__insight-card"><strong>{feature.title}</strong><p>{feature.description}</p><MiniChart color={feature.color} type={index === 3 || index === 8 ? 'bars' : 'line'} /></div>
-    <div className="mobile-phone__tiles"><span><b>{index % 2 ? '7h 42m' : '94%'}</b><small>today</small></span><span><b>{index % 3 ? '+12' : '3'}</b><small>signals</small></span></div>
-    <div className="mobile-phone__nav"><Activity size={16} /><HeartPulse size={16} className="is-active" /><Brain size={16} /><Sparkles size={16} /></div>
-  </div>;
+  return (
+    <button
+      type="button"
+      className={index === activeIndex ? 'is-active' : ''}
+      onClick={() => onSelect(index)}
+      aria-label={`Show step ${String(index + 1).padStart(2, '0')}: ${FEATURES[index].label}`}
+      aria-pressed={index === activeIndex}
+      aria-current={index === activeIndex ? 'step' : undefined}
+    >
+      <span>{String(index + 1).padStart(2, '0')}</span>
+      <m.i style={{ scaleX: fill }} />
+    </button>
+  );
 }
 
 export default function MobileShowcase({ onOpenAuth }) {
-  const sectionRef = useRef(null);
-  const pinRef = useRef(null);
-  const progressRef = useRef({ value: 0 });
+  const scrollRef = useRef(null);
+  const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const { getLenis, scrollTo } = useSmoothScroll();
+  const reducedMotion = useReducedMotion() ?? false;
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ['start start', 'end end'],
+  });
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 26,
+    mass: 0.4,
+  });
+  const phoneRotateY = useTransform(progress, [0, 1], [-4, 4]);
+  const phoneY = useTransform(progress, [0, 0.5, 1], [12, -12, 12]);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const pin = pinRef.current;
-    if (!section || !pin) return undefined;
-    const mm = gsap.matchMedia();
-    mm.add('(min-width: 761px) and (prefers-reduced-motion: no-preference)', () => {
-      const state = progressRef.current;
-      const setFeature = () => {
-        const nextIndex = Math.min(FEATURES.length - 1, Math.floor(state.value * FEATURES.length));
-        setActiveIndex((current) => current === nextIndex ? current : nextIndex);
-      };
-      const context = gsap.context(() => {
-        gsap.to(state, {
-          value: 0.999,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: pin,
-            start: 'top top',
-            end: () => `+=${window.innerHeight * FEATURES.length}`,
-            pin: true,
-            pinSpacing: true,
-            scrub: 0.55,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: setFeature,
-          },
-        });
-      }, section);
-      return () => context.revert();
-    });
-    return () => mm.revert();
-  }, []);
+  useMotionValueEvent(progress, 'change', (value) => {
+    const current = activeIndexRef.current;
+    const next = Math.min(FEATURES.length - 1, Math.floor(value * FEATURES.length));
+    if (next > current && value < (current + 1) / FEATURES.length + HYSTERESIS) return;
+    if (next < current && value > current / FEATURES.length - HYSTERESIS) return;
+    if (next === current) return;
+    activeIndexRef.current = next;
+    setActiveIndex(next);
+  });
+
+  const selectStep = (index) => {
+    const wrapper = scrollRef.current;
+    if (!wrapper) return;
+    const top = wrapper.getBoundingClientRect().top + window.scrollY;
+    const scrollRange = Math.max(0, wrapper.offsetHeight - window.innerHeight);
+    const target = top + (scrollRange * (index + 0.5)) / FEATURES.length;
+    const lenis = getLenis();
+    if (lenis) lenis.scrollTo(target, { duration: 0.85 });
+    else scrollTo(target);
+  };
 
   const feature = FEATURES[activeIndex];
   const ActiveIcon = feature.icon;
-  return <section className="mobile-showcase" id="showcase" ref={sectionRef} aria-label="Fitness AI mobile app showcase">
-    <div className="mobile-showcase__intro"><span className="mobile-showcase__kicker"><Sparkles size={13} /> THE COMPLETE FITNESS AI APP</span><h2>One app. <span>Every signal.</span></h2><p>From your first step to your last insight, Fitness AI makes health data easier to use.</p></div>
-    <div className="mobile-showcase__pin" ref={pinRef}>
-      <div className="mobile-showcase__status"><span><i /> LIVE PRODUCT TOUR</span><b>{String(activeIndex + 1).padStart(2, '0')} <em>/ 05</em></b></div>
-      <div className="mobile-showcase__progress"><span style={{ transform: `scaleX(${(activeIndex + 1) / FEATURES.length})` }} /></div>
-      <div className="mobile-showcase__layout">
-        <div className="mobile-showcase__copy"><span className="mobile-showcase__eyebrow"><ActiveIcon size={16} /> {feature.label}</span><h3>{feature.title}</h3><p>{feature.description}</p><div className="mobile-showcase__benefits">{feature.benefits.map((benefit) => <span key={benefit}><Check size={14} /> {benefit}</span>)}</div><div className="mobile-showcase__usecase"><small>WHY IT MATTERS</small><p>{feature.useCase}</p></div><button type="button" onClick={() => onOpenAuth('signup')}>Build your health picture <ArrowRight size={16} /></button></div>
-        <div className="mobile-showcase__phone-wrap"><div className="mobile-showcase__glow" /><div className="mobile-phone"><div className="mobile-phone__bezel" /><div className="mobile-phone__island" /><PhoneScreen key={activeIndex} feature={feature} index={activeIndex} /><div className="mobile-phone__home" /></div></div>
-        <div className="mobile-showcase__side"><div className="mobile-showcase__side-card"><span>CONNECTED HEALTH</span><strong>Designed around your day.</strong><p>Clearer signals, better decisions, and a plan that adapts as you do.</p></div><div className="mobile-showcase__steps">{FEATURES.map((item, index) => <button key={item.label} type="button" className={index === activeIndex ? 'is-active' : ''} onClick={() => setActiveIndex(index)} aria-label={`Show ${item.label}`}><i /><span>{String(index + 1).padStart(2, '0')}</span></button>)}</div></div>
+  const transition = {
+    duration: reducedMotion ? 0.22 : 0.6,
+    ease: MOTION_EASE,
+  };
+
+  return (
+    <LazyMotion features={domAnimation}>
+    <section className="mobile-showcase" id="showcase" aria-label="Fitness AI mobile app showcase">
+      <div className="mobile-showcase__intro">
+        <span className="mobile-showcase__kicker"><Sparkles size={13} /> THE COMPLETE FITNESS AI APP</span>
+        <h2>One app. <span>Every signal.</span></h2>
+        <p>From your first step to your last insight, Fitness AI makes health data easier to use.</p>
       </div>
-      <div className="mobile-showcase__footer"><span>SCROLL TO EXPLORE</span><span>PERSONALIZED · PRIVATE · PRACTICAL</span></div>
-    </div>
-  </section>;
+
+      <div className="mobile-showcase__scroll" ref={scrollRef}>
+        <div className="mobile-showcase__pin">
+          <div className="mobile-showcase__status">
+            <span><i /> LIVE PRODUCT TOUR</span>
+            <b>{String(activeIndex + 1).padStart(2, '0')} <em>/ 05</em></b>
+          </div>
+          <div className="mobile-showcase__progress">
+            <m.span style={{ scaleX: progress }} />
+          </div>
+
+          <div className="mobile-showcase__layout">
+            <div className="mobile-showcase__copy">
+              <AnimatePresence mode="sync" initial={false}>
+                <m.div
+                  key={feature.label}
+                  className="mobile-showcase__copy-scene"
+                  initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: reducedMotion ? 0 : -16 }}
+                  transition={transition}
+                >
+                  <span className="mobile-showcase__eyebrow"><ActiveIcon size={16} /> {feature.label}</span>
+                  <h3 className="mobile-showcase__copy-title">
+                    <span>
+                      <m.span
+                        initial={{ opacity: 0, y: reducedMotion ? 0 : '100%' }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: reducedMotion ? 0 : '-100%' }}
+                        transition={transition}
+                      >
+                        {feature.title}
+                      </m.span>
+                    </span>
+                  </h3>
+                  <p>{feature.description}</p>
+                  <div className="mobile-showcase__benefits">
+                    {feature.benefits.map((benefit, index) => (
+                      <m.span
+                        key={benefit}
+                        initial={{ opacity: 0, y: reducedMotion ? 0 : 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          ...transition,
+                          delay: reducedMotion ? 0 : index * 0.06,
+                        }}
+                      >
+                        <Check size={14} /> {benefit}
+                      </m.span>
+                    ))}
+                  </div>
+                  <div className="mobile-showcase__usecase">
+                    <small>WHY IT MATTERS</small>
+                    <p>{feature.useCase}</p>
+                  </div>
+                  <button type="button" onClick={() => onOpenAuth('signup')}>
+                    Build your health picture <ArrowRight size={16} />
+                  </button>
+                </m.div>
+              </AnimatePresence>
+            </div>
+
+            <m.div
+              className="mobile-showcase__phone-wrap"
+              style={reducedMotion ? undefined : { rotateY: phoneRotateY, y: phoneY }}
+            >
+              <div className="mobile-showcase__phone-shadow" aria-hidden="true" />
+              <MobilePhoneMockup feature={feature} index={activeIndex} reducedMotion={reducedMotion} />
+            </m.div>
+
+            <div className="mobile-showcase__side">
+              <AnimatePresence mode="sync" initial={false}>
+                <m.div
+                  key={feature.useCase}
+                  className="mobile-showcase__side-card"
+                  initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: reducedMotion ? 0 : -12 }}
+                  transition={transition}
+                >
+                  <span>CONNECTED HEALTH</span>
+                  <strong>Designed around your day.</strong>
+                  <p>{feature.useCase}</p>
+                </m.div>
+              </AnimatePresence>
+              <div className="mobile-showcase__steps" role="group" aria-label="Choose an app feature">
+                {FEATURES.map((item, index) => (
+                  <StepPill
+                    key={item.label}
+                    index={index}
+                    activeIndex={activeIndex}
+                    progress={progress}
+                    onSelect={selectStep}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mobile-showcase__footer">
+            <span>SCROLL TO EXPLORE</span>
+            <span>PERSONALIZED · PRIVATE · PRACTICAL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    </LazyMotion>
+  );
 }

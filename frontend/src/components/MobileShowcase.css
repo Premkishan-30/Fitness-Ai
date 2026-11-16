@@ -1,0 +1,520 @@
+.mobile-showcase {
+  position: relative;
+  background: linear-gradient(135deg, var(--brand-primary), var(--primary-deep));
+  color: var(--on-dark);
+}
+
+.mobile-showcase__scroll {
+  position: relative;
+  height: 600svh;
+}
+
+.mobile-showcase__pin {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100svh;
+  min-height: 0;
+  flex-direction: column;
+  padding: 24px clamp(24px, 6vw, 92px) 20px;
+  overflow: hidden;
+  border-block: 1px solid var(--brand-card-border);
+  background:
+    radial-gradient(ellipse at 50% 43%, var(--brand-light-bg) 0, transparent 34%),
+    linear-gradient(135deg, var(--brand-card), var(--brand-light-bg) 70%, var(--brand-card));
+}
+
+.mobile-showcase__status,
+.mobile-showcase__footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--brand-muted);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.11em;
+}
+
+.mobile-showcase__status i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+.mobile-showcase__status b {
+  color: var(--brand-primary);
+  font-size: 12px;
+}
+
+.mobile-showcase__status em {
+  color: var(--brand-muted);
+  font-style: normal;
+}
+
+.mobile-showcase__progress {
+  height: 2px;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--brand-card-border);
+}
+
+.mobile-showcase__progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: var(--brand-primary);
+  transition: none;
+}
+
+.mobile-showcase__layout {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 330px) minmax(190px, 0.72fr);
+  align-items: center;
+  gap: clamp(22px, 4vw, 74px);
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+.mobile-showcase__copy {
+  display: grid;
+  position: relative;
+  min-width: 0;
+  max-width: 480px;
+}
+
+.mobile-showcase__copy-scene {
+  grid-area: 1 / 1;
+  will-change: transform, opacity;
+}
+
+.mobile-showcase__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--brand-primary);
+  font: 700 11px/1 var(--font-mono);
+  letter-spacing: 0.13em;
+}
+
+.mobile-showcase__copy-title {
+  margin: 18px 0 0;
+  font-size: clamp(2.4rem, 4vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.mobile-showcase__copy-title > span {
+  display: block;
+  overflow: hidden;
+}
+
+.mobile-showcase__copy-title > span > span {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.mobile-showcase__copy-scene > p {
+  margin: 18px 0 0;
+  color: var(--brand-muted);
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.mobile-showcase__benefits {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+  color: var(--brand-dark);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.mobile-showcase__benefits span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  will-change: transform, opacity;
+}
+
+.mobile-showcase__benefits svg {
+  flex: 0 0 auto;
+  color: var(--brand-primary);
+}
+
+.mobile-showcase__usecase {
+  margin-top: 25px;
+  padding: 15px 17px;
+  border-left: 2px solid var(--brand-primary);
+  background: var(--brand-light-bg);
+}
+
+.mobile-showcase__usecase small {
+  color: var(--brand-primary);
+  font: 700 9px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+}
+
+.mobile-showcase__usecase p {
+  margin: 7px 0 0;
+  color: var(--brand-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mobile-showcase__copy-scene > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 25px;
+  padding: 13px 17px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--brand-primary);
+  color: var(--brand-card);
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.mobile-showcase__phone-wrap {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  place-items: center;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.mobile-showcase__phone-shadow {
+  position: absolute;
+  right: 9%;
+  bottom: 5%;
+  left: 9%;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--brand-dark) 30%, transparent), transparent 72%);
+  opacity: 0.55;
+}
+
+.mobile-showcase__pin .mobile-phone {
+  z-index: 1;
+  width: 330px;
+  max-width: 100%;
+  height: min(78svh, 690px);
+  min-height: 0;
+  box-shadow: none;
+}
+
+.mobile-showcase__pin .mobile-phone__screen-stack {
+  position: absolute;
+  inset: 7px;
+  overflow: hidden;
+  border-radius: 43px;
+  background: var(--brand-light-bg);
+}
+
+.mobile-showcase__pin .mobile-phone__screen-ui {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  will-change: transform, opacity;
+}
+
+.mobile-showcase__side {
+  display: grid;
+  min-width: 0;
+  gap: 28px;
+  align-content: center;
+}
+
+.mobile-showcase__side-card {
+  max-width: 250px;
+  padding: 20px;
+  border: 1px solid var(--brand-card-border);
+  border-radius: 18px;
+  background: var(--brand-card);
+  box-shadow: 0 10px 24px -22px var(--brand-dark);
+  will-change: transform, opacity;
+}
+
+.mobile-showcase__side-card > span {
+  color: var(--brand-primary);
+  font: 700 9px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+}
+
+.mobile-showcase__side-card strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.mobile-showcase__side-card p {
+  margin: 10px 0 0;
+  color: var(--brand-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.mobile-showcase__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-width: 250px;
+}
+
+.mobile-showcase__steps button {
+  position: relative;
+  display: flex;
+  min-width: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 9px 10px;
+  overflow: hidden;
+  border: 1px solid var(--brand-card-border);
+  border-radius: 99px;
+  background: var(--brand-card);
+  color: var(--brand-muted);
+  cursor: pointer;
+  font: 700 9px/1 var(--font-mono);
+}
+
+.mobile-showcase__steps button.is-active {
+  border-color: var(--brand-primary);
+  background: var(--brand-light-bg);
+  color: var(--brand-primary);
+}
+
+.mobile-showcase__steps button i {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  transform-origin: left center;
+  background: var(--brand-primary);
+}
+
+.mobile-showcase__footer {
+  position: absolute;
+  right: clamp(24px, 6vw, 92px);
+  bottom: 20px;
+  left: clamp(24px, 6vw, 92px);
+  font-size: 9px;
+}
+
+@media (max-width: 899px) {
+  .mobile-showcase__scroll {
+    height: 450svh;
+  }
+
+  .mobile-showcase__pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+    padding: 12px 16px;
+    overflow: hidden;
+  }
+
+  .mobile-showcase__layout {
+    display: grid;
+    height: auto;
+    flex: 1;
+    flex-direction: initial;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1.5fr) minmax(0, 0.85fr) minmax(0, 0.42fr);
+    grid-template-areas:
+      "phone"
+      "copy"
+      "side";
+    gap: 4px;
+    width: min(100%, 620px);
+  }
+
+  .mobile-showcase__phone-wrap {
+    grid-area: phone;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .mobile-showcase__pin .mobile-phone {
+    width: 220px;
+    max-width: 56vw;
+    height: min(50svh, 430px);
+  }
+
+  .mobile-showcase__pin .mobile-phone__screen-ui {
+    gap: 5px;
+    padding: 32px 11px 12px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__brand {
+    font-size: 9px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__welcome strong {
+    font-size: 18px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__hero-card {
+    grid-template-columns: 32px 1fr;
+    gap: 2px 8px;
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__hero-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__hero-card strong {
+    font-size: 20px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__insight-card {
+    padding: 9px;
+    border-radius: 13px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__insight-card strong {
+    font-size: 12px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__insight-card p {
+    margin: 4px 0 6px;
+    font-size: 9px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__chart,
+  .mobile-showcase__pin .mobile-phone__bars {
+    height: 38px;
+  }
+
+  .mobile-showcase__pin .mobile-phone__tiles {
+    display: none;
+  }
+
+  .mobile-showcase__pin .mobile-phone__nav {
+    padding-top: 8px;
+  }
+
+  .mobile-showcase__phone-shadow {
+    right: 25%;
+    bottom: 3%;
+    left: 25%;
+    height: 16px;
+  }
+
+  .mobile-showcase__copy {
+    grid-area: copy;
+    width: 100%;
+    max-width: 620px;
+  }
+
+  .mobile-showcase__copy h3.mobile-showcase__copy-title {
+    margin-top: 8px;
+    font-size: clamp(1.45rem, 6.4vw, 2.2rem);
+  }
+
+  .mobile-showcase__copy-scene > p {
+    margin-top: 7px;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .mobile-showcase__benefits {
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 10px;
+  }
+
+  .mobile-showcase__usecase {
+    margin-top: 8px;
+    padding: 8px 10px;
+  }
+
+  .mobile-showcase__usecase p {
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  .mobile-showcase__copy-scene > button {
+    min-height: 34px;
+    margin-top: 8px;
+    padding: 8px 11px;
+    font-size: 10px;
+  }
+
+  .mobile-showcase__side {
+    display: grid;
+    grid-area: side;
+    gap: 6px;
+    align-content: center;
+  }
+
+  .mobile-showcase__side-card {
+    max-width: none;
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
+
+  .mobile-showcase__side-card strong {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  .mobile-showcase__side-card p {
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  .mobile-showcase__steps {
+    max-width: none;
+    gap: 5px;
+  }
+
+  .mobile-showcase__steps button {
+    min-width: 34px;
+    padding: 7px 8px 9px;
+  }
+
+  .mobile-showcase__footer {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+    left: 16px;
+    margin: 0;
+  }
+
+  .mobile-showcase__footer span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-showcase__phone-wrap,
+  .mobile-showcase__copy-scene,
+  .mobile-showcase__copy-title > span > span,
+  .mobile-showcase__benefits span,
+  .mobile-showcase__side-card,
+  .mobile-showcase__pin .mobile-phone__screen-ui {
+    will-change: auto;
+  }
+}

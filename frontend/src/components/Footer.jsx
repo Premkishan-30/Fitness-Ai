@@ -1,9 +1,19 @@
 import { Activity } from 'lucide-react';
+import { useSmoothScroll } from '../smoothScrollContext';
 
 export default function Footer({ onOpenAuth }) {
+  const { scrollTo } = useSmoothScroll();
+
   const scrollToTop = (e) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollTo(0);
+  };
+
+  const handleLinkClick = (event, href) => {
+    const element = document.querySelector(href);
+    if (!element) return;
+    event.preventDefault();
+    scrollTo(element);
   };
 
   const footerSections = [
@@ -106,6 +116,7 @@ export default function Footer({ onOpenAuth }) {
                   <li key={lIdx}>
                     <a
                       href={link.href}
+                      onClick={(event) => handleLinkClick(event, link.href)}
                       className="text-slate-500 hover:text-blue-600 transition-colors block py-0.5"
                     >
                       {link.name}

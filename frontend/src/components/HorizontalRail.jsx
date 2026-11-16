@@ -86,7 +86,7 @@ export default function HorizontalRail({ onOpenAuth }) {
       description:
         'Autonomic nervous system balance calculated from high-frequency heart rate variability (HRV) and nocturnal resting pulse trends.',
       icon: Heart,
-      color: 'from-emerald-500 to-teal-500',
+      color: 'from-blue-500 to-blue-500',
       badgeColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
       mockup: (
         <div className="space-y-4">
@@ -108,7 +108,7 @@ export default function HorizontalRail({ onOpenAuth }) {
               <span className="text-emerald-400 font-medium">Parasympathetic Dominant</span>
             </div>
             <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden flex">
-              <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-[76%]" />
+              <div className="bg-gradient-to-r from-blue-500 to-blue-500 h-full w-[76%]" />
               <div className="bg-slate-700 h-full w-[24%]" />
             </div>
             <div className="flex justify-between text-[10px] text-slate-400 mt-1">
@@ -132,8 +132,8 @@ export default function HorizontalRail({ onOpenAuth }) {
       description:
         'Quantify cardiovascular load and muscular fatigue in real-time, matching workout intensity to your actual recovery capacity.',
       icon: Flame,
-      color: 'from-orange-500 to-amber-500',
-      badgeColor: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
+      color: 'from-blue-500 to-blue-500',
+      badgeColor: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
       mockup: (
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -388,7 +388,7 @@ export default function HorizontalRail({ onOpenAuth }) {
       description:
         'Zero-friction bi-directional synchronization with leading medical-grade CGMs, smart rings, chest straps, and smart sleep pods.',
       icon: Watch,
-      color: 'from-cyan-500 to-teal-500',
+      color: 'from-cyan-500 to-blue-500',
       badgeColor: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
       mockup: (
         <div className="space-y-3">

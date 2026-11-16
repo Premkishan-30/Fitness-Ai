@@ -3,11 +3,15 @@ const themeColors = new Map();
 export function getThemeColor(token, alpha = 1) {
   let value = themeColors.get(token);
   if (!value) {
-    const property = token === 'accent'
-      ? '--accent'
-      : token === 'border-dark'
-        ? '--border-dark'
-        : `--brand-${token}`;
+    const properties = {
+      accent: '--primary',
+      'border-dark': '--border-dark',
+      primary: '--primary',
+      dark: '--ink',
+      'light-bg': '--on-dark',
+      'on-dark': '--on-dark',
+    };
+    const property = properties[token] || `--brand-${token}`;
     value = getComputedStyle(document.documentElement).getPropertyValue(property).trim();
     themeColors.set(token, value);
   }

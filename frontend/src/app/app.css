@@ -280,7 +280,7 @@
   right: 7px;
   width: 6px;
   height: 6px;
-  border: 1.5px solid white;
+  border: 1.5px solid var(--on-dark);
   border-radius: 50%;
   background: var(--brand-primary);
 }
@@ -699,7 +699,7 @@
   height: 106px;
   place-items: center;
   border-radius: 50%;
-  background: conic-gradient(var(--accent) 0 77%, var(--border-dark) 77% 100%);
+  background: conic-gradient(var(--primary) 0 77%, var(--border-light) 77% 100%);
   transform: rotate(-90deg);
 }
 
@@ -1000,12 +1000,12 @@
 }
 
 .workspace-button--primary {
-  background: var(--brand-primary);
+  background: var(--btn);
   color: var(--brand-card) !important;
 }
 
 .workspace-button--primary:not(:disabled):hover {
-  background: var(--brand-primary);
+  background: var(--btn-hover);
 }
 
 .workspace-button--secondary {
@@ -1354,7 +1354,7 @@
 .workspace-score--compact .workspace-score-ring {
   width: 90px;
   height: 90px;
-  background: conic-gradient(var(--accent) 0 78%, var(--border-dark) 78% 100%);
+  background: conic-gradient(var(--primary) 0 78%, var(--border-light) 78% 100%);
 }
 
 .workspace-score--compact .workspace-score-ring::before {
@@ -2956,4 +2956,50 @@
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
+}
+
+.workspace small {
+  color: var(--ink);
+}
+
+.workspace .workspace-nav-link.is-active,
+.workspace .workspace-nav-new,
+.workspace .workspace-eyebrow,
+.workspace .workspace-text-link,
+.workspace .workspace-badge,
+.workspace .workspace-change,
+.workspace .workspace-water-row,
+.workspace .workspace-segmented button.is-active,
+.workspace .workspace-settings-nav > button.is-active,
+.workspace .workspace-tabbar button.is-active {
+  color: var(--btn);
+}
+
+.workspace .workspace-section-heading > span,
+.workspace .workspace-note--blue strong,
+.workspace .workspace-membership h3,
+.workspace .workspace-feedback {
+  color: var(--ink);
+}
+
+.workspace .workspace-chat-message--user > div,
+.workspace .workspace-privacy-note {
+  color: var(--ink);
+}
+
+.workspace .workspace-nav-link svg,
+.workspace .workspace-text-link svg,
+.workspace .workspace-change svg,
+.workspace .workspace-water-row svg,
+.workspace .workspace-privacy-note svg {
+  color: var(--primary);
+}
+
+.workspace .workspace-button--primary {
+  background: var(--btn);
+  color: var(--on-dark) !important;
+}
+
+.workspace .workspace-button--primary:not(:disabled):hover {
+  background: var(--btn-hover);
 }

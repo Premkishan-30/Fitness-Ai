@@ -47,6 +47,7 @@ export default function EarlyAccessModal({ isOpen, mode, onClose, onContinue }) 
     <div
       role="dialog"
       aria-modal="true"
+      data-lenis-prevent
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
     >
       {/* Click outside backdrop */}

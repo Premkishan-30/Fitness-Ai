@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Activity, Menu, X, ArrowRight } from 'lucide-react';
+import { useSmoothScroll } from '../smoothScrollContext';
 
 export default function Navbar({ onOpenAuth }) {
+  const { scrollTo } = useSmoothScroll();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('rail');
@@ -37,12 +39,11 @@ export default function Navbar({ onOpenAuth }) {
   ];
 
   const handleLinkClick = (e, href) => {
-    e.preventDefault();
     setMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      const target = element.getBoundingClientRect().top + window.scrollY - 92;
-      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      e.preventDefault();
+      scrollTo(element);
     }
   };
 
